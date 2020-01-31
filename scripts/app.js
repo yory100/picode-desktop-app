@@ -10,13 +10,14 @@ import runCode from './runcode';
 
   var editorEl = document.getElementById('editor');
   var btnRun = document.getElementById('btn-run');
-  var fileDirectory = __dirname + '/log/output.js';  
+  var fileDirectory = __dirname + '/log/output.js';
 
   var myCodeMirror = CodeMirror(editorEl, {
     lineNumbers: true,
     value: fs.readFileSync(fileDirectory, 'utf8'),
     mode: "javascript",
     theme: 'monokai',
+    lineWrapping: true,
     lineNumbers: true,
     matchBrackets: true,
     autoCloseBrackets: true,
@@ -31,6 +32,6 @@ import runCode from './runcode';
     fs.writeFileSync(fileDirectory, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
   });
 
-  btnRun.addEventListener('click', runCode(fileDirectory));
+  btnRun.addEventListener('click', () => { runCode(fileDirectory) });
 
 })()
