@@ -34,4 +34,8 @@ import runCode from './runcode';
 
   btnRun.addEventListener('click', () => { runCode(fileDirectory) });
 
+  fs.watchFile(__dirname + '/log/openedfile.js', (curr, prev) => {
+    let fileContent = fs.readFileSync(__dirname + '/log/openedfile.js', { encoding: 'UTF8' });
+    myCodeMirror.setValue(fileContent)
+  });
 })()

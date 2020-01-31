@@ -1,28 +1,29 @@
 {
-  "name": "electron-quick-start",
+  "name": "runjs",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "editor for javascript",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "nodemon": "nodemon --watch . --exec \"electron . --debug\""
+    "packager": "electron-packager . --ignore=^/scripts"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/electron/run-js",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "editor",
+    "javascript",
+    "live",
+    "preview",
+    "fast"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Haikel Fazzani",
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "electron": "^7.1.10",
+    "electron-packager": "^14.2.0",
     "electron-reload": "^1.5.0",
     "electron-reloader": "^0.3.0",
     "rollup": "^1.31.0",
