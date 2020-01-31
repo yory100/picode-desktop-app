@@ -8,18 +8,24 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
   <title>run js</title>
+
+  <link rel="stylesheet" href="./styles/codemirror.css">
+  <link rel="stylesheet" href="./styles/monokai.css">
+  <link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body>
 
-  <button id="btn">run</button>
-  <textarea name="txt" id="txt" cols="30" rows="10"></textarea>
+  <button id="btn-run">run</button>
 
-  <ul id="result"></ul>
+  <div class="container">
+    <div id="editor"></div>
+    <ul id="result"></ul>
+  </div>
 
   <script src="./init.js"></script>
-  <script src="./scripts/app.js"></script>
- 
+  <script src="./public/build/bundle.js"></script>
+
 </body>
 
 </html>

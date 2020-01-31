@@ -18,7 +18,10 @@ function createWindow () {
 
   mainWindow.loadFile('index.html')
 
-  mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools();
+  try {
+    require('electron-reloader')(module);
+  } catch (_) {}
 
   mainWindow.on('closed', function () {
     mainWindow = null

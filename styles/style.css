@@ -1,0 +1,69 @@
+@font-face {
+  font-family: Consolas;
+  src: url(Consolas.ttf);
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: Consolas;
+  background-color: #1e1e1e  !important;
+  color: #fff !important;
+}
+
+.container {
+  position: relative;
+  height: 97%;
+  width: 100%;
+  display: flex;
+}
+
+#editor,
+#result {
+  width: 50% !important;
+  height: 100% !important;
+}
+
+.CodeMirror {
+  width: 100% !important;
+  height: 100% !important;
+  font-size: 16px;
+  background-color: #1e1e1e  !important;
+}
+
+.CodeMirror-gutters {background-color: #1e1e1e  !important; margin-left: 2px !important; margin-right: 5px !important;}
+
+#result {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding: 10px 20px;
+  border-left: 2px solid #121213;
+}
+
+#result li {
+  padding: 10px;
+  border-bottom: 2px solid #121213;
+}
+
+#btn-run {
+  position: absolute;
+  left: 43%;
+  top: 1%;
+  z-index: 999;
+}
+
+/* scroll */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #363636;
+}

@@ -1,23 +1,65 @@
+import CodeMirror from './lib/codemirror';
+import autoClose from './lib/autoclose';
+import modeJs from './lib/mode/javascript/javascript';
+
 (function () {
 
+  autoClose(CodeMirror);
+  modeJs(CodeMirror);
   var fileDirectory = __dirname + '/scripts/script.js';
 
-  var txtArea = document.getElementById('txt');
+  document.getElementById('btn-run').addEventListener('click', runCode);
 
-  txtArea.addEventListener('keyup', (evt) => {
-    fs.writeFileSync(fileDirectory, txtArea.value, { encoding: 'UTF8', flag: 'w' });
-  })
+  var myCodeMirror = CodeMirror(document.getElementById('editor'), {
+    lineNumbers: true,
+    value: fs.readFileSync(fileDirectory, 'utf8'),
+    mode: "javascript",
+    theme: 'monokai',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    indentUnit: 2
+  });
 
-  document.getElementById('btn').addEventListener('click', () => {
-    var child = exec('node ' + fileDirectory, function (error, stdout, stderr) {
+  var CodeMirrorValue = myCodeMirror.getValue();
+  myCodeMirror.on("change", function () {
+    CodeMirrorValue = myCodeMirror.getValue();
+    fs.writeFileSync(fileDirectory, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
+  });
 
-      stdout = stdout.split(/\n|\r\n/).filter(v => v);
+  function runCode () {
+    var resultUl = document.getElementById('result');
+    var output = '';
+    var outputErr = '';
+    const nodeRun = spawn('node', [fileDirectory]);
 
-      stdout.forEach(v => {
-        document.getElementById('result').innerHTML += v;
-      });
-
-    //  console.log(stderr.split(/\n|\r\n/))
+    nodeRun.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+      output += data;
     });
-  })
+
+    nodeRun.stderr.on('data', (data) => {
+      //console.error(`stderr: ${data}`);
+      //outputErr += data;
+      resultUl.innerHTML += `<li>${data}</li>`;
+
+    });
+
+    nodeRun.on('close', (code) => {
+
+      if (!outputErr && outputErr.length < 1) {
+        resultUl.innerHTML = '';
+        output = output.split(/\n|\r\n/).filter(v => v);
+
+        for (let i = 0; i < output.length; i++) {
+          const element = output[i];
+          resultUl.innerHTML += `<li>${element}</li>`;
+        }
+      }
+
+      //console.log(`child process exited with code ${code}`);
+    });
+
+  }
+
 })()
