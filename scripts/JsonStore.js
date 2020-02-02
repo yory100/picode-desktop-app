@@ -11,6 +11,11 @@ export default class JsonStore {
     return this.fileContent;
   }
 
+  static getPropVal(prop) {
+    this.store = this.get();
+    return this.store[prop];
+  }
+
   static pushOrUpdate (field, value) {
     this.store = this.get() || {};
     this.store[field] = value;

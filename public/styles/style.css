@@ -11,15 +11,15 @@
 html,
 body {
   margin: 0;
-  height: 100%;
+  height: 98%;
   width: 100%;
-  font-family: Montserrat;
+  font-family: Consolas;
   background-color: #1e1e1e !important;
   color: #fff !important;
 }
 
 .container {
-  height: 97%;
+  height: 95%;
   width: 100%;
   display: flex;
 }
@@ -34,7 +34,6 @@ body {
 .CodeMirror {
   width: 100% !important;
   height: 100% !important;
-  font-size: 18px;
   background-color: #1e1e1e !important;
   font-family: Consolas !important;
 }
@@ -57,7 +56,7 @@ body {
 }
 
 #result li {
-  padding: 10px;  
+  padding: 7px;  
 }
 
 /* top nav */
@@ -80,9 +79,12 @@ body {
   box-shadow: 0px 1px 2px 0px rgba(111, 111, 111, 0.3), 0px 2px 6px 2px rgba(105, 105, 105, 0.15);
 }
 
-.navbar {
+.navbar { width: 100%; background-color: #171718;
+  border-bottom: 2px solid #121213;
+   display: flex; justify-content: space-between;}
+
+.navbar ul {
   width: 100%;
-  background-color: #121213;  
   list-style: none;
   padding: 0;
   margin: 0;
@@ -90,17 +92,31 @@ body {
 }
 
 .navbar li {  
-  border-right: 2px solid rgb(0, 0, 0);
   padding: 10px 20px;
   font-size: 12px !important;
   text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;  
   transition: all .2s;
 }
 
-.navbar li:hover {background-color: #26262c !important;}
+#file-name { background-color: #1e1e1e !important; }
 #btn-run {background-color: #c17d00 !important;}
 #btn-run:hover {background-color: #06c100 !important;}
+
+select {border: 0;background-color: rgba(73, 72, 62, .99);color: antiquewhite; outline: none;}
+
+/* util */
+.flex-end{display: flex; justify-content: flex-end;}
+
+.cl-red {color: #ff4444 !important;}
+.cl-green {color: #292 !important;}
+
+.bg-dark-red {background-color: #a00000 !important;}
+.bg-green {background-color: #292 !important;}
+.bg-dark-gray {background-color: rgba(73, 72, 62, .99) !important;}
 /* scroll */
 ::-webkit-scrollbar {
   width: 10px;

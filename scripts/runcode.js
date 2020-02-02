@@ -16,10 +16,10 @@ export default function runCode () {
   });
 
   nodeRun.stderr.on('data', (data) => {
-    //console.error(`stderr: ${data}`);
-    //outputErr += data;
-    resultUl.innerHTML += `<li>${data}</li>`;
-
+    console.error(`stderr: ${data}`);
+    resultUl.innerHTML = '';
+    outputErr += data;
+    resultUl.innerHTML += `<li class="cl-red">${data}</li>`;
   });
 
   nodeRun.on('close', (code) => {
@@ -34,6 +34,6 @@ export default function runCode () {
       }
     }
 
-    //console.log(`child process exited with code ${code}`);
+    console.log(`child process exited with code ${code}`);
   });
 }

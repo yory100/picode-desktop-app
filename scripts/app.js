@@ -7,6 +7,7 @@ var fs = require('fs');
 let { dialog } = require('electron').remote;
 
 import { openFile, saveAs, saveCurrent } from './file-manager';
+import JsonStore from './JsonStore';
 
 (function () {
   autoClose(CodeMirror);
@@ -33,7 +34,33 @@ import { openFile, saveAs, saveCurrent } from './file-manager';
   myCodeMirror.on("change", function () {
     CodeMirrorValue = myCodeMirror.getValue();
     fs.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
+    if (livePreview) { runCode() }
   });
+
+  /** navbar: checkbox */
+  var livePreview = JsonStore.getPropVal('live-preview') || false;
+  var chkLivePreview = document.getElementById('live-preview');
+  chkLivePreview.checked = livePreview;
+
+  chkLivePreview.addEventListener('change', (e) => {
+    livePreview = !livePreview;    
+    JsonStore.pushOrUpdate('live-preview', livePreview);
+    chkLivePreview.parentElement.classList.toggle('bg-green');
+  });
+
+  /** navbar: font size change */
+  var codeMirrorElement = document.querySelector('.CodeMirror ');
+  var fontSize = JsonStore.getPropVal('font-size') || "16px";
+  codeMirrorElement.style.fontSize = fontSize;
+  
+  var selectFontSize = document.getElementById('fontsize');
+  selectFontSize.value = fontSize;
+
+  selectFontSize.addEventListener('change', (e) => {
+    fontSize = (e.target.value);
+    codeMirrorElement.style.fontSize = fontSize;
+    JsonStore.pushOrUpdate('font-size', fontSize);
+  })
 
   openFile(dialog, fs, myCodeMirror);
   saveAs(dialog, fs, myCodeMirror);

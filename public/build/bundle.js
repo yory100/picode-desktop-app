@@ -10937,15 +10937,15 @@
 	  });
 
 	  nodeRun.stderr.on('data', (data) => {
-	    //console.error(`stderr: ${data}`);
-	    //outputErr += data;
-	    resultUl.innerHTML += `<li>${data}</li>`;
-
+	    console.error(`stderr: ${data}`);
+	    resultUl.innerHTML = '';
+	    outputErr += data;
+	    resultUl.innerHTML += `<li class="cl-red">${data}</li>`;
 	  });
 
 	  nodeRun.on('close', (code) => {
 
-	    if ( outputErr.length < 1) {
+	    if (!outputErr && outputErr.length < 1) {
 	      resultUl.innerHTML = '';
 	      output = output.split(/\n|\r\n/).filter(v => v);
 
@@ -10955,7 +10955,7 @@
 	      }
 	    }
 
-	    //console.log(`child process exited with code ${code}`);
+	    console.log(`child process exited with code ${code}`);
 	  });
 	}
 
@@ -10972,6 +10972,11 @@
 	    return this.fileContent;
 	  }
 
+	  static getPropVal(prop) {
+	    this.store = this.get();
+	    return this.store[prop];
+	  }
+
 	  static pushOrUpdate (field, value) {
 	    this.store = this.get() || {};
 	    this.store[field] = value;
@@ -10984,11 +10989,15 @@
 	  }
 	}
 
+	var path = require("path");
+
 	const btnOpenFile = document.getElementById('open-file');
 	const btnSaveFile = document.getElementById('save-file');
 	const btnSaveAs = document.getElementById('save-as');
+	const setFileName = document.getElementById('file-name');
 
 	let currentFilePath = '';
+	let fileName = '';
 
 	function openFile (dialog, fs, myCodeMirror) {
 
@@ -11000,6 +11009,9 @@
 	        let fileContent = fs.readFileSync(currentFilePath, { encoding: 'UTF8' });
 	        myCodeMirror.setValue(fileContent);
 
+	        fileName = path.basename(currentFilePath);
+	        setFileName.textContent = fileName;
+	        JsonStore.pushOrUpdate("filename", fileName);
 	        JsonStore.pushOrUpdate("current-path", currentFilePath);
 	      }
 	    } catch (error) {
@@ -11015,6 +11027,7 @@
 	      if (!result.canceled) {
 	        currentFilePath = result.filePaths[0];
 	        fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+	        
 	        JsonStore.pushOrUpdate("current-path", currentFilePath);
 	      }
 	    } catch (error) {
@@ -11060,6 +11073,32 @@
 	  myCodeMirror.on("change", function () {
 	    CodeMirrorValue = myCodeMirror.getValue();
 	    fs$1.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
+	    if (livePreview) { runCode(); }
+	  });
+
+	  /** navbar: checkbox */
+	  var livePreview = JsonStore.getPropVal('live-preview') || false;
+	  var chkLivePreview = document.getElementById('live-preview');
+	  chkLivePreview.checked = livePreview;
+
+	  chkLivePreview.addEventListener('change', (e) => {
+	    livePreview = !livePreview;    
+	    JsonStore.pushOrUpdate('live-preview', livePreview);
+	    chkLivePreview.parentElement.classList.toggle('bg-green');
+	  });
+
+	  /** navbar: font size change */
+	  var codeMirrorElement = document.querySelector('.CodeMirror ');
+	  var fontSize = JsonStore.getPropVal('font-size') || "16px";
+	  codeMirrorElement.style.fontSize = fontSize;
+	  
+	  var selectFontSize = document.getElementById('fontsize');
+	  selectFontSize.value = fontSize;
+
+	  selectFontSize.addEventListener('change', (e) => {
+	    fontSize = (e.target.value);
+	    codeMirrorElement.style.fontSize = fontSize;
+	    JsonStore.pushOrUpdate('font-size', fontSize);
 	  });
 
 	  openFile(dialog, fs$1, myCodeMirror);

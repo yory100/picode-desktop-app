@@ -16,12 +16,30 @@
 
 <body>
 
-  <ul class="navbar">
-    <li id="open-file">open file</li>
-    <li id="save-file">save file</li>
-    <li id="save-as">save as</li>
-    <li id="btn-run">run</li>
-  </ul>
+  <div class="navbar">
+    <ul>
+      <li id="file-name">filename.js</li>
+      <li id="btn-run">run</li>
+    </ul>
+
+    <ul class="flex-end">
+      <li class="bg-dark-gray ">
+        <select name="fontsize" id="fontsize">
+          <option value="10px">10px</option>
+          <option value="12px">12px</option>
+          <option value="14px">14px</option>
+          <option value="16px" selected>16px</option>
+          <option value="18px">18px</option>
+          <option value="20px">20px</option>
+          <option value="22px">22px</option>
+        </select>
+      </li>
+      <li class="bg-dark-red"><input type="checkbox" name="live-preview" id="live-preview">live</li>
+      <li id="open-file">open file</li>
+      <li id="save-file">save file</li>
+      <li id="save-as">save as</li>
+    </ul>
+  </div>
 
   <div class="container">
     <div id="editor"></div>
@@ -30,4 +48,5 @@
 
   <script src="./build/bundle.js"></script>
 </body>
+
 </html>
