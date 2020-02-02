@@ -10,7 +10,7 @@ contextMenu({
     { type: 'separator' },
     {
       label: 'Live preview',
-      type: 'checkbox',
+      type: 'radio',
       checked: false,
       click: (menuItem, browserWindow, event) => {
         menuItem.checked = true ? false : true;
