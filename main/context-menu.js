@@ -4,7 +4,8 @@ var isChecked = false;
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
     {
-      label: 'Run code', click: (menuItem, browserWindow, event) => {
+      label: 'Run code', 
+      click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('run-code', 'run code')
       }
     },

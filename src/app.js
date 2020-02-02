@@ -40,43 +40,42 @@ import JsonStore from './JsonStore';
 
   /** navbar: checkbox - live preview/live code */
   var livePreview = JsonStore.getPropVal('live-preview') || false;
-  var chkLivePreview = document.getElementById('live-preview');
 
   ipcRenderer.on('live-preview', (channel, listener) => {
-    livePreview = !livePreview;
+    livePreview = listener;
     JsonStore.pushOrUpdate('live-preview', livePreview);
+    var chkLivePreview = document.getElementById('live-preview');
     chkLivePreview.classList.toggle('bg-green');
   });
 
   /** navbar: font size change */
   var codeMirrorElement = document.querySelector('.CodeMirror');
-  var fontSize = JsonStore.getPropVal('font-size') || "16px";
-  codeMirrorElement.style.fontSize = fontSize;
+  var resultBoxElement = document.getElementById('result');
 
-  var selectFontSize = document.getElementById('fontsize');
-  selectFontSize.value = fontSize;
+  var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
+  codeMirrorElement.style.fontSize = currFontSize + 'px';
+  resultBoxElement.style.fontSize = currFontSize + 'px';
 
-  selectFontSize.addEventListener('change', (e) => {
-    fontSize = (e.target.value);
-    codeMirrorElement.style.fontSize = fontSize;
-    JsonStore.pushOrUpdate('font-size', fontSize);
+  ipcRenderer.on('increase-font', async () => {
+    currFontSize++;
+    codeMirrorElement.style.fontSize = currFontSize + 'px';
+    resultBoxElement.style.fontSize = currFontSize + 'px';
+    JsonStore.pushOrUpdate('font-size', currFontSize);
   });
 
+  ipcRenderer.on('decrease-font', async () => {
+    currFontSize--;
+    codeMirrorElement.style.fontSize = currFontSize + 'px';
+    resultBoxElement.style.fontSize = currFontSize + 'px';
+    JsonStore.pushOrUpdate('font-size', currFontSize);
+  });
   // run code
-  ipcRenderer.on('run-code', () => {
-    runCode();
-  });
+  ipcRenderer.on('run-code', () => { runCode(); });
 
   // File management
-  ipcRenderer.on('load-file', async () => {
-    await loadFile(dialog, myCodeMirror);
-  });
+  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror); });
 
-  ipcRenderer.on('save-file', async () => {
-    await saveCurrent(dialog, myCodeMirror);;
-  });
+  ipcRenderer.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror);; });
 
-  ipcRenderer.on('save-as-file', async () => {
-    await saveAs(dialog, myCodeMirror);
-  });
+  ipcRenderer.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
 })()

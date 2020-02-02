@@ -25,8 +25,5 @@ function editDistance(word1, word2) {
 
 console.log(editDistance("hello", "hello")); // 4
 console.log(editDistance("hello", "helol")); // 4
+
 console.log(editDistance("hello", "sssss")); // 4
-
-
-
-

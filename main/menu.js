@@ -1,6 +1,60 @@
-const { app, Menu } = require('electron');
-
+const { app, Menu, shell } = require('electron');
 const isMac = process.platform === 'darwin';
+
+const Action = {
+  label: 'Action',
+  submenu: [
+    {
+      label: 'Run code',
+      accelerator: 'CmdOrCtrl+Enter',
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('run-code', 'run code')
+      }
+    },
+    { type: 'separator' },
+    {
+      label: 'Increase font size +',      
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('increase-font', 'Increase font size')
+      }
+    },
+    {
+      label: 'Decrease font size -',      
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('decrease-font', 'Decrease font size')
+      }
+    }
+  ]
+};
+
+const FileManager = {
+  label: 'File',
+  submenu: [
+    {
+      label: 'Load file',
+      accelerator: 'CmdOrCtrl+l',
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('load-file', 'files')
+      }
+    },
+    {
+      label: 'Save',
+      accelerator: 'CmdOrCtrl+s',
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('save-file', 'files')
+      }
+    },
+    {
+      label: 'Save as..',
+      accelerator: 'CmdOrCtrl+Shift+s',
+      click: (menuItem, browserWindow, event) => {
+        browserWindow.webContents.send('save-as-file', 'files')
+      }
+    },
+    { type: 'separator' },
+    isMac ? { role: 'close' } : { role: 'quit' }
+  ]
+};
 
 const template = [
   // { role: 'appMenu' }
@@ -19,28 +73,7 @@ const template = [
     ]
   }] : []),
   // { role: 'fileMenu' }
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Load file', click: (menuItem, browserWindow, event) => {
-          browserWindow.webContents.send('load-file', 'files')
-        }
-      },
-      {
-        label: 'Save', click: (menuItem, browserWindow, event) => {
-          browserWindow.webContents.send('save-file', 'files')
-        }
-      },
-      {
-        label: 'Save as..', click: (menuItem, browserWindow, event) => {
-          browserWindow.webContents.send('save-as-file', 'files')
-        }
-      },
-      { type: 'separator' },
-      isMac ? { role: 'close' } : { role: 'quit' }
-    ]
-  },
+  FileManager,
   // { role: 'editMenu' }
   {
     label: 'Edit',
@@ -70,6 +103,7 @@ const template = [
         ])
     ]
   },
+  Action,
   // { role: 'viewMenu' }
   {
     label: 'View',
@@ -107,7 +141,6 @@ const template = [
       {
         label: 'Learn More',
         click: async () => {
-          const { shell } = require('electron')
           await shell.openExternal('https://github.com/haikelfazzani')
         }
       }
