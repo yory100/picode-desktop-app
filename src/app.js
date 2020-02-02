@@ -38,7 +38,7 @@ import JsonStore from './JsonStore';
     if (livePreview) { runCode() }
   });
 
-  /** navbar: checkbox */
+  /** navbar: checkbox - live preview/live code */
   var livePreview = JsonStore.getPropVal('live-preview') || false;
   var chkLivePreview = document.getElementById('live-preview');
   chkLivePreview.checked = livePreview;
@@ -47,6 +47,11 @@ import JsonStore from './JsonStore';
     livePreview = !livePreview;
     JsonStore.pushOrUpdate('live-preview', livePreview);
     chkLivePreview.parentElement.classList.toggle('bg-green');
+  });
+
+  ipcRenderer.on('live-preview', (channel, listener) => {
+    console.log(channel, listener);
+    
   });
 
   /** navbar: font size change */
@@ -63,13 +68,18 @@ import JsonStore from './JsonStore';
     JsonStore.pushOrUpdate('font-size', fontSize);
   });
 
+  // run code
+  ipcRenderer.on('run-code', () => {
+    runCode();
+  });
+
   // File management
   ipcRenderer.on('load-file', async () => {
     await loadFile(dialog, myCodeMirror);
   });
 
   ipcRenderer.on('save-file', async () => {
-    await saveCurrent(myCodeMirror);;
+    await saveCurrent(dialog, myCodeMirror);;
   });
 
   ipcRenderer.on('save-as-file', async () => {

@@ -29,10 +29,10 @@ export async function loadFile (dialog, myCodeMirror) {
 export async function saveAs (dialog, myCodeMirror) {
   try {
     let result = await dialog.showSaveDialog();
+    
     if (!result.canceled) {
-      currentFilePath = result.filePaths[0];
-      fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
-
+      currentFilePath = result.filePath;
+      fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
       JsonStore.pushOrUpdate("current-path", currentFilePath);
     }
   } catch (error) {
@@ -40,9 +40,13 @@ export async function saveAs (dialog, myCodeMirror) {
   }
 }
 
-export async function saveCurrent (myCodeMirror) {
+export async function saveCurrent (dialog,myCodeMirror) {
   if (!result.canceled) {
     currentFilePath = JsonStore.get()["current-path"];
     fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+    dialog.showMessageBox({
+      message: 'The file has been saved!',
+      buttons: ['OK']
+    });
   }
 }

@@ -1,6 +1,7 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
-const menu = require(__dirname+'/main/menu');
+const menu = require(__dirname + '/main/menu');
+const contextMenu = require(__dirname + '/main/context-menu');
 
 let mainWindow;
 
@@ -10,7 +11,7 @@ function createWindow () {
   });
 
   mainWindow.maximize();
-  mainWindow.loadFile(__dirname+'/public/index.html');
+  mainWindow.loadFile(__dirname + '/public/index.html');
 
   mainWindow.webContents.openDevTools();
   Menu.setApplicationMenu(menu);

@@ -11024,10 +11024,10 @@
 	async function saveAs (dialog, myCodeMirror) {
 	  try {
 	    let result = await dialog.showSaveDialog();
+	    
 	    if (!result.canceled) {
-	      currentFilePath = result.filePaths[0];
-	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
-
+	      currentFilePath = result.filePath;
+	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
 	      JsonStore.pushOrUpdate("current-path", currentFilePath);
 	    }
 	  } catch (error) {
@@ -11035,10 +11035,14 @@
 	  }
 	}
 
-	async function saveCurrent (myCodeMirror) {
+	async function saveCurrent (dialog,myCodeMirror) {
 	  if (!result.canceled) {
 	    currentFilePath = JsonStore.get()["current-path"];
 	    fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+	    dialog.showMessageBox({
+	      message: 'The file has been saved!',
+	      buttons: ['OK']
+	    });
 	  }
 	}
 
@@ -11074,7 +11078,7 @@
 	    if (livePreview) { runCode(); }
 	  });
 
-	  /** navbar: checkbox */
+	  /** navbar: checkbox - live preview/live code */
 	  var livePreview = JsonStore.getPropVal('live-preview') || false;
 	  var chkLivePreview = document.getElementById('live-preview');
 	  chkLivePreview.checked = livePreview;
@@ -11083,6 +11087,11 @@
 	    livePreview = !livePreview;
 	    JsonStore.pushOrUpdate('live-preview', livePreview);
 	    chkLivePreview.parentElement.classList.toggle('bg-green');
+	  });
+
+	  ipcRenderer.on('live-preview', (channel, listener) => {
+	    console.log(channel, listener);
+	    
 	  });
 
 	  /** navbar: font size change */
@@ -11099,13 +11108,18 @@
 	    JsonStore.pushOrUpdate('font-size', fontSize);
 	  });
 
+	  // run code
+	  ipcRenderer.on('run-code', () => {
+	    runCode();
+	  });
+
 	  // File management
 	  ipcRenderer.on('load-file', async () => {
 	    await loadFile(dialog, myCodeMirror);
 	  });
 
 	  ipcRenderer.on('save-file', async () => {
-	    await saveCurrent(myCodeMirror);  });
+	    await saveCurrent(dialog, myCodeMirror);  });
 
 	  ipcRenderer.on('save-as-file', async () => {
 	    await saveAs(dialog, myCodeMirror);
