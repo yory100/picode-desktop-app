@@ -12,7 +12,7 @@ export default function runCode () {
 
   nodeRun.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
-    output += data;
+    output += data + '  ';
   });
 
   nodeRun.stderr.on('data', (data) => {

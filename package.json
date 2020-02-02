@@ -1,7 +1,7 @@
 {
   "name": "picode",
   "version": "1.0.0",
-  "description": "editor for javascript",
+  "description": "lightweight javascript playground",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,16 +9,9 @@
     "dev": "rollup -c -w",
     "packager": "electron-packager . --ignore=^/src"
   },
-  "repository": "https://github.com/electron/run-js",
-  "keywords": [
-    "editor",
-    "javascript",
-    "live",
-    "preview",
-    "fast"
-  ],
-  "author": "Haikel Fazzani",
-  "license": "MIT",
+  "dependencies": {
+    "electron-context-menu": "^0.16.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -30,7 +23,15 @@
     "rollup-plugin-livereload": "^1.0.4",
     "rollup-plugin-terser": "^5.2.0"
   },
-  "dependencies": {
-    "electron-context-menu": "^0.16.0"
-  }
+  "repository": "https://github.com/electron/picode-desktop-app",
+  "keywords": [
+    "editor",
+    "playground",
+    "javascript",
+    "live",
+    "preview",
+    "fast"
+  ],
+  "author": "Haikel Fazzani",
+  "license": "MIT"
 }
