@@ -10961,7 +10961,7 @@
 
 	var fs = require('fs');
 
-	class JsonStore {
+	class JsonStore$1 {
 
 	  constructor () {
 	    this.store = {
@@ -11013,8 +11013,8 @@
 
 	      fileName = path.basename(currentFilePath);
 	      setFileName.textContent = fileName;
-	      JsonStore.pushOrUpdate("filename", fileName);
-	      JsonStore.pushOrUpdate("current-path", currentFilePath);
+	      JsonStore$1.pushOrUpdate("filename", fileName);
+	      JsonStore$1.pushOrUpdate("current-path", currentFilePath);
 	    }
 	  } catch (error) {
 	    console.log(error);
@@ -11028,7 +11028,7 @@
 	    if (!result.canceled) {
 	      currentFilePath = result.filePath;
 	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
-	      JsonStore.pushOrUpdate("current-path", currentFilePath);
+	      JsonStore$1.pushOrUpdate("current-path", currentFilePath);
 	    }
 	  } catch (error) {
 	    console.log(error);
@@ -11037,13 +11037,19 @@
 
 	async function saveCurrent (dialog,myCodeMirror) {
 	  if (!result.canceled) {
-	    currentFilePath = JsonStore.get()["current-path"];
+	    currentFilePath = JsonStore$1.get()["current-path"];
 	    fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
 	    dialog.showMessageBox({
 	      message: 'The file has been saved!',
 	      buttons: ['OK']
 	    });
 	  }
+	}
+
+	function updateFontSize (newFontSize) {
+	  codeMirrorElement.style.fontSize = newFontSize + 'px';
+	  resultBoxElement.style.fontSize = newFontSize + 'px';
+	  JsonStore.pushOrUpdate('font-size', newFontSize);
 	}
 
 	var fs$2 = require('fs');
@@ -11079,11 +11085,11 @@
 	  });
 
 	  /** navbar: checkbox - live preview/live code */
-	  var livePreview = JsonStore.getPropVal('live-preview') || false;
+	  var livePreview = JsonStore$1.getPropVal('live-preview') || false;
 
 	  ipcRenderer.on('live-preview', (channel, listener) => {
 	    livePreview = listener;
-	    JsonStore.pushOrUpdate('live-preview', livePreview);
+	    JsonStore$1.pushOrUpdate('live-preview', livePreview);
 	    var chkLivePreview = document.getElementById('live-preview');
 	    chkLivePreview.classList.toggle('bg-green');
 	  });
@@ -11092,23 +11098,20 @@
 	  var codeMirrorElement = document.querySelector('.CodeMirror');
 	  var resultBoxElement = document.getElementById('result');
 
-	  var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
+	  var currFontSize = parseInt(JsonStore$1.getPropVal('font-size'), 10) || 16;
 	  codeMirrorElement.style.fontSize = currFontSize + 'px';
 	  resultBoxElement.style.fontSize = currFontSize + 'px';
 
 	  ipcRenderer.on('increase-font', async () => {
 	    currFontSize++;
-	    codeMirrorElement.style.fontSize = currFontSize + 'px';
-	    resultBoxElement.style.fontSize = currFontSize + 'px';
-	    JsonStore.pushOrUpdate('font-size', currFontSize);
+	    updateFontSize(currFontSize);
 	  });
 
 	  ipcRenderer.on('decrease-font', async () => {
 	    currFontSize--;
-	    codeMirrorElement.style.fontSize = currFontSize + 'px';
-	    resultBoxElement.style.fontSize = currFontSize + 'px';
-	    JsonStore.pushOrUpdate('font-size', currFontSize);
+	    updateFontSize(currFontSize);
 	  });
+
 	  // run code
 	  ipcRenderer.on('run-code', () => { runCode(); });
 

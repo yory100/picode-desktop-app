@@ -9,6 +9,7 @@ let { ipcRenderer } = require('electron');
 
 import { loadFile, saveAs, saveCurrent } from './file-manager';
 import JsonStore from './JsonStore';
+import updateFontSize from './fontsize';
 
 (function () {
   autoClose(CodeMirror);
@@ -58,17 +59,14 @@ import JsonStore from './JsonStore';
 
   ipcRenderer.on('increase-font', async () => {
     currFontSize++;
-    codeMirrorElement.style.fontSize = currFontSize + 'px';
-    resultBoxElement.style.fontSize = currFontSize + 'px';
-    JsonStore.pushOrUpdate('font-size', currFontSize);
+    updateFontSize(currFontSize);
   });
 
   ipcRenderer.on('decrease-font', async () => {
     currFontSize--;
-    codeMirrorElement.style.fontSize = currFontSize + 'px';
-    resultBoxElement.style.fontSize = currFontSize + 'px';
-    JsonStore.pushOrUpdate('font-size', currFontSize);
+    updateFontSize(currFontSize);
   });
+
   // run code
   ipcRenderer.on('run-code', () => { runCode(); });
 
