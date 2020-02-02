@@ -1,5 +1,6 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
+const menu = require(__dirname+'/main/menu');
 
 let mainWindow;
 
@@ -12,7 +13,7 @@ function createWindow () {
   mainWindow.loadFile(__dirname+'/public/index.html');
 
   mainWindow.webContents.openDevTools();
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(menu);
 
   // try {
   //   require('electron-reloader')(module);

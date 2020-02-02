@@ -16,14 +16,15 @@
 
 <body>
 
-  <div class="navbar">
-    <ul>
+  <div class="navbar w-100">
+    <ul class="w-60">
       <li id="file-name">filename.js</li>
       <li id="btn-run">run</li>
     </ul>
 
-    <ul class="flex-end">
-      <li class="bg-dark-gray ">
+    <ul class="flex w-40">
+      <li class="bg-dark-red"><input type="checkbox" name="live-preview" id="live-preview">live</li>
+      <li>
         <select name="fontsize" id="fontsize">
           <option value="10px">10px</option>
           <option value="12px">12px</option>
@@ -32,18 +33,15 @@
           <option value="18px">18px</option>
           <option value="20px">20px</option>
           <option value="22px">22px</option>
+          <option value="22px">24px</option>
         </select>
-      </li>
-      <li class="bg-dark-red"><input type="checkbox" name="live-preview" id="live-preview">live</li>
-      <li id="open-file">open file</li>
-      <li id="save-file">save file</li>
-      <li id="save-as">save as</li>
+      </li>      
     </ul>
   </div>
 
   <div class="container">
-    <div id="editor"></div>
-    <ul id="result"></ul>
+    <div id="editor" class="w-60"></div>
+    <ul id="result" class="w-40"></ul>
   </div>
 
   <script src="./build/bundle.js"></script>

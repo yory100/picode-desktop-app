@@ -3,7 +3,12 @@ var fs = require('fs');
 export default class JsonStore {
 
   constructor () {
-    this.store = {};
+    this.store = {
+      "current-path": ".",
+      "filename": "test.js",
+      "live-preview": false,
+      "font-size": "22px"
+    };
   }
 
   static get () {

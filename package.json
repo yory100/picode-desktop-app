@@ -7,7 +7,7 @@
     "start": "electron .",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "packager": "electron-packager . --ignore=^/scripts"
+    "packager": "electron-packager . --ignore=^/src"
   },
   "repository": "https://github.com/electron/run-js",
   "keywords": [

@@ -10964,7 +10964,12 @@
 	class JsonStore {
 
 	  constructor () {
-	    this.store = {};
+	    this.store = {
+	      "current-path": ".",
+	      "filename": "test.js",
+	      "live-preview": false,
+	      "font-size": "22px"
+	    };
 	  }
 
 	  static get () {
@@ -10990,63 +10995,56 @@
 	}
 
 	var path = require("path");
+	var fs$1 = require('fs');
 
-	const btnOpenFile = document.getElementById('open-file');
-	const btnSaveFile = document.getElementById('save-file');
-	const btnSaveAs = document.getElementById('save-as');
 	const setFileName = document.getElementById('file-name');
 
 	let currentFilePath = '';
 	let fileName = '';
 
-	function openFile (dialog, fs, myCodeMirror) {
+	async function loadFile (dialog, myCodeMirror) {
 
-	  btnOpenFile.addEventListener('click', async () => {
-	    try {
-	      let result = await dialog.showOpenDialog();
-	      if (!result.canceled) {
-	        currentFilePath = result.filePaths[0];
-	        let fileContent = fs.readFileSync(currentFilePath, { encoding: 'UTF8' });
-	        myCodeMirror.setValue(fileContent);
-
-	        fileName = path.basename(currentFilePath);
-	        setFileName.textContent = fileName;
-	        JsonStore.pushOrUpdate("filename", fileName);
-	        JsonStore.pushOrUpdate("current-path", currentFilePath);
-	      }
-	    } catch (error) {
-	      console.log(error);
-	    }
-	  });
-	}
-
-	function saveAs (dialog, fs, myCodeMirror) {
-	  btnSaveAs.addEventListener('click', async () => {
-	    try {
-	      let result = await dialog.showOpenDialog();
-	      if (!result.canceled) {
-	        currentFilePath = result.filePaths[0];
-	        fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
-	        
-	        JsonStore.pushOrUpdate("current-path", currentFilePath);
-	      }
-	    } catch (error) {
-	      console.log(error);
-	    }
-	  });
-	}
-
-	function saveCurrent (fs, myCodeMirror) {
-	  btnSaveFile.addEventListener('click', () => {
+	  try {
+	    let result = await dialog.showOpenDialog();
 	    if (!result.canceled) {
-	      currentFilePath = JsonStore.get()["current-path"];
-	      fs.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+	      currentFilePath = result.filePaths[0];
+	      let fileContent = fs$1.readFileSync(currentFilePath, { encoding: 'UTF8' });
+	      myCodeMirror.setValue(fileContent);
+
+	      fileName = path.basename(currentFilePath);
+	      setFileName.textContent = fileName;
+	      JsonStore.pushOrUpdate("filename", fileName);
+	      JsonStore.pushOrUpdate("current-path", currentFilePath);
 	    }
-	  });
+	  } catch (error) {
+	    console.log(error);
+	  }
 	}
 
-	var fs$1 = require('fs');
+	async function saveAs (dialog, myCodeMirror) {
+	  try {
+	    let result = await dialog.showSaveDialog();
+	    if (!result.canceled) {
+	      currentFilePath = result.filePaths[0];
+	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+
+	      JsonStore.pushOrUpdate("current-path", currentFilePath);
+	    }
+	  } catch (error) {
+	    console.log(error);
+	  }
+	}
+
+	async function saveCurrent (myCodeMirror) {
+	  if (!result.canceled) {
+	    currentFilePath = JsonStore.get()["current-path"];
+	    fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
+	  }
+	}
+
+	var fs$2 = require('fs');
 	let { dialog } = require('electron').remote;
+	let { ipcRenderer } = require('electron');
 
 	(function () {
 	  autoClose(codemirror);
@@ -11057,7 +11055,7 @@
 
 	  const myCodeMirror = codemirror(editorEl, {
 	    lineNumbers: true,
-	    value: fs$1.readFileSync(tempFile, 'utf8'),
+	    value: fs$2.readFileSync(tempFile, 'utf8'),
 	    mode: "javascript",
 	    theme: 'monokai',
 	    lineWrapping: true,
@@ -11072,7 +11070,7 @@
 	  var CodeMirrorValue = myCodeMirror.getValue();
 	  myCodeMirror.on("change", function () {
 	    CodeMirrorValue = myCodeMirror.getValue();
-	    fs$1.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
+	    fs$2.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
 	    if (livePreview) { runCode(); }
 	  });
 
@@ -11082,7 +11080,7 @@
 	  chkLivePreview.checked = livePreview;
 
 	  chkLivePreview.addEventListener('change', (e) => {
-	    livePreview = !livePreview;    
+	    livePreview = !livePreview;
 	    JsonStore.pushOrUpdate('live-preview', livePreview);
 	    chkLivePreview.parentElement.classList.toggle('bg-green');
 	  });
@@ -11091,7 +11089,7 @@
 	  var codeMirrorElement = document.querySelector('.CodeMirror ');
 	  var fontSize = JsonStore.getPropVal('font-size') || "16px";
 	  codeMirrorElement.style.fontSize = fontSize;
-	  
+
 	  var selectFontSize = document.getElementById('fontsize');
 	  selectFontSize.value = fontSize;
 
@@ -11101,9 +11099,17 @@
 	    JsonStore.pushOrUpdate('font-size', fontSize);
 	  });
 
-	  openFile(dialog, fs$1, myCodeMirror);
-	  saveAs(dialog, fs$1, myCodeMirror);
-	  saveCurrent(fs$1, myCodeMirror);
+	  // File management
+	  ipcRenderer.on('load-file', async () => {
+	    await loadFile(dialog, myCodeMirror);
+	  });
+
+	  ipcRenderer.on('save-file', async () => {
+	    await saveCurrent(myCodeMirror);  });
+
+	  ipcRenderer.on('save-as-file', async () => {
+	    await saveAs(dialog, myCodeMirror);
+	  });
 	})();
 
 }());

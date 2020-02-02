@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-	input: 'scripts/app.js',
+	input: 'src/app.js',
 	output: {
 		sourcemap: true,
 		format: 'iife',
@@ -16,7 +16,7 @@ export default {
 	plugins: [
 		resolve({ browser: true }),
 		commonjs(),
-		!production && livereload('scripts'),
+		!production && livereload('src'),
 		production && terser()
 	],
 	watch: { clearScreen: false }

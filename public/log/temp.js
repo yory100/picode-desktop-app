@@ -6,7 +6,7 @@ function generatePyramid() {
             output += j + '  ';
         }
         console.log(output);
-        output = '';
+        output ='';
     }
 }
 

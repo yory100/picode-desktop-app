@@ -5,8 +5,9 @@ import runCode from './runcode';
 
 var fs = require('fs');
 let { dialog } = require('electron').remote;
+let { ipcRenderer } = require('electron');
 
-import { openFile, saveAs, saveCurrent } from './file-manager';
+import { loadFile, saveAs, saveCurrent } from './file-manager';
 import JsonStore from './JsonStore';
 
 (function () {
@@ -43,7 +44,7 @@ import JsonStore from './JsonStore';
   chkLivePreview.checked = livePreview;
 
   chkLivePreview.addEventListener('change', (e) => {
-    livePreview = !livePreview;    
+    livePreview = !livePreview;
     JsonStore.pushOrUpdate('live-preview', livePreview);
     chkLivePreview.parentElement.classList.toggle('bg-green');
   });
@@ -52,7 +53,7 @@ import JsonStore from './JsonStore';
   var codeMirrorElement = document.querySelector('.CodeMirror ');
   var fontSize = JsonStore.getPropVal('font-size') || "16px";
   codeMirrorElement.style.fontSize = fontSize;
-  
+
   var selectFontSize = document.getElementById('fontsize');
   selectFontSize.value = fontSize;
 
@@ -60,9 +61,18 @@ import JsonStore from './JsonStore';
     fontSize = (e.target.value);
     codeMirrorElement.style.fontSize = fontSize;
     JsonStore.pushOrUpdate('font-size', fontSize);
-  })
+  });
 
-  openFile(dialog, fs, myCodeMirror);
-  saveAs(dialog, fs, myCodeMirror);
-  saveCurrent(fs, myCodeMirror);
+  // File management
+  ipcRenderer.on('load-file', async () => {
+    await loadFile(dialog, myCodeMirror);
+  });
+
+  ipcRenderer.on('save-file', async () => {
+    await saveCurrent(myCodeMirror);;
+  });
+
+  ipcRenderer.on('save-as-file', async () => {
+    await saveAs(dialog, myCodeMirror);
+  });
 })()
