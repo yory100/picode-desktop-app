@@ -11081,21 +11081,15 @@
 	  /** navbar: checkbox - live preview/live code */
 	  var livePreview = JsonStore.getPropVal('live-preview') || false;
 	  var chkLivePreview = document.getElementById('live-preview');
-	  chkLivePreview.checked = livePreview;
-
-	  chkLivePreview.addEventListener('change', (e) => {
-	    livePreview = !livePreview;
-	    JsonStore.pushOrUpdate('live-preview', livePreview);
-	    chkLivePreview.parentElement.classList.toggle('bg-green');
-	  });
 
 	  ipcRenderer.on('live-preview', (channel, listener) => {
-	    console.log(channel, listener);
-	    
+	    livePreview = !livePreview;
+	    JsonStore.pushOrUpdate('live-preview', livePreview);
+	    chkLivePreview.classList.toggle('bg-green');
 	  });
 
 	  /** navbar: font size change */
-	  var codeMirrorElement = document.querySelector('.CodeMirror ');
+	  var codeMirrorElement = document.querySelector('.CodeMirror');
 	  var fontSize = JsonStore.getPropVal('font-size') || "16px";
 	  codeMirrorElement.style.fontSize = fontSize;
 

@@ -1,4 +1,4 @@
-# Run Js playground: fast , lightweight
+# Picode is a Javascript playground: fast , lightweight
 
 - [x] live preview
 - [ ] support Typescript

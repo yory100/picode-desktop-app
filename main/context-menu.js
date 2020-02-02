@@ -1,4 +1,5 @@
 const contextMenu = require('electron-context-menu');
+var isChecked = false;
 
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
@@ -10,11 +11,11 @@ contextMenu({
     { type: 'separator' },
     {
       label: 'Live preview',
-      type: 'radio',
-      checked: false,
+      type: 'checkbox',
+      checked: isChecked,
       click: (menuItem, browserWindow, event) => {
-        menuItem.checked = true ? false : true;
-        browserWindow.webContents.send('live-preview', menuItem.checked);        
+        browserWindow.webContents.send('live-preview', menuItem.checked);
+        isChecked = !isChecked;
       }
     },
     { type: 'separator' },
