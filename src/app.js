@@ -59,12 +59,12 @@ import updateFontSize from './fontsize';
 
   ipcRenderer.on('increase-font', async () => {
     currFontSize++;
-    updateFontSize(currFontSize);
+    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
   });
 
   ipcRenderer.on('decrease-font', async () => {
     currFontSize--;
-    updateFontSize(currFontSize);
+    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
   });
 
   // run code

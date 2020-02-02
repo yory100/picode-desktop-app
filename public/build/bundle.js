@@ -10961,7 +10961,7 @@
 
 	var fs = require('fs');
 
-	class JsonStore$1 {
+	class JsonStore {
 
 	  constructor () {
 	    this.store = {
@@ -11013,8 +11013,8 @@
 
 	      fileName = path.basename(currentFilePath);
 	      setFileName.textContent = fileName;
-	      JsonStore$1.pushOrUpdate("filename", fileName);
-	      JsonStore$1.pushOrUpdate("current-path", currentFilePath);
+	      JsonStore.pushOrUpdate("filename", fileName);
+	      JsonStore.pushOrUpdate("current-path", currentFilePath);
 	    }
 	  } catch (error) {
 	    console.log(error);
@@ -11028,7 +11028,7 @@
 	    if (!result.canceled) {
 	      currentFilePath = result.filePath;
 	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
-	      JsonStore$1.pushOrUpdate("current-path", currentFilePath);
+	      JsonStore.pushOrUpdate("current-path", currentFilePath);
 	    }
 	  } catch (error) {
 	    console.log(error);
@@ -11037,7 +11037,7 @@
 
 	async function saveCurrent (dialog,myCodeMirror) {
 	  if (!result.canceled) {
-	    currentFilePath = JsonStore$1.get()["current-path"];
+	    currentFilePath = JsonStore.get()["current-path"];
 	    fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
 	    dialog.showMessageBox({
 	      message: 'The file has been saved!',
@@ -11046,7 +11046,7 @@
 	  }
 	}
 
-	function updateFontSize (newFontSize) {
+	function updateFontSize (newFontSize, codeMirrorElement, resultBoxElement) {
 	  codeMirrorElement.style.fontSize = newFontSize + 'px';
 	  resultBoxElement.style.fontSize = newFontSize + 'px';
 	  JsonStore.pushOrUpdate('font-size', newFontSize);
@@ -11085,11 +11085,11 @@
 	  });
 
 	  /** navbar: checkbox - live preview/live code */
-	  var livePreview = JsonStore$1.getPropVal('live-preview') || false;
+	  var livePreview = JsonStore.getPropVal('live-preview') || false;
 
 	  ipcRenderer.on('live-preview', (channel, listener) => {
 	    livePreview = listener;
-	    JsonStore$1.pushOrUpdate('live-preview', livePreview);
+	    JsonStore.pushOrUpdate('live-preview', livePreview);
 	    var chkLivePreview = document.getElementById('live-preview');
 	    chkLivePreview.classList.toggle('bg-green');
 	  });
@@ -11098,18 +11098,18 @@
 	  var codeMirrorElement = document.querySelector('.CodeMirror');
 	  var resultBoxElement = document.getElementById('result');
 
-	  var currFontSize = parseInt(JsonStore$1.getPropVal('font-size'), 10) || 16;
+	  var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
 	  codeMirrorElement.style.fontSize = currFontSize + 'px';
 	  resultBoxElement.style.fontSize = currFontSize + 'px';
 
 	  ipcRenderer.on('increase-font', async () => {
 	    currFontSize++;
-	    updateFontSize(currFontSize);
+	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
 	  });
 
 	  ipcRenderer.on('decrease-font', async () => {
 	    currFontSize--;
-	    updateFontSize(currFontSize);
+	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
 	  });
 
 	  // run code
