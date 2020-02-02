@@ -3,18 +3,21 @@ import autoClose from './lib/autoclose';
 import modeJs from './lib/mode/javascript/javascript';
 import runCode from './runcode';
 
-(function () {
+var fs = require('fs');
+let { dialog } = require('electron').remote;
 
+import { openFile, saveAs, saveCurrent } from './file-manager';
+
+(function () {
   autoClose(CodeMirror);
   modeJs(CodeMirror);
 
-  var editorEl = document.getElementById('editor');
-  var btnRun = document.getElementById('btn-run');
-  var fileDirectory = __dirname + '/log/output.js';
+  const editorEl = document.getElementById('editor');
+  const tempFile = __dirname + '/log/temp.js';
 
-  var myCodeMirror = CodeMirror(editorEl, {
+  const myCodeMirror = CodeMirror(editorEl, {
     lineNumbers: true,
-    value: fs.readFileSync(fileDirectory, 'utf8'),
+    value: fs.readFileSync(tempFile, 'utf8'),
     mode: "javascript",
     theme: 'monokai',
     lineWrapping: true,
@@ -29,13 +32,10 @@ import runCode from './runcode';
   var CodeMirrorValue = myCodeMirror.getValue();
   myCodeMirror.on("change", function () {
     CodeMirrorValue = myCodeMirror.getValue();
-    fs.writeFileSync(fileDirectory, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
+    fs.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
   });
 
-  btnRun.addEventListener('click', () => { runCode(fileDirectory) });
-
-  fs.watchFile(__dirname + '/log/openedfile.js', (curr, prev) => {
-    let fileContent = fs.readFileSync(__dirname + '/log/openedfile.js', { encoding: 'UTF8' });
-    myCodeMirror.setValue(fileContent)
-  });
+  openFile(dialog, fs, myCodeMirror);
+  saveAs(dialog, fs, myCodeMirror);
+  saveCurrent(fs, myCodeMirror);
 })()

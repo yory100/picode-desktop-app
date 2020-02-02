@@ -1,7 +1,5 @@
-const { app, BrowserWindow, dialog, Menu } = require('electron');
-
-const path = require('path');
-const template = require('./menu');
+const electron = require('electron');
+const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
 
@@ -11,12 +9,10 @@ function createWindow () {
   });
 
   mainWindow.maximize();
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile(__dirname+'/public/index.html');
 
   mainWindow.webContents.openDevTools();
-
-  const menu = Menu.buildFromTemplate(template(dialog,mainWindow));
-  Menu.setApplicationMenu(menu);
+  Menu.setApplicationMenu(null);
 
   // try {
   //   require('electron-reloader')(module);

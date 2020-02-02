@@ -1,8 +1,14 @@
-export default function runCode (fileDirectory) {
-  var resultUl = document.getElementById('result');
+const { spawn } = require('child_process');
+const tempFileR = __dirname + '/log/temp.js';
+const btnRun = document.getElementById('btn-run');
+
+btnRun.addEventListener('click', () => { runCode() });
+
+export default function runCode () {
+  const resultUl = document.getElementById('result');
   var output = '';
   var outputErr = '';
-  const nodeRun = spawn('node', [fileDirectory]);
+  const nodeRun = spawn('node', [tempFileR]);
 
   nodeRun.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -30,5 +36,4 @@ export default function runCode (fileDirectory) {
 
     //console.log(`child process exited with code ${code}`);
   });
-
 }

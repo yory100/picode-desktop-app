@@ -8,7 +8,6 @@
   src: url(fonts/Montserrat-Regular.ttf);
 }
 
-
 html,
 body {
   margin: 0;
@@ -27,7 +26,6 @@ body {
 
 /* Editor : codemirror */
 #editor {
-  position: relative;
   width: 60% !important;
   max-width: 60% !important;
   height: 100% !important;
@@ -36,7 +34,7 @@ body {
 .CodeMirror {
   width: 100% !important;
   height: 100% !important;
-  font-size: 16px;
+  font-size: 18px;
   background-color: #1e1e1e !important;
   font-family: Consolas !important;
 }
@@ -59,11 +57,11 @@ body {
 }
 
 #result li {
-  padding: 10px;
+  padding: 10px;  
 }
 
 /* top nav */
-#btn-run {
+.btn {
   position: absolute;
   right: 20px;
   top: 10px;
@@ -79,9 +77,30 @@ body {
   transition: transform 300ms ease-in-out;
   text-decoration: none;
   cursor: pointer;
-  box-shadow:0px 1px 2px 0px rgba(111, 111, 111, 0.3), 0px 2px 6px 2px rgba(105, 105, 105, 0.15);
+  box-shadow: 0px 1px 2px 0px rgba(111, 111, 111, 0.3), 0px 2px 6px 2px rgba(105, 105, 105, 0.15);
 }
 
+.navbar {
+  width: 100%;
+  background-color: #121213;  
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.navbar li {  
+  border-right: 2px solid rgb(0, 0, 0);
+  padding: 10px 20px;
+  font-size: 12px !important;
+  text-transform: uppercase;
+  cursor: pointer;  
+  transition: all .2s;
+}
+
+.navbar li:hover {background-color: #26262c !important;}
+#btn-run {background-color: #c17d00 !important;}
+#btn-run:hover {background-color: #06c100 !important;}
 /* scroll */
 ::-webkit-scrollbar {
   width: 10px;
