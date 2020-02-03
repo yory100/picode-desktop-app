@@ -7,7 +7,7 @@ var fs = require('fs');
 let { dialog } = require('electron').remote;
 let { ipcRenderer } = require('electron');
 
-import { loadFile, saveAs, saveCurrent } from './file-manager';
+import { loadFile, saveAs, saveCurrent, loadFilesIntoSide, loadFileContent } from './file-manager';
 import JsonStore from './JsonStore';
 import updateFontSize from './fontsize';
 
@@ -70,10 +70,26 @@ import updateFontSize from './fontsize';
   // run code
   ipcRenderer.on('run-code', () => { runCode(); });
 
+
+  // side files
+  var sideFilesEl = document.getElementById('side-files');
+  var isSideFilesOpened = true;
+  loadFilesIntoSide(sideFilesEl);
+  sideFilesEl.addEventListener('click', () => {
+    isSideFilesOpened = !isSideFilesOpened;
+    sideFilesEl.style.left = isSideFilesOpened ? '0px' : '-185px';
+  });
+
+  Array.from(sideFilesEl.children).forEach(el => {
+    el.addEventListener('click', () => {
+      let listFiles = JsonStore.getPropVal('opened-files');
+      let filePath = listFiles.find(f => f.fileName === el.dataset.id).currentFilePath
+      loadFileContent(filePath, el.dataset.id, myCodeMirror);
+    });
+  });
+
   // File management
-  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror); });
-
+  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror, sideFilesEl); });
   ipcRenderer.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror);; });
-
   ipcRenderer.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
 })()

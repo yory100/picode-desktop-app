@@ -10997,34 +10997,47 @@
 	var path = require("path");
 	var fs$1 = require('fs');
 
-	const setFileName = document.getElementById('file-name');
-
 	let currentFilePath = '';
 	let fileName = '';
+	let openedFiles = [];
 
-	async function loadFile (dialog, myCodeMirror) {
+	async function loadFile (dialog, myCodeMirror, sideFilesEl) {
 
 	  try {
 	    let result = await dialog.showOpenDialog();
 	    if (!result.canceled) {
-	      currentFilePath = result.filePaths[0];
-	      let fileContent = fs$1.readFileSync(currentFilePath, { encoding: 'UTF8' });
-	      myCodeMirror.setValue(fileContent);
 
+	      currentFilePath = result.filePaths[0];
 	      fileName = path.basename(currentFilePath);
-	      setFileName.textContent = fileName;
-	      JsonStore.pushOrUpdate("filename", fileName);
-	      JsonStore.pushOrUpdate("current-path", currentFilePath);
+	      setFileName(fileName);
+	      loadFileContent(currentFilePath, fileName, myCodeMirror);
+
+	      addFileIntoSide(currentFilePath, fileName, sideFilesEl);
 	    }
 	  } catch (error) {
 	    console.log(error);
 	  }
 	}
 
+	function setFileName(fileName) {
+	  const fileNameHeader = document.getElementById('file-name');
+	  fileName = path.basename(currentFilePath);
+	  fileNameHeader.textContent = fileName;
+	}
+
+	// load file content into editor: CodeMirror
+	function loadFileContent (FilePath, fileName, myCodeMirror) {
+	  setFileName(fileName);
+	  let fileContent = fs$1.readFileSync(FilePath, { encoding: 'UTF8' });
+	  myCodeMirror.setValue(fileContent);
+	  JsonStore.pushOrUpdate("filename", fileName);
+	  JsonStore.pushOrUpdate("current-path", FilePath);
+	}
+
 	async function saveAs (dialog, myCodeMirror) {
 	  try {
 	    let result = await dialog.showSaveDialog();
-	    
+
 	    if (!result.canceled) {
 	      currentFilePath = result.filePath;
 	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
@@ -11035,13 +11048,34 @@
 	  }
 	}
 
-	async function saveCurrent (dialog,myCodeMirror) {
+	async function saveCurrent (dialog, myCodeMirror) {
 	  if (!result.canceled) {
 	    currentFilePath = JsonStore.get()["current-path"];
 	    fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8', flag: 'w' });
 	    dialog.showMessageBox({
 	      message: 'The file has been saved!',
 	      buttons: ['OK']
+	    });
+	  }
+	}
+
+	function addFileIntoSide (currentFilePath, fileName, sideFilesEl) {
+	  openedFiles = JsonStore.getPropVal('opened-files');
+	  if (!openedFiles.some(f => f.fileName === fileName)) {
+	    openedFiles.push({ fileName, currentFilePath });
+	    loadFilesIntoSide(sideFilesEl);
+	    JsonStore.pushOrUpdate('opened-files', openedFiles);
+	  }
+	}
+
+	function loadFilesIntoSide (sideFilesEl) {
+	  let listFiles = JsonStore.getPropVal('opened-files');
+	  if (sideFilesEl) {
+	    sideFilesEl.innerHTML = '';
+	    listFiles.forEach(file => {
+	      sideFilesEl.innerHTML += `<li class="p-10" data-id="${file.fileName}">
+    📁 ${file.fileName}
+    </li>`;
 	    });
 	  }
 	}
@@ -11115,11 +11149,27 @@
 	  // run code
 	  ipcRenderer.on('run-code', () => { runCode(); });
 
+
+	  // side files
+	  var sideFilesEl = document.getElementById('side-files');
+	  var isSideFilesOpened = true;
+	  loadFilesIntoSide(sideFilesEl);
+	  sideFilesEl.addEventListener('click', () => {
+	    isSideFilesOpened = !isSideFilesOpened;
+	    sideFilesEl.style.left = isSideFilesOpened ? '0px' : '-185px';
+	  });
+
+	  Array.from(sideFilesEl.children).forEach(el => {
+	    el.addEventListener('click', () => {
+	      let listFiles = JsonStore.getPropVal('opened-files');
+	      let filePath = listFiles.find(f => f.fileName === el.dataset.id).currentFilePath;
+	      loadFileContent(filePath, el.dataset.id, myCodeMirror);
+	    });
+	  });
+
 	  // File management
-	  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror); });
-
+	  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror, sideFilesEl); });
 	  ipcRenderer.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror); });
-
 	  ipcRenderer.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
 	})();
 
