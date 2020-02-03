@@ -1,5 +1,7 @@
+import JsonStore from './JsonStore';
+
 const { spawn } = require('child_process');
-const tempFileR = __dirname + '/log/temp.js';
+const tempFileP = __dirname + '/log/temp';
 const btnRun = document.getElementById('btn-run');
 
 btnRun.addEventListener('click', () => { runCode() });
@@ -8,7 +10,19 @@ export default function runCode () {
   const resultUl = document.getElementById('result');
   var output = '';
   var outputErr = '';
-  const nodeRun = spawn('node', [tempFileR]);
+
+  let currLanguage = JsonStore.getPropVal('language');
+  let nodeRun = spawn('node', [tempFileP]);
+
+  switch (currLanguage) {
+    case 'python':
+      nodeRun = spawn('python', [tempFileP]);
+      break;
+  
+    default:
+      nodeRun = spawn('node', [tempFileP]);
+      break;
+  }
 
   nodeRun.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);

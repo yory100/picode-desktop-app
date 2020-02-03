@@ -6,7 +6,7 @@
 
 - [ ] support Typescript
 - [ ] support React
-- [ ] Support Python
+- [x] Support Python
 
 - [ ] remote import
 - [ ] timer

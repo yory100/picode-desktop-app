@@ -1,5 +1,8 @@
 const contextMenu = require('electron-context-menu');
-var isChecked = false;
+var fs = require('fs');
+
+let jsonStore = fs.readFileSync(__dirname+'/../public/log/store.json', {encoding:'UTF-8'});
+var isChecked = JSON.parse(jsonStore)['live-preview'];
 
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [

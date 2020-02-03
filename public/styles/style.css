@@ -29,12 +29,15 @@ body {
 ul {list-style: none;padding: 0;margin: 0;}
 
 /* side files */
-#side-files {
+.side-files {
   background-color: #373638;
-  position: absolute; top: 0; left: 0; width: 200px; height: 100%; z-index: 999;
+  position: absolute; top: 0; left: 0; width: 200px; height: 100%; 
+  display: flex; flex-direction: column;
+  z-index: 999;
 transition: all .3s;}
 
-#side-files li {cursor: pointer;}
+.side-files span {background-color: #c17d00;}
+.side-files ul li {cursor: pointer; word-break: break-all;}
 
 /* Editor : codemirror */
 #editor {

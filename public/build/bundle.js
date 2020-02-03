@@ -10919,46 +10919,6 @@
 
 	}
 
-	const { spawn } = require('child_process');
-	const tempFileR = __dirname + '/log/temp.js';
-	const btnRun = document.getElementById('btn-run');
-
-	btnRun.addEventListener('click', () => { runCode(); });
-
-	function runCode () {
-	  const resultUl = document.getElementById('result');
-	  var output = '';
-	  var outputErr = '';
-	  const nodeRun = spawn('node', [tempFileR]);
-
-	  nodeRun.stdout.on('data', (data) => {
-	    console.log(`stdout: ${data}`);
-	    output += data + '  ';
-	  });
-
-	  nodeRun.stderr.on('data', (data) => {
-	    console.error(`stderr: ${data}`);
-	    resultUl.innerHTML = '';
-	    outputErr += data;
-	    resultUl.innerHTML += `<li class="cl-red">${data}</li>`;
-	  });
-
-	  nodeRun.on('close', (code) => {
-
-	    if (!outputErr && outputErr.length < 1) {
-	      resultUl.innerHTML = '';
-	      output = output.split(/\n|\r\n/).filter(v => v);
-
-	      for (let i = 0; i < output.length; i++) {
-	        const element = output[i];
-	        resultUl.innerHTML += `<li>${element}</li>`;
-	      }
-	    }
-
-	    console.log(`child process exited with code ${code}`);
-	  });
-	}
-
 	var fs = require('fs');
 
 	class JsonStore {
@@ -10994,15 +10954,68 @@
 	  }
 	}
 
+	const { spawn } = require('child_process');
+	const tempFileP = __dirname + '/log/temp';
+	const btnRun = document.getElementById('btn-run');
+
+	btnRun.addEventListener('click', () => { runCode(); });
+
+	function runCode () {
+	  const resultUl = document.getElementById('result');
+	  var output = '';
+	  var outputErr = '';
+
+	  let currLanguage = JsonStore.getPropVal('language');
+	  let nodeRun = spawn('node', [tempFileP]);
+
+	  switch (currLanguage) {
+	    case 'python':
+	      nodeRun = spawn('python', [tempFileP]);
+	      break;
+	  
+	    default:
+	      nodeRun = spawn('node', [tempFileP]);
+	      break;
+	  }
+
+	  nodeRun.stdout.on('data', (data) => {
+	    console.log(`stdout: ${data}`);
+	    output += data + '  ';
+	  });
+
+	  nodeRun.stderr.on('data', (data) => {
+	    console.error(`stderr: ${data}`);
+	    resultUl.innerHTML = '';
+	    outputErr += data;
+	    resultUl.innerHTML += `<li class="cl-red">${data}</li>`;
+	  });
+
+	  nodeRun.on('close', (code) => {
+
+	    if (!outputErr && outputErr.length < 1) {
+	      resultUl.innerHTML = '';
+	      output = output.split(/\n|\r\n/).filter(v => v);
+
+	      for (let i = 0; i < output.length; i++) {
+	        const element = output[i];
+	        resultUl.innerHTML += `<li>${element}</li>`;
+	      }
+	    }
+
+	    console.log(`child process exited with code ${code}`);
+	  });
+	}
+
 	var path = require("path");
 	var fs$1 = require('fs');
 
+	var fileNameHeader = document.getElementById('file-name');
+
 	let currentFilePath = '';
 	let fileName = '';
-	let openedFiles = [];
 
-	async function loadFile (dialog, myCodeMirror, sideFilesEl) {
 
+	async function loadFile (dialog, myCodeMirror, ulFilesEl) {
 	  try {
 	    let result = await dialog.showOpenDialog();
 	    if (!result.canceled) {
@@ -11010,34 +11023,30 @@
 	      currentFilePath = result.filePaths[0];
 	      fileName = path.basename(currentFilePath);
 	      setFileName(fileName);
-	      loadFileContent(currentFilePath, fileName, myCodeMirror);
+	      myCodeMirror.setValue(getFileContent(currentFilePath, fileName));
 
-	      addFileIntoSide(currentFilePath, fileName, sideFilesEl);
+	      addFileIntoSide(currentFilePath, fileName, ulFilesEl);
 	    }
 	  } catch (error) {
 	    console.log(error);
 	  }
 	}
 
-	function setFileName(fileName) {
-	  const fileNameHeader = document.getElementById('file-name');
-	  fileName = path.basename(currentFilePath);
+	function setFileName (fileName) {
 	  fileNameHeader.textContent = fileName;
 	}
 
-	// load file content into editor: CodeMirror
-	function loadFileContent (FilePath, fileName, myCodeMirror) {
+	function getFileContent (FilePath, fileName) {
 	  setFileName(fileName);
 	  let fileContent = fs$1.readFileSync(FilePath, { encoding: 'UTF8' });
-	  myCodeMirror.setValue(fileContent);
 	  JsonStore.pushOrUpdate("filename", fileName);
 	  JsonStore.pushOrUpdate("current-path", FilePath);
+	  return fileContent;
 	}
 
 	async function saveAs (dialog, myCodeMirror) {
 	  try {
 	    let result = await dialog.showSaveDialog();
-
 	    if (!result.canceled) {
 	      currentFilePath = result.filePath;
 	      fs$1.writeFileSync(currentFilePath, myCodeMirror.getValue(), { encoding: 'UTF-8' });
@@ -11059,43 +11068,79 @@
 	  }
 	}
 
-	function addFileIntoSide (currentFilePath, fileName, sideFilesEl) {
-	  openedFiles = JsonStore.getPropVal('opened-files');
-	  if (!openedFiles.some(f => f.fileName === fileName)) {
-	    openedFiles.push({ fileName, currentFilePath });
-	    loadFilesIntoSide(sideFilesEl);
-	    JsonStore.pushOrUpdate('opened-files', openedFiles);
+	// add loaded files into the store and update list ui files (sidebar)
+	function addFileIntoSide (currentFilePath, fileName, ulFilesEl) {
+	  let listFiles = JsonStore.getPropVal('opened-files');
+	  if (!listFiles.some(f => f.fileName === fileName)) {
+	    listFiles.push({ fileName, currentFilePath });
+	    loadFilesIntoSide(ulFilesEl);
+	    JsonStore.pushOrUpdate('opened-files', listFiles);
 	  }
 	}
 
-	function loadFilesIntoSide (sideFilesEl) {
+	function loadFilesIntoSide (ulFilesEl) {
 	  let listFiles = JsonStore.getPropVal('opened-files');
-	  if (sideFilesEl) {
-	    sideFilesEl.innerHTML = '';
+	  if (ulFilesEl) {
+	    ulFilesEl.innerHTML = '';
 	    listFiles.forEach(file => {
-	      sideFilesEl.innerHTML += `<li class="p-10" data-id="${file.fileName}">
-    📁 ${file.fileName}
+	      ulFilesEl.innerHTML += `<li class="p-10" data-id="${file.fileName}">
+      📑 ${file.fileName}
     </li>`;
 	    });
 	  }
 	}
 
-	function updateFontSize (newFontSize, codeMirrorElement, resultBoxElement) {
-	  codeMirrorElement.style.fontSize = newFontSize + 'px';
-	  resultBoxElement.style.fontSize = newFontSize + 'px';
-	  JsonStore.pushOrUpdate('font-size', newFontSize);
+	let { ipcRenderer } = require('electron');
+
+	var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
+
+	function appFontSize (codeMirrorElement, resultBoxElement) {
+
+	  codeMirrorElement.style.fontSize = currFontSize + 'px';
+	  resultBoxElement.style.fontSize = currFontSize + 'px';
+
+	  ipcRenderer.on('increase-font', async () => {
+	    currFontSize++;
+	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
+	  });
+
+	  ipcRenderer.on('decrease-font', async () => {
+	    currFontSize--;
+	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
+	  });
+
+	  function updateFontSize (newFontSize, codeMirrorElement, resultBoxElement) {
+	    codeMirrorElement.style.fontSize = newFontSize + 'px';
+	    resultBoxElement.style.fontSize = newFontSize + 'px';
+	    JsonStore.pushOrUpdate('font-size', newFontSize);
+	  }
+	}
+
+	let { ipcRenderer: ipcRenderer$1 } = require('electron');
+
+	let livePreviewVal = JsonStore.getPropVal('live-preview') || false;
+
+	function updateLivePreview (livePreviewEl) {  
+	  livePreviewEl.style.backgroundColor = (livePreviewVal ? '#292' : '#a00000');
+	  
+	  ipcRenderer$1.on('live-preview', (channel, listener) => {
+	    livePreviewVal = listener;
+	    JsonStore.pushOrUpdate('live-preview', livePreviewVal);
+	    livePreviewEl.style.backgroundColor = (livePreviewVal ? '#292' : '#a00000');
+	  });
+	  return livePreviewVal;
 	}
 
 	var fs$2 = require('fs');
 	let { dialog } = require('electron').remote;
-	let { ipcRenderer } = require('electron');
+	let { ipcRenderer: ipcRenderer$2 } = require('electron');
 
-	(function () {
+	window.addEventListener('load', () => {
 	  autoClose(codemirror);
 	  modeJs(codemirror);
-
+	  
 	  const editorEl = document.getElementById('editor');
-	  const tempFile = __dirname + '/log/temp.js';
+	  const tempFile = __dirname + '/log/temp';
 
 	  const myCodeMirror = codemirror(editorEl, {
 	    lineNumbers: true,
@@ -11112,66 +11157,61 @@
 	  });
 
 	  var CodeMirrorValue = myCodeMirror.getValue();
+	  var livePreviewEl = document.getElementById('live-preview');
+
 	  myCodeMirror.on("change", function () {
 	    CodeMirrorValue = myCodeMirror.getValue();
 	    fs$2.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
-	    if (livePreview) { runCode(); }
+	    if (updateLivePreview(livePreviewEl)) { runCode(); }
 	  });
 
-	  /** navbar: checkbox - live preview/live code */
-	  var livePreview = JsonStore.getPropVal('live-preview') || false;
+	  // live preview
+	  updateLivePreview(livePreviewEl);
 
-	  ipcRenderer.on('live-preview', (channel, listener) => {
-	    livePreview = listener;
-	    JsonStore.pushOrUpdate('live-preview', livePreview);
-	    var chkLivePreview = document.getElementById('live-preview');
-	    chkLivePreview.classList.toggle('bg-green');
-	  });
+	  /** language select */
+	  const selectlanguage = document.getElementById('language');
+	  selectlanguage.value = JsonStore.getPropVal('language');
+	  selectlanguage.addEventListener('change', (evt) => {
+	    JsonStore.pushOrUpdate('language', evt.target.value);
+	    selectlanguage.value = JsonStore.getPropVal('language');
+	  });  
 
-	  /** navbar: font size change */
+	  // font size update
 	  var codeMirrorElement = document.querySelector('.CodeMirror');
 	  var resultBoxElement = document.getElementById('result');
-
-	  var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
-	  codeMirrorElement.style.fontSize = currFontSize + 'px';
-	  resultBoxElement.style.fontSize = currFontSize + 'px';
-
-	  ipcRenderer.on('increase-font', async () => {
-	    currFontSize++;
-	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
-	  });
-
-	  ipcRenderer.on('decrease-font', async () => {
-	    currFontSize--;
-	    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
-	  });
+	  appFontSize(codeMirrorElement,resultBoxElement);
 
 	  // run code
-	  ipcRenderer.on('run-code', () => { runCode(); });
-
+	  ipcRenderer$2.on('run-code', () => { runCode(); });
 
 	  // side files
-	  var sideFilesEl = document.getElementById('side-files');
+	  var sideFilesEl = document.querySelector('.side-files');
+	  var sideFilesSpan = document.getElementById('open-close-side');
+
 	  var isSideFilesOpened = true;
-	  loadFilesIntoSide(sideFilesEl);
-	  sideFilesEl.addEventListener('click', () => {
+
+	  sideFilesSpan.addEventListener('click', () => {
 	    isSideFilesOpened = !isSideFilesOpened;
 	    sideFilesEl.style.left = isSideFilesOpened ? '0px' : '-185px';
 	  });
 
-	  Array.from(sideFilesEl.children).forEach(el => {
+	  var ulFilesEl = document.getElementById('list-files');
+	  loadFilesIntoSide(ulFilesEl);
+
+	  Array.from(ulFilesEl.children).forEach(el => {
 	    el.addEventListener('click', () => {
 	      let listFiles = JsonStore.getPropVal('opened-files');
 	      let filePath = listFiles.find(f => f.fileName === el.dataset.id).currentFilePath;
-	      loadFileContent(filePath, el.dataset.id, myCodeMirror);
+	      myCodeMirror.setValue(getFileContent(filePath, el.dataset.id));
 	    });
 	  });
 
+
 	  // File management
-	  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror, sideFilesEl); });
-	  ipcRenderer.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror); });
-	  ipcRenderer.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
-	})();
+	  ipcRenderer$2.on('load-file', async () => { await loadFile(dialog, myCodeMirror, ulFilesEl); });
+	  ipcRenderer$2.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror); });
+	  ipcRenderer$2.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
+	});
 
 }());
 //# sourceMappingURL=bundle.js.map

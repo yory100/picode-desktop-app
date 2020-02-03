@@ -1,22 +1,23 @@
 import CodeMirror from './lib/codemirror';
 import autoClose from './lib/autoclose';
 import modeJs from './lib/mode/javascript/javascript';
-import runCode from './runcode';
 
 var fs = require('fs');
 let { dialog } = require('electron').remote;
 let { ipcRenderer } = require('electron');
 
-import { loadFile, saveAs, saveCurrent, loadFilesIntoSide, loadFileContent } from './file-manager';
 import JsonStore from './JsonStore';
-import updateFontSize from './fontsize';
+import runCode from './runcode';
+import { loadFile, saveAs, saveCurrent, loadFilesIntoSide, getFileContent } from './file-manager';
+import appFontSize from './fontsize';
+import updateLivePreview from './live-preview';
 
-(function () {
+window.addEventListener('load', () => {
   autoClose(CodeMirror);
   modeJs(CodeMirror);
-
+  
   const editorEl = document.getElementById('editor');
-  const tempFile = __dirname + '/log/temp.js';
+  const tempFile = __dirname + '/log/temp';
 
   const myCodeMirror = CodeMirror(editorEl, {
     lineNumbers: true,
@@ -33,63 +34,58 @@ import updateFontSize from './fontsize';
   });
 
   var CodeMirrorValue = myCodeMirror.getValue();
+  var livePreviewEl = document.getElementById('live-preview');
+
   myCodeMirror.on("change", function () {
     CodeMirrorValue = myCodeMirror.getValue();
     fs.writeFileSync(tempFile, CodeMirrorValue, { encoding: 'UTF8', flag: 'w' });
-    if (livePreview) { runCode() }
+    if (updateLivePreview(livePreviewEl)) { runCode() }
   });
 
-  /** navbar: checkbox - live preview/live code */
-  var livePreview = JsonStore.getPropVal('live-preview') || false;
+  // live preview
+  updateLivePreview(livePreviewEl);
 
-  ipcRenderer.on('live-preview', (channel, listener) => {
-    livePreview = listener;
-    JsonStore.pushOrUpdate('live-preview', livePreview);
-    var chkLivePreview = document.getElementById('live-preview');
-    chkLivePreview.classList.toggle('bg-green');
-  });
+  /** language select */
+  const selectlanguage = document.getElementById('language');
+  selectlanguage.value = JsonStore.getPropVal('language');
+  selectlanguage.addEventListener('change', (evt) => {
+    JsonStore.pushOrUpdate('language', evt.target.value);
+    selectlanguage.value = JsonStore.getPropVal('language');
+  });  
 
-  /** navbar: font size change */
+  // font size update
   var codeMirrorElement = document.querySelector('.CodeMirror');
   var resultBoxElement = document.getElementById('result');
-
-  var currFontSize = parseInt(JsonStore.getPropVal('font-size'), 10) || 16;
-  codeMirrorElement.style.fontSize = currFontSize + 'px';
-  resultBoxElement.style.fontSize = currFontSize + 'px';
-
-  ipcRenderer.on('increase-font', async () => {
-    currFontSize++;
-    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
-  });
-
-  ipcRenderer.on('decrease-font', async () => {
-    currFontSize--;
-    updateFontSize(currFontSize, codeMirrorElement, resultBoxElement);
-  });
+  appFontSize(codeMirrorElement,resultBoxElement);
 
   // run code
   ipcRenderer.on('run-code', () => { runCode(); });
 
-
   // side files
-  var sideFilesEl = document.getElementById('side-files');
+  var sideFilesEl = document.querySelector('.side-files');
+  var sideFilesSpan = document.getElementById('open-close-side');
+
   var isSideFilesOpened = true;
-  loadFilesIntoSide(sideFilesEl);
-  sideFilesEl.addEventListener('click', () => {
+
+  sideFilesSpan.addEventListener('click', () => {
     isSideFilesOpened = !isSideFilesOpened;
     sideFilesEl.style.left = isSideFilesOpened ? '0px' : '-185px';
   });
 
-  Array.from(sideFilesEl.children).forEach(el => {
+  var ulFilesEl = document.getElementById('list-files');
+  loadFilesIntoSide(ulFilesEl);
+
+  Array.from(ulFilesEl.children).forEach(el => {
     el.addEventListener('click', () => {
       let listFiles = JsonStore.getPropVal('opened-files');
-      let filePath = listFiles.find(f => f.fileName === el.dataset.id).currentFilePath
-      loadFileContent(filePath, el.dataset.id, myCodeMirror);
+      let filePath = listFiles.find(f => f.fileName === el.dataset.id).currentFilePath;
+      myCodeMirror.setValue(getFileContent(filePath, el.dataset.id));
     });
   });
 
+
   // File management
-  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror, sideFilesEl); });
+  ipcRenderer.on('load-file', async () => { await loadFile(dialog, myCodeMirror, ulFilesEl); });
   ipcRenderer.on('save-file', async () => { await saveCurrent(dialog, myCodeMirror);; });
   ipcRenderer.on('save-as-file', async () => { await saveAs(dialog, myCodeMirror); });
-})()
+})
