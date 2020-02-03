@@ -1,18 +1,21 @@
-# Picode is a Javascript playground: fast , lightweight
+# Picode is a Javascript/Python playground: fast , lightweight
 
+### functionality
 - [x] live preview
 - [x] import node modules
 - [x] cache (only current file edit)
+- [x] sidebar for files
+- [x] Menu: files shortcuts
+- [ ] remote import
+- [ ] timer
+- [ ] capture code
 
+### Languages
 - [ ] support Typescript
 - [ ] support React
 - [x] Support Python
-
-- [ ] remote import
-- [ ] timer
-- [x] sidebar for files
-- [x] Menu: files shortcuts
-- [ ] capture code
+- [x] Support Javascript
+- [x] Support Nodejs modules
 
 ### Capture
 ![Capture](https://i.ibb.co/d4pW1Xz/Capture.png)
