@@ -64,12 +64,11 @@ window.addEventListener('load', () => {
   // side files
   var sideFilesEl = document.querySelector('.side-files');
   var sideFilesSpan = document.getElementById('open-close-side');
-
   var isSideFilesOpened = true;
 
   sideFilesSpan.addEventListener('click', () => {
     isSideFilesOpened = !isSideFilesOpened;
-    sideFilesEl.style.left = isSideFilesOpened ? '0px' : '-185px';
+    sideFilesEl.style.marginLeft = isSideFilesOpened ? '-14%' : '0%';
   });
 
   var ulFilesEl = document.getElementById('list-files');

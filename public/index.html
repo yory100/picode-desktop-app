@@ -17,36 +17,32 @@
 <body>
 
   <div class="navbar w-100">
-    <ul class="w-1 border-right"></ul>
-    <ul class="w-60 border-right">
+    <ul class="border-right">
       <li class="bg-dark">
         <span id="live-preview"></span>
         <span id="file-name">Filename</span>
       </li>
-      <li id="btn-run">Run</li>
-    </ul>
 
-    <ul class="flex w-40">
-      <li class="bg-dark">
-        <select name="language" id="language">
+      <li class="bg-green">
+        <select name="language" id="language" class="bg-green">
           <option value="javascript" selected>Javascript</option>
           <option value="python">Python</option>
         </select>
       </li>
+      <li id="btn-run">Run</li>
     </ul>
   </div>
 
   <div class="container">
-    <div class="side-files">
+    <div class="side-files border-right">
       <span class="p-10" id="open-close-side">📁 Files</span>
       <ul id="list-files"></ul>
     </div>
 
-    <ul class="w-1 border-right"></ul>
     <div id="editor" class="w-60"></div>
     <ul id="result" class="w-40"></ul>
   </div>
-  
+
   <script src="./build/bundle.js"></script>
 </body>
 
