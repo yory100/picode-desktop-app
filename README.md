@@ -10,12 +10,12 @@
 
 - [ ] remote import
 - [ ] timer
-- [ ] sidebar for files
-- [ ] Menu: files shortcuts
+- [x] sidebar for files
+- [x] Menu: files shortcuts
 - [ ] capture code
 
 ### Capture
-![Capture](https://i.ibb.co/VWjWct7/Capture.png)
+![Capture](https://i.ibb.co/d4pW1Xz/Capture.png)
 
 ## Notes
 - All pull requests are welcome, feel free.
