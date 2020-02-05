@@ -12,9 +12,8 @@ import { getStoreFontSize, updateFontSize, getStoreLang, updateLang } from './ut
 import Footer from './components/Footer';
 
 const fs = require('fs');
-const path = require("path");
 let { ipcRenderer } = require('electron');
-const tempFilePath = __dirname + '/temp';
+const TEMP_FILE = __dirname + '/store/temp';
 
 function App () {
 
@@ -30,9 +29,9 @@ function App () {
 
   function onEditorChange (newValue) {
     setCodeVal(newValue);
-    fs.writeFileSync(tempFilePath, newValue, { encoding: 'UTF8' });
+    fs.writeFileSync(TEMP_FILE, newValue, { encoding: 'UTF8' });
     if (livePreview) {
-      runCode(tempFilePath).then(result => {
+      runCode(newValue).then(result => {
         setCodeResult(result);
         setCodeError([]);
       })
@@ -44,13 +43,14 @@ function App () {
   }
 
   React.useEffect(() => {
-    let res = fs.readFileSync(tempFilePath, { encoding: 'UTF8' });
+    let res = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
     setCodeVal(res);
 
     ipcRenderer.on('run-code', () => {
-      setCodeVal(fs.readFileSync(tempFilePath, { encoding: 'UTF8' }));
+      let newValue = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
+      setCodeVal(newValue);
 
-      runCode(tempFilePath).then(result => {
+      runCode(newValue).then(result => {
         setCodeResult(result);
         setCodeError([]);
       })

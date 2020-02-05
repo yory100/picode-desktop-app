@@ -1,7 +1,7 @@
 {
   "name": "picode",
   "version": "0.0.1",
-  "description": "React electron",
+  "description": "Picode",
   "main": "main.js",
   "scripts": {
     "watch": "rollup -c -w src/",

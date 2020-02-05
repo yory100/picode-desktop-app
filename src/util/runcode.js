@@ -1,8 +1,13 @@
 import JsonStore from './JsonStore';
 
-const execFile = require('child_process').execFile;
+const { execFile, exec } = require('child_process');
+const path = require("path");
+const fs = require('fs');
 
-export default function runCode (codeValue) {
+const TEMP_FILE_TS = path.join(__dirname, '/store/temp.ts');
+const TEMP_FILE = path.join(__dirname, '/store/temp');
+
+export default function runCode (newValue) {
 
   return new Promise((resolve, reject) => {
 
@@ -10,7 +15,19 @@ export default function runCode (codeValue) {
 
     switch (currLang) {
       case 'python':
-        execFile('python', [codeValue], (error, stdout, stderr) => {
+        execFile('python', [TEMP_FILE], (error, stdout, stderr) => {
+          if (stderr) {
+            reject(stderr.split(/\n|\r\n/).filter(v => v))
+          }
+          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+        });
+        break;
+
+      case 'typescript':
+        fs.writeFileSync(TEMP_FILE_TS, newValue, { flag: 'w' });
+        exec('ts-node ' + TEMP_FILE_TS, (error, stdout, stderr) => {
+          console.log(error, stdout, stderr);
+
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -19,7 +36,7 @@ export default function runCode (codeValue) {
         break;
 
       default:
-        execFile('node', [codeValue], (error, stdout, stderr) => {
+        execFile('node', [TEMP_FILE], (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }

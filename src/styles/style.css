@@ -57,21 +57,22 @@ ul li:hover { color:#ffffff;}
 footer {
   background-color: #282a2b;
   color: #fff;
+  border-top: 2px solid #282a2b;
   width: 100%;
   max-height: 3%;
   display: flex;
-  padding: 5px 7px;
+  padding: 5px 0px;
   position: fixed;
   left: 0;
   bottom: 0;
   z-index: 999;
 }
 
-footer > div { display: flex; align-items: center; }
+footer > div { display: flex; align-items: center; background-color: #1e1e1e; }
 
-.live-preview {border-radius: 50%;     padding: 0px 7px; margin-right: 5px;}
+.live-preview { margin-right: 8px;}
 
-select { padding: 0 10px; color: #ffffff; background-color: #1e1e1e; }
+select { padding: 0 10px; color: #ffffff; background-color: #1e1e1e; border: 0; }
 /* util */
 button {cursor: pointer; }
 
@@ -87,7 +88,7 @@ button {cursor: pointer; }
 .ml-20 {margin-left: 20px !important;}
 .mr-20 {margin-right: 20px !important;}
 
-.plr {padding-left: 10px; padding-right: 10px;}
+.plr {padding: 7px 10px; border-left: 2px solid #272727 !important;}
 
 .w-100 {width: 100% !important;}
 

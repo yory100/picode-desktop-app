@@ -8,14 +8,15 @@ export default function Footer ({
   return <footer className="disp-flex">
     <div>
       <div>
-        <span className={livePreview ? "live-preview bg-green" : "live-preview bg-yellow"}></span> Live preview
+        <span className={livePreview ? "live-preview bg-green plr" : "live-preview bg-yellow plr"}></span> 
+        Live preview
       </div>
-      <div className="btn-close ml-20 bg-yellow plr">{lang}</div>
-      <div className="btn-close ml-20 bg-yellow plr">{fontSize + 'px'}</div>
+      <div className="btn-close ml-20 plr">{lang}</div>
+      <div className="btn-close plr">{fontSize + 'px'}</div>
     </div>
 
     <div>
-      <select onChange={updateFont}>
+      <select onChange={updateFont} className="plr">
         <option value="12">12</option>
         <option value="14">14</option>
         <option value="16">16</option>
@@ -24,9 +25,10 @@ export default function Footer ({
         <option value="22">22</option>
       </select>
 
-      <select onChange={selectLang} className="ml-20 mr-20">
+      <select onChange={selectLang} className="plr">
         <option value="javascript">javascript</option>
         <option value="python">python</option>
+        <option value="typescript">typescript</option>
       </select>
     </div>
   </footer>;

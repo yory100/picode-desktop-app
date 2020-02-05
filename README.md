@@ -1,4 +1,4 @@
-# Picode is a Javascript/Python playground: fast , lightweight
+# Picode is a Javascript/Typescript/Python playground: fast , lightweight
 
 ### functionality
 - [x] live preview
@@ -11,17 +11,22 @@
 - [ ] capture code
 
 ### Languages
-- [ ] support Typescript
+- [x] support Typescript (require : ts-node and typescript installed globally)
+- [x] Support Python (require: python installed)
+- [x] Support Javascript (require: nodejs installed)
+- [x] Support Nodejs modules (require: nodejs installed)
 - [ ] support React
-- [x] Support Python
-- [x] Support Javascript
-- [x] Support Nodejs modules
+- [ ] support browser
 
 ### Capture
-![Capture](https://i.ibb.co/Xx2QW46/Capture.png)
+![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)
 
 ## Notes
+- [ts-node](https://www.npmjs.com/package/ts-node)
 - All pull requests are welcome, feel free.
 
 ### Author
 - Haikel Fazzani
+
+### License
+MIT

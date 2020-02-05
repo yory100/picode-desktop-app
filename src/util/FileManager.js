@@ -4,8 +4,8 @@ const path = require("path");
 const fs = require('fs');
 const { dialog } = require('electron').remote;
 
-const tempFilePath = __dirname + '/temp';
-let currentFilePath = tempFilePath;
+const TEMP_FILE = __dirname + '/store/temp';
+let currentFilePath = TEMP_FILE;
 
 export async function loadFile () {
 
@@ -24,7 +24,7 @@ export async function loadFile () {
 export function updateFileInfos (filePath, fileName, fileContent) {
   JsonStore.pushOrUpdate("current-path", filePath);
   JsonStore.pushOrUpdate("filename", fileName);
-  fs.writeFileSync(tempFilePath, fileContent, { encoding: 'UTF8' });
+  fs.writeFileSync(TEMP_FILE, fileContent, { encoding: 'UTF8' });
 }
 
 export async function saveAs (codeValue) {
@@ -43,7 +43,7 @@ export async function saveAs (codeValue) {
 
 export async function saveCurrent () {
   currentFilePath = JsonStore.get()["current-path"];
-  let codeValue = fs.readFileSync(tempFilePath, { encoding: 'UTF8' });
+  let codeValue = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
   fs.writeFileSync(currentFilePath, codeValue, { encoding: 'UTF8', flag: 'w' });
   await dialog.showMessageBox({
     message: 'The file has been saved!',
