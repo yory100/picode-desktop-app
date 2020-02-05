@@ -1,11 +1,10 @@
 import React from 'react';
 import { loadFile, saveCurrent, updateFilesToStore, getFilesFromStore, updateFileInfos, removeFileFromStore } from '../util/FileManager';
 
-const tempFilePath = __dirname + '/temp';
 const fs = require('fs');
 let { ipcRenderer } = require('electron');
 
-export default function SideFiles ({ isSideFileClosed, setCodeVal }) {
+export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setCodeVal }) {
 
   const [files, setFiles] = React.useState(getFilesFromStore());
   const [currFileName, setCurrFileName] = React.useState('');
@@ -41,20 +40,16 @@ export default function SideFiles ({ isSideFileClosed, setCodeVal }) {
   }
 
   return <div className="sidebar-files" style={{ marginLeft: isSideFileClosed ? '-16%' : '0%' }}>
-    
-    <ul>
-      {files && Array.isArray(files) && files.map(f => {
-        return f.fileName === currFileName ? <li key={f.fileName} className="disp-flex cl-green">
+
+    <ul style={{width:'95%'}}>
+      {files && Array.isArray(files) && files.map(f =>
+        <li key={f.fileName} className={f.fileName === currFileName ? "disp-flex cl-yellow" : "disp-flex"}>
           <span onClick={() => { getPath(f.currentFilePath, f.fileName) }}>📑 {f.fileName}</span>
           <button onClick={() => { removeFile(f.fileName) }} className="btn-rm">x</button>
-        </li> :
-          (
-            <li key={f.fileName} className="disp-flex">
-              <span onClick={() => { getPath(f.currentFilePath, f.fileName) }}>📑 {f.fileName}</span>
-              <button onClick={() => { removeFile(f.fileName) }} className="btn-rm">x</button>
-            </li>
-          )
-      })}
+        </li>
+      )}
     </ul>
+
+    <div className="close-side bg-dark" onClick={() => { setIsSideFileClosed(!isSideFileClosed) }}></div>
   </div>;
 }

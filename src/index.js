@@ -9,6 +9,7 @@ import { saveAs } from './util/FileManager';
 import CodeEditor from './components/CodeEditor';
 import CodeOutput from './components/CodeOutput';
 import { getStoreFontSize, updateFontSize, getStoreLang, updateLang } from './util/LangFonSize';
+import Footer from './components/Footer';
 
 const fs = require('fs');
 const path = require("path");
@@ -20,10 +21,11 @@ function App () {
   const [codeVal, setCodeVal] = React.useState();
   const [codeResult, setCodeResult] = React.useState([]);
   const [codeError, setCodeError] = React.useState([]);
-  const [livePreview, setLivePreview] = React.useState(false);
 
+  const [livePreview, setLivePreview] = React.useState(false);
   const [fontSize, setFontSize] = React.useState(getStoreFontSize());
   const [lang, setLang] = React.useState(getStoreLang());
+  
   const [isSideFileClosed, setIsSideFileClosed] = React.useState(false);
 
   function onEditorChange (newValue) {
@@ -82,6 +84,7 @@ function App () {
       <div className="container">
 
         <SideFiles
+          setIsSideFileClosed={setIsSideFileClosed}
           isSideFileClosed={isSideFileClosed}
           setCodeVal={setCodeVal}
         />
@@ -102,30 +105,13 @@ function App () {
 
       </div>
 
-      <header className="disp-flex">
-        <div>
-          <div onClick={() => { setIsSideFileClosed(!isSideFileClosed) }} className="btn-close mr-20">close</div>
-
-          <div className="btn-close ml-20 bg-green">{lang}</div>
-          <div className="btn-close ml-20 bg-green">{fontSize + 'px'}</div>
-        </div>
-
-        <div>
-          <select onChange={updateFont}>
-            <option value="12">12</option>
-            <option value="14">14</option>
-            <option value="16">16</option>
-            <option value="18">18</option>
-            <option value="20">20</option>
-            <option value="22">22</option>
-          </select>
-
-          <select onChange={selectLang} className="ml-20 mr-20">
-            <option value="javascript">javascript</option>
-            <option value="python">python</option>
-          </select>
-        </div>
-      </header>
+      <Footer
+        updateFont={updateFont}
+        selectLang={selectLang}
+        lang={lang}
+        fontSize={fontSize}
+        livePreview={livePreview}
+      />
     </>);
 }
 
