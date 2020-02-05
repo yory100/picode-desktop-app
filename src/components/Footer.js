@@ -10,8 +10,8 @@ export default function Footer ({
       <div>
         <span className={livePreview ? "live-preview bg-green" : "live-preview bg-yellow"}></span> Live preview
       </div>
-      <div className="btn-close ml-20 bg-yellow">{lang}</div>
-      <div className="btn-close ml-20 bg-yellow">{fontSize + 'px'}</div>
+      <div className="btn-close ml-20 bg-yellow plr">{lang}</div>
+      <div className="btn-close ml-20 bg-yellow plr">{fontSize + 'px'}</div>
     </div>
 
     <div>

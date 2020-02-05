@@ -1,8 +1,19 @@
+@font-face {
+  font-family: Consolas;
+  src: url(Consolas.ttf);
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url(Montserrat-Regular.ttf);
+}
+
 html,body,#root , .container{
   margin: 0;  
   width: 100vw;
   height: 100vh;
   font-size: 14px;
+  font-family: Consolas;
 }
 body {overflow-x: hidden; }
 html,body,.container,#root, .ace-monokai, .ace-monokai .ace_gutter { background-color: #1e1e1e; }
@@ -25,17 +36,20 @@ html,body,.container,#root, .ace-monokai, .ace-monokai .ace_gutter { background-
   word-break: break-all;
   border-left: 2px solid #272727;
 }
-
+/* Side files */
 .sidebar-files {
   width: 17%;
     color: #ffffff;
-    background-color: #282a2b;
     border-right: 2px solid #272727;
     display: flex; justify-content: space-between;
 }
 
 .close-side { width:5%; height:100% }
 .close-side:hover { background-color: #282a2b !important; }
+
+ul {list-style: none; padding: 0;}
+ul li { padding: 7px 15px; color: rgb(226, 226, 226);  word-break: break-all; cursor: pointer;}
+ul li:hover { color:#ffffff;}
 
 .btn-rm {    background-color: inherit;border: none;color: #fff;cursor: pointer;}
 .btn-rm:hover {    background-color:rgb(218, 1, 1);}
@@ -59,11 +73,7 @@ footer > div { display: flex; align-items: center; }
 
 select { padding: 0 10px; color: #ffffff; background-color: #1e1e1e; }
 /* util */
-ul {list-style: none; padding: 0;}
-ul li { padding: 7px 15px; color: rgb(226, 226, 226); transition: color .2s;  word-break: break-all; cursor: pointer;}
-ul li:hover { color:#ffffff;}
-
-button {cursor: pointer;}
+button {cursor: pointer; }
 
 .cl-yellow{color: #f1d817;}
 .cl-red{color: #ff5959;}
@@ -71,11 +81,13 @@ button {cursor: pointer;}
 
 .bg-red{background-color: #ff5959 !important;}
 .bg-green{background-color: #06960e !important;}
-.bg-yellow{background-color: #f1d817 !important;}
+.bg-yellow{background-color: #ac9800 !important;}
 .bg-dark{background-color: #1e1e1e !important;}
 
 .ml-20 {margin-left: 20px !important;}
 .mr-20 {margin-right: 20px !important;}
+
+.plr {padding-left: 10px; padding-right: 10px;}
 
 .w-100 {width: 100% !important;}
 
