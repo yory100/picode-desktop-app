@@ -1,23 +1,31 @@
+import { terser } from "rollup-plugin-terser";
+import babel from 'rollup-plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
+import commonjs from 'rollup-plugin-commonjs';
+import copy from 'rollup-plugin-copy'
 
-const production = !process.env.ROLLUP_WATCH;
+const config = {
+  input: './src/index.js',
+  output: {
+    file: './dist/bundle.js',
+    name: 'SomeModule',
+    format: 'iife',
+    sourcemap: 'inline',
+  },
+  plugins: [
+    babel({
+      exclude: /node_modules/
+    }),
+    resolve(),
+    commonjs({ include: /node_modules/ }),
+    copy({
+      targets: [
+        { src: 'src/styles', dest: 'dist/' },
+      ]
+    }),
+    terser()
+  ],
+  external: ['react', 'react-dom', 'electron'],
+}
 
-export default {
-	input: 'src/app.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
-	},
-	plugins: [
-		resolve({ browser: true }),
-		commonjs(),
-		!production && livereload('src'),
-		production && terser()
-	],
-	watch: { clearScreen: false }
-};
+export default config;

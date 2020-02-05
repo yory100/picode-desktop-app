@@ -1,25 +1,24 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
-const menu = require(__dirname + '/main/menu');
-const contextMenu = require(__dirname + '/main/context-menu');
+const menu = require(__dirname + '/main_process/menu');
+const contextMenu = require(__dirname + '/main_process/context-menu');
 
 let mainWindow;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
-    icon: __dirname + '/icons/logo192.png'
+    icon: __dirname + '/dist/icons/logo192.png'
   });
 
   mainWindow.maximize();
-  mainWindow.loadFile(__dirname + '/public/index.html');
+  mainWindow.loadFile(__dirname + '/dist/index.html');
 
-  mainWindow.webContents.openDevTools();
   Menu.setApplicationMenu(menu);
 
-  try {
-    require('electron-reloader')(module);
-  } catch (_) { }
+  // try {
+  //   require('electron-reloader')(module);
+  // } catch (_) { }
 
   mainWindow.on('closed', function () {
     mainWindow = null
@@ -35,5 +34,3 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
   if (mainWindow === null) createWindow()
 })
-
-module.exports = app;

@@ -1,37 +1,50 @@
 {
   "name": "picode",
-  "version": "1.0.0",
-  "description": "lightweight javascript playground",
+  "version": "0.0.1",
+  "description": "React electron",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "watch": "rollup -c -w src/",
     "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "start": "electron .",
     "packager": "electron-packager . --ignore=^/src"
   },
   "dependencies": {
-    "electron-context-menu": "^0.16.0"
+    "ace-builds": "^1.4.8",
+    "electron-context-menu": "^0.16.0",
+    "react-ace": "^8.0.0"
   },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^11.0.1",
-    "@rollup/plugin-node-resolve": "^7.0.0",
-    "electron": "^7.1.10",
-    "electron-packager": "^14.2.0",
-    "electron-reload": "^1.5.0",
-    "electron-reloader": "^0.3.0",
-    "rollup": "^1.31.0",
-    "rollup-plugin-livereload": "^1.0.4",
-    "rollup-plugin-terser": "^5.2.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haikelfazzani/picode.git"
   },
-  "repository": "https://github.com/electron/picode-desktop-app",
   "keywords": [
-    "editor",
-    "playground",
-    "javascript",
-    "live",
-    "preview",
-    "fast"
+    "react"
   ],
   "author": "Haikel Fazzani",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haikelfazzani/picode/issues"
+  },
+  "homepage": "https://github.com/haikelfazzani/picode#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "babel-loader": "^8.0.6",
+    "electron": "^8.0.0",
+    "electron-packager": "^14.2.0",
+    "electron-reloader": "^0.3.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "rollup": "^1.16.3",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-terser": "^5.2.0",
+    "rollup-plugin-uglify": "^6.0.2"
+  }
 }

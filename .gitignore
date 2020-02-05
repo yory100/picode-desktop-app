@@ -1,2 +1,7 @@
+.vscode
+.idea
+storybook-static
 node_modules
-runjs-win32-x64
+coverage
+
+picode-win32-x64

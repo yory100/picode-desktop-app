@@ -18,7 +18,7 @@
 - [x] Support Nodejs modules
 
 ### Capture
-![Capture](https://i.ibb.co/d4pW1Xz/Capture.png)
+![Capture](https://i.ibb.co/Xx2QW46/Capture.png)
 
 ## Notes
 - All pull requests are welcome, feel free.

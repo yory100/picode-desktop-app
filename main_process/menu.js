@@ -10,19 +10,6 @@ const Action = {
       click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('run-code', 'run code')
       }
-    },
-    { type: 'separator' },
-    {
-      label: 'Increase font size +',      
-      click: (menuItem, browserWindow, event) => {
-        browserWindow.webContents.send('increase-font', 'Increase font size')
-      }
-    },
-    {
-      label: 'Decrease font size -',      
-      click: (menuItem, browserWindow, event) => {
-        browserWindow.webContents.send('decrease-font', 'Decrease font size')
-      }
     }
   ]
 };

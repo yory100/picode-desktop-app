@@ -1,13 +1,13 @@
 const contextMenu = require('electron-context-menu');
 var fs = require('fs');
 
-let jsonStore = fs.readFileSync(__dirname+'/../public/log/store.json', {encoding:'UTF-8'});
+let jsonStore = fs.readFileSync(__dirname + '/../dist/store.json', { encoding: 'UTF-8' });
 var isChecked = JSON.parse(jsonStore)['live-preview'];
 
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
     {
-      label: 'Run code', 
+      label: 'Run code',
       click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('run-code', 'run code')
       }

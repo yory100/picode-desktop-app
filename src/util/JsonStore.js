@@ -1,22 +1,17 @@
 var fs = require('fs');
+const STORE_PATH = __dirname + '/store.json';
 
 export default class JsonStore {
 
   constructor () {
-    this.store = {
-      "current-path": ".",
-      "filename": "test.js",
-      "live-preview": false,
-      "font-size": "22px"
-    };
+    this.store = require(STORE_PATH);
   }
 
   static get () {
-    this.fileContent = require(__dirname + '/log/store.json');    
-    return this.fileContent;
+    return require(STORE_PATH);
   }
 
-  static getPropVal(prop) {
+  static getPropVal (prop) {
     this.store = this.get();
     return this.store[prop];
   }
@@ -29,6 +24,6 @@ export default class JsonStore {
   }
 
   static saveStore () {
-    fs.writeFileSync(__dirname + '/log/store.json', JSON.stringify(this.store));
+    fs.writeFileSync(STORE_PATH, JSON.stringify(this.store));
   }
 }
