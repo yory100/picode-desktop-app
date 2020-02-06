@@ -1,17 +1,17 @@
-function createHalfPyramid (height) {
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
 
-  for (var i = 1; i <= height; i++) {
-    var row = '';
+	<p>hello world dgsdg</p>
+	
+	<script>
+	  (function hello() {
+	    console.log('ok')
+	  })()
+	</script>
 
-    for (var j = 1; j <= (height - i); j++) {
-      row += ' ';
-    }
-    for (var k = 1; k <= i; k++) {
-      row += '*';
-    }
-
-    console.log(row);
-  }
-}
-
-createHalfPyramid(5);
+</body>
+</html>

@@ -10,7 +10,8 @@ let currentFilePath = TEMP_FILE;
 const LANG_EXT = [
   { ext: '.js', lang: 'javascript' },
   { ext: '.ts', lang: 'typescript' },
-  { ext: '.py', lang: 'python' }
+  { ext: '.py', lang: 'python' },
+  { ext: '.html', lang: 'html' }
 ];
 
 export async function loadFile () {

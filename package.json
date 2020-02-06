@@ -1,6 +1,6 @@
 {
   "name": "picode",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Haikel Fazzani",
   "license": "MIT",
   "description": "Modern and ligtweight code editor",
@@ -15,7 +15,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "asar": false,
+    "asar": true,
     "win": {
       "target": [
         {
@@ -35,7 +35,6 @@
       "buildResources": "dist",
       "output": "build"
     },
-    "buildVersion": "1.0.0",
     "files": [
       "main.js",
       "main_process/*",
@@ -46,7 +45,8 @@
   "dependencies": {
     "ace-builds": "^1.4.8",
     "electron-context-menu": "^0.16.0",
-    "react-ace": "^8.0.0"
+    "react-ace": "^8.0.0",
+    "react-iframe": "^1.8.0"
   },
   "repository": {
     "type": "git",

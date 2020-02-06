@@ -16,7 +16,7 @@
 - [x] Support Javascript (require: nodejs installed)
 - [x] Support Nodejs modules (require: nodejs installed)
 - [ ] support React
-- [ ] support browser
+- [x] support browser
 
 ### Capture
 ![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)

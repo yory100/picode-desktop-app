@@ -26,8 +26,15 @@ export default function runCode (newValue) {
       case 'typescript':
         fs.writeFileSync(TEMP_FILE_TS, newValue, { flag: 'w' });
         exec('ts-node ' + TEMP_FILE_TS, (error, stdout, stderr) => {
-          console.log(error, stdout, stderr);
+          if (stderr) {
+            reject(stderr.split(/\n|\r\n/).filter(v => v))
+          }
+          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+        });
+        break;
 
+        case 'javascript':
+        execFile('node', [TEMP_FILE], (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -36,12 +43,8 @@ export default function runCode (newValue) {
         break;
 
       default:
-        execFile('node', [TEMP_FILE], (error, stdout, stderr) => {
-          if (stderr) {
-            reject(stderr.split(/\n|\r\n/).filter(v => v))
-          }
-          resolve(stdout.split(/\n|\r\n/).filter(v => v));
-        });
+        resolve(newValue);
+        reject(newValue);
         break;
     }
   })

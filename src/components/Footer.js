@@ -27,6 +27,7 @@ export default function Footer ({
       </select>
 
       <select onChange={(e) => { selectLang(e.target.value) }} className="plr">
+        <option value="html">html</option>
         <option value="javascript">javascript</option>
         <option value="python">python</option>
         <option value="typescript">typescript</option>

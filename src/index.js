@@ -108,6 +108,8 @@ function App () {
           isSideFileClosed={isSideFileClosed}
           fontSize={fontSize}
           btnRunIsClicked={btnRunIsClicked}
+          language={lang}
+          codeVal={codeVal}
         />
 
       </div>
