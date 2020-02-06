@@ -7,9 +7,9 @@ export default function htmlToURL (html) {
   const source = `<!doctype html>
 <html>
   <head>
-  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <style>body { color: #fff; }</style>
   </head>
-  <style>body { color: #fff; }</style>
   <body>
     ${html}
   </body>

@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
+function generatePyramid() {
+    var totalNumberofRows = 5;
+    var output = '';
+    for (var i = 1; i <= totalNumberofRows; i++) {
+        for (var j = 1; j <= i; j++) {
+            output += j + '  ';
+        }
+        console.log(output);
+        output ='';
+    }
+}
 
-	<p>hello world dgsdg</p>
-	
-	<script>
-	  (function hello() {
-	    console.log('ok')
-	  })()
-	</script>
-
-</body>
-</html>
+generatePyramid();

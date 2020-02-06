@@ -1,4 +1,5 @@
-# Picode is a Javascript/Typescript/Python playground: fast , lightweight
+# Picode   
+Simple HTML/Javascript/Typescript/Python playground
 
 ### functionality
 - [x] live preview
@@ -16,7 +17,7 @@
 - [x] Support Javascript (require: nodejs installed)
 - [x] Support Nodejs modules (require: nodejs installed)
 - [ ] support React
-- [x] support browser
+- [x] support browser (html)
 
 ### Capture
 ![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)
