@@ -3,16 +3,17 @@ import React from 'react';
 export default function Footer ({
   updateFont, fontSize,
   selectLang, lang,
-  livePreview
+  livePreview,
+  btnRunIsClicked
 }) {
   return <footer className="disp-flex">
     <div>
       <div>
-        <span className={livePreview ? "live-preview bg-green plr" : "live-preview bg-yellow plr"}></span> 
+        <span className={livePreview ? "live-preview bg-green plr" : "live-preview bg-yellow plr"}></span>
         Live preview
       </div>
-      <div className="btn-close ml-20 plr">{lang}</div>
-      <div className="btn-close plr">{fontSize + 'px'}</div>
+      <div className={btnRunIsClicked ? "lang bg-green ml-20 plr" : "lang ml-20 plr"}>{lang}</div>
+      <div className="plr">{fontSize + 'px'}</div>
     </div>
 
     <div>
@@ -25,7 +26,7 @@ export default function Footer ({
         <option value="22">22</option>
       </select>
 
-      <select onChange={selectLang} className="plr">
+      <select onChange={(e) => { selectLang(e.target.value) }} className="plr">
         <option value="javascript">javascript</option>
         <option value="python">python</option>
         <option value="typescript">typescript</option>

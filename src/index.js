@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import "@babel/polyfill";
@@ -17,15 +17,17 @@ const TEMP_FILE = __dirname + '/store/temp';
 
 function App () {
 
-  const [codeVal, setCodeVal] = React.useState();
-  const [codeResult, setCodeResult] = React.useState([]);
-  const [codeError, setCodeError] = React.useState([]);
+  const [codeVal, setCodeVal] = useState();
+  const [codeResult, setCodeResult] = useState([]);
+  const [codeError, setCodeError] = useState([]);
 
-  const [livePreview, setLivePreview] = React.useState(false);
-  const [fontSize, setFontSize] = React.useState(getStoreFontSize());
-  const [lang, setLang] = React.useState(getStoreLang());
-  
-  const [isSideFileClosed, setIsSideFileClosed] = React.useState(false);
+  const [livePreview, setLivePreview] = useState(false);
+  const [fontSize, setFontSize] = useState(getStoreFontSize());
+  const [lang, setLang] = useState(getStoreLang());
+
+  const [btnRunIsClicked, setBtnRunIsClicked] = useState(false);
+
+  const [isSideFileClosed, setIsSideFileClosed] = useState(false);
 
   function onEditorChange (newValue) {
     setCodeVal(newValue);
@@ -47,16 +49,19 @@ function App () {
     setCodeVal(res);
 
     ipcRenderer.on('run-code', () => {
+      setBtnRunIsClicked(true);
       let newValue = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
       setCodeVal(newValue);
 
       runCode(newValue).then(result => {
         setCodeResult(result);
         setCodeError([]);
+        if (result && result.length > 0) setBtnRunIsClicked(false);
       })
         .catch(e => {
           setCodeError(e);
           setCodeResult([]);
+          if (e && e.length > 0) setBtnRunIsClicked(false);
         });
     });
 
@@ -75,8 +80,8 @@ function App () {
   }
 
   const selectLang = (e) => {
-    setLang(e.target.value);
-    updateLang(e.target.value);
+    setLang(e);
+    updateLang(e);
   }
 
   return (
@@ -87,6 +92,7 @@ function App () {
           setIsSideFileClosed={setIsSideFileClosed}
           isSideFileClosed={isSideFileClosed}
           setCodeVal={setCodeVal}
+          selectLang={selectLang}
         />
 
         <CodeEditor
@@ -101,16 +107,18 @@ function App () {
           codeResult={codeResult}
           isSideFileClosed={isSideFileClosed}
           fontSize={fontSize}
+          btnRunIsClicked={btnRunIsClicked}
         />
 
       </div>
 
       <Footer
-        updateFont={updateFont}
-        selectLang={selectLang}
-        lang={lang}
+        updateFont={updateFont}                
         fontSize={fontSize}
+        lang={lang}
+        selectLang={selectLang}
         livePreview={livePreview}
+        btnRunIsClicked={btnRunIsClicked}
       />
     </>);
 }

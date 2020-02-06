@@ -2,9 +2,17 @@ import React from 'react';
 import { loadFile, saveCurrent, updateFilesToStore, getFilesFromStore, updateFileInfos, removeFileFromStore } from '../util/FileManager';
 
 const fs = require('fs');
+const path = require('path');
 let { ipcRenderer } = require('electron');
 
-export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setCodeVal }) {
+const LANG_EXT = [
+  { ext: '.js', lang: 'javascript' },
+  { ext: '.ts', lang: 'typescript' },
+  { ext: '.py', lang: 'python' }
+];
+
+
+export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setCodeVal, selectLang }) {
 
   const [files, setFiles] = React.useState(getFilesFromStore());
   const [currFileName, setCurrFileName] = React.useState('');
@@ -31,7 +39,12 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
     setCurrFileName(fileName);
     let fileContent = fs.readFileSync(filePath, { encoding: 'UTF8' });
     setCodeVal(fileContent);
-    updateFileInfos(filePath, fileName, fileContent);
+
+    let fileExtension = path.extname(fileName);      
+    let language = LANG_EXT.find(l => l.ext === fileExtension).lang;
+    selectLang(language);
+
+    updateFileInfos(filePath, fileName, fileContent, fileExtension);
   }
 
   const removeFile = (fileName) => {
@@ -41,7 +54,7 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
 
   return <div className="sidebar-files" style={{ marginLeft: isSideFileClosed ? '-16%' : '0%' }}>
 
-    <ul style={{width:'95%'}}>
+    <ul style={{ width: '95%' }}>
       {files && Array.isArray(files) && files.map(f =>
         <li key={f.fileName} className={f.fileName === currFileName ? "disp-flex cl-yellow" : "disp-flex"}>
           <span onClick={() => { getPath(f.currentFilePath, f.fileName) }}>📑 {f.fileName}</span>

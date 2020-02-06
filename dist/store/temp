@@ -1,20 +1,21 @@
-"use strict";
+class Car {
 
-function createHalfPyramid (height) {
-  
-  for (var i = 1; i <= height; i++) {
-    var row = '';
-    
-    for (var j = 1; j <= (height - i); j++) {
-      row += ' ';
-    }
-    
-    for (var k = 1; k <= i; k++) {
-      row += '*';
-    }
-    
-    console.log(row);
+  // fields  
+  model: String;  
+  doors: Number;  
+  isElectric: Boolean;
+
+  constructor(model: String, doors: Number, isElectric: Boolean) {  
+    this.model = model;  
+    this.doors = doors;  
+    this.isElectric = isElectric;  
   }
+
+  displayMake(): void {  
+    console.log(`This car is ${this.model}`);  
+  }
+
 }
 
-createHalfPyramid(5);
+const Prius = new Car('Prius', 4, true);  
+Prius.displayMake(); // This car is Prius

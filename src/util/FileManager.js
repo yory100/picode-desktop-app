@@ -7,23 +7,35 @@ const { dialog } = require('electron').remote;
 const TEMP_FILE = __dirname + '/store/temp';
 let currentFilePath = TEMP_FILE;
 
+const LANG_EXT = [
+  { ext: '.js', lang: 'javascript' },
+  { ext: '.ts', lang: 'typescript' },
+  { ext: '.py', lang: 'python' }
+];
+
 export async function loadFile () {
 
   let result = await dialog.showOpenDialog();
-  let fileContent = '', fileName = '';
+  let fileContent = '',
+    fileName = '',
+    fileExtension = '';
+
   currentFilePath = result.filePaths[0];
 
   if (!result.canceled) {
     fileName = path.basename(currentFilePath);
     fileContent = fs.readFileSync(currentFilePath, { encoding: 'UTF8' });
-    updateFileInfos(currentFilePath, fileName, fileContent);
+    fileExtension = path.extname(fileName);
+    updateFileInfos(currentFilePath, fileName, fileContent, fileExtension);
   }
   return { fileName, fileContent, filePath: currentFilePath };
 }
 
-export function updateFileInfos (filePath, fileName, fileContent) {
+export function updateFileInfos (filePath, fileName, fileContent, fileExtension) {
+  let language = LANG_EXT.find(l => l.ext === fileExtension).lang;
   JsonStore.pushOrUpdate("current-path", filePath);
   JsonStore.pushOrUpdate("filename", fileName);
+  JsonStore.pushOrUpdate("language", language);
   fs.writeFileSync(TEMP_FILE, fileContent, { encoding: 'UTF8' });
 }
 

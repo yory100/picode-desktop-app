@@ -4,11 +4,11 @@
 - [x] live preview
 - [x] import node modules
 - [x] cache (only current file edit)
-- [x] sidebar for files
-- [x] Menu: files shortcuts
+- [x] sidebar for files (closed/shortcuts)
 - [ ] remote import
 - [ ] timer
 - [ ] capture code
+- [ ] multi tabs
 
 ### Languages
 - [x] support Typescript (require : ts-node and typescript installed globally)
