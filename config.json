@@ -1,0 +1,8 @@
+{
+  "dest": "installer/",
+  "icon": "dist/icons/logo.ico",
+  "tags": [
+    "code",
+    "editor"
+  ]
+}

@@ -54,7 +54,7 @@ ul li { padding: 7px 15px; color: rgb(226, 226, 226);  word-break: break-all; cu
 ul li:hover { color:#ffffff;}
 
 .btn-rm {    background-color: inherit;border: none;color: #ababab;cursor: pointer;}
-.btn-rm:hover { color: #ababab !important; }
+.btn-rm:hover { color: #ffffff !important; }
 /* Footer */
 footer {
   background-color: #282a2b;

@@ -1,13 +1,39 @@
 {
   "name": "picode",
   "version": "0.0.1",
-  "description": "Picode",
+  "author": "Haikel Fazzani",
+  "license": "MIT",
+  "description": "Modern and ligtweight code editor",
   "main": "main.js",
+  "icon": "dist/logo/logo.ico",
   "scripts": {
     "watch": "rollup -c -w src/",
     "build": "rollup -c",
     "start": "electron .",
-    "packager": "electron-packager . --ignore=^/src"
+    "packager": "electron-packager . --ignore=^/src",
+    "setup": "electron-installer-windows --src picode-win32-x64 --dest build/x64/ --config config.json",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "installerIcon": "dist/icons/logo.ico",
+      "license":"License"
+    },
+    "directories": {
+      "buildResources": ".",
+      "output": "build"
+    }
   },
   "dependencies": {
     "ace-builds": "^1.4.8",
@@ -19,10 +45,12 @@
     "url": "git+https://github.com/haikelfazzani/picode.git"
   },
   "keywords": [
-    "react"
+    "code",
+    "editor",
+    "javascript",
+    "typescript",
+    "python"
   ],
-  "author": "Haikel Fazzani",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/haikelfazzani/picode/issues"
   },
@@ -35,8 +63,11 @@
     "@rollup/plugin-node-resolve": "^7.1.1",
     "babel-loader": "^8.0.6",
     "electron": "^8.0.0",
+    "electron-builder": "^22.3.2",
+    "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.0",
     "electron-reloader": "^0.3.0",
+    "electron-winstaller": "^4.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
