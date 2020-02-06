@@ -20,7 +20,7 @@ html,body,.container,#root, .ace-monokai, .ace-monokai .ace_gutter { background-
 
 #root , .container {
   display: flex;
-  height: 96vh;
+  height: 95vh;
 }
 
 #ace-editor-col,.ace_editor {
@@ -31,7 +31,7 @@ html,body,.container,#root, .ace-monokai, .ace-monokai .ace_gutter { background-
 .code-result {
   width: 23%;
   height: 100%;
-  color: #ffffff;
+  color: #f1d817;
   padding: 0 15px;
   word-break: break-all;
   border-left: 2px solid #272727;

@@ -1,21 +1,17 @@
-class Car {
+function createHalfPyramid (height) {
 
-  // fields  
-  model: String;  
-  doors: Number;  
-  isElectric: Boolean;
+  for (var i = 1; i <= height; i++) {
+    var row = '';
 
-  constructor(model: String, doors: Number, isElectric: Boolean) {  
-    this.model = model;  
-    this.doors = doors;  
-    this.isElectric = isElectric;  
+    for (var j = 1; j <= (height - i); j++) {
+      row += ' ';
+    }
+    for (var k = 1; k <= i; k++) {
+      row += '*';
+    }
+
+    console.log(row);
   }
-
-  displayMake(): void {  
-    console.log(`This car is ${this.model}`);  
-  }
-
 }
 
-const Prius = new Car('Prius', 4, true);  
-Prius.displayMake(); // This car is Prius
+createHalfPyramid(5);
