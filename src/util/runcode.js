@@ -1,5 +1,5 @@
 import JsonStore from './JsonStore';
-import TempManager from './TempManager';
+import FileSys from './FileSys';
 
 const { execFile, exec } = require('child_process');
 
@@ -11,7 +11,7 @@ export default function runCode (newValue) {
 
     switch (currLang) {
       case 'python':
-        execFile('python', [TempManager.getDefaultFilePath()], (error, stdout, stderr) => {
+        execFile('python', [FileSys.getDefaultFilePath()], (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -20,7 +20,7 @@ export default function runCode (newValue) {
         break;
 
       case 'javascript':
-        execFile('node', [TempManager.getDefaultFilePath()], (error, stdout, stderr) => {
+        execFile('node', [FileSys.getDefaultFilePath()], (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -29,8 +29,8 @@ export default function runCode (newValue) {
         break;
 
       case 'typescript':
-        TempManager.overrideFile(TempManager.getTsFilePath(), newValue)
-        exec('ts-node ' + TempManager.getTsFilePath(), (error, stdout, stderr) => {
+        FileSys.overrideFile(FileSys.getTsFilePath(), newValue)
+        exec('ts-node ' + FileSys.getTsFilePath(), (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }

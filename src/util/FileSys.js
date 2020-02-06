@@ -4,7 +4,7 @@ const fs = require('fs');
 const TEMP_FILE_TS = path.join(__dirname, '/store/temp.ts');
 const TEMP_FILE = path.join(__dirname, '/store/temp');
 
-export default class TempManager {
+export default class FileSys {
 
   static readFile (flag) {
     let currPath = flag === 'default' ? TEMP_FILE : TEMP_FILE_TS;

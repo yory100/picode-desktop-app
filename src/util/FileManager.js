@@ -1,5 +1,5 @@
 import JsonStore from "./JsonStore";
-import TempManager from "./TempManager";
+import FileSys from "./FileSys";
 
 const path = require("path");
 const { dialog } = require('electron').remote;
@@ -24,7 +24,7 @@ export async function loadFile () {
 
   if (!result.canceled) {
     fileName = path.basename(currentFilePath);
-    fileContent = TempManager.readFileUsingPath(currentFilePath);
+    fileContent = FileSys.readFileUsingPath(currentFilePath);
 
     fileExtension = path.extname(fileName);
     updateFileInfos(currentFilePath, fileName, fileContent, fileExtension);
@@ -37,7 +37,7 @@ export function updateFileInfos (filePath, fileName, fileContent, fileExtension)
   JsonStore.pushOrUpdate("current-path", filePath);
   JsonStore.pushOrUpdate("filename", fileName);
   JsonStore.pushOrUpdate("language", language);
-  TempManager.overrideFile('default', fileContent);
+  FileSys.overrideFile('default', fileContent);
 }
 
 export async function saveAs () {
@@ -46,7 +46,7 @@ export async function saveAs () {
     if (!result.canceled) {
       currentFilePath = result.filePath;
       
-      TempManager.readAndWriteFile(currentFilePath);
+      FileSys.readAndWriteFile(currentFilePath);
 
       JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
       JsonStore.pushOrUpdate("current-path", currentFilePath);
@@ -58,7 +58,7 @@ export async function saveAs () {
 
 export async function saveCurrent () {
   currentFilePath = JsonStore.get()["current-path"];
-  TempManager.readAndWriteFile(currentFilePath);
+  FileSys.readAndWriteFile(currentFilePath);
   await dialog.showMessageBox({
     message: 'The file has been saved!',
     buttons: ['OK']
