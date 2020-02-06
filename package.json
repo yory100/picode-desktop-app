@@ -16,6 +16,7 @@
     "dist": "electron-builder"
   },
   "build": {
+    "asar": false,
     "win": {
       "target": [
         {
@@ -28,12 +29,20 @@
     },
     "nsis": {
       "installerIcon": "dist/icons/logo.ico",
-      "license":"License"
+      "uninstallerIcon": "dist/icons/logo.ico",
+      "license": "License"
     },
     "directories": {
-      "buildResources": ".",
+      "buildResources": "dist",
       "output": "build"
-    }
+    },
+    "buildVersion": "1.0.0",
+    "files": [
+      "main.js",
+      "main_process/*",
+      "dist/*",
+      "dist/*/**"
+    ]
   },
   "dependencies": {
     "ace-builds": "^1.4.8",
