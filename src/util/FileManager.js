@@ -1,11 +1,10 @@
 import JsonStore from "./JsonStore";
+import TempManager from "./TempManager";
 
 const path = require("path");
-const fs = require('fs');
 const { dialog } = require('electron').remote;
 
-const TEMP_FILE = __dirname + '/store/temp';
-let currentFilePath = TEMP_FILE;
+let currentFilePath = __dirname + '/store/temp';
 
 const LANG_EXT = [
   { ext: '.js', lang: 'javascript' },
@@ -25,7 +24,8 @@ export async function loadFile () {
 
   if (!result.canceled) {
     fileName = path.basename(currentFilePath);
-    fileContent = fs.readFileSync(currentFilePath, { encoding: 'UTF8' });
+    fileContent = TempManager.readFileUsingPath(currentFilePath);
+
     fileExtension = path.extname(fileName);
     updateFileInfos(currentFilePath, fileName, fileContent, fileExtension);
   }
@@ -37,15 +37,17 @@ export function updateFileInfos (filePath, fileName, fileContent, fileExtension)
   JsonStore.pushOrUpdate("current-path", filePath);
   JsonStore.pushOrUpdate("filename", fileName);
   JsonStore.pushOrUpdate("language", language);
-  fs.writeFileSync(TEMP_FILE, fileContent, { encoding: 'UTF8' });
+  TempManager.overrideFile('default', fileContent);
 }
 
-export async function saveAs (codeValue) {
+export async function saveAs () {
   try {
     let result = await dialog.showSaveDialog();
     if (!result.canceled) {
       currentFilePath = result.filePath;
-      fs.writeFileSync(currentFilePath, codeValue, { encoding: 'UTF8' });
+      
+      TempManager.readAndWriteFile(currentFilePath);
+
       JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
       JsonStore.pushOrUpdate("current-path", currentFilePath);
     }
@@ -56,8 +58,7 @@ export async function saveAs (codeValue) {
 
 export async function saveCurrent () {
   currentFilePath = JsonStore.get()["current-path"];
-  let codeValue = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
-  fs.writeFileSync(currentFilePath, codeValue, { encoding: 'UTF8', flag: 'w' });
+  TempManager.readAndWriteFile(currentFilePath);
   await dialog.showMessageBox({
     message: 'The file has been saved!',
     buttons: ['OK']

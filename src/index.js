@@ -10,10 +10,9 @@ import CodeEditor from './components/CodeEditor';
 import CodeOutput from './components/CodeOutput';
 import { getStoreFontSize, updateFontSize, getStoreLang, updateLang } from './util/LangFonSize';
 import Footer from './components/Footer';
+import TempManager from './util/TempManager';
 
-const fs = require('fs');
 let { ipcRenderer } = require('electron');
-const TEMP_FILE = __dirname + '/store/temp';
 
 function App () {
 
@@ -31,7 +30,7 @@ function App () {
 
   function onEditorChange (newValue) {
     setCodeVal(newValue);
-    fs.writeFileSync(TEMP_FILE, newValue, { encoding: 'UTF8' });
+    TempManager.overrideFile('default', newValue);
     if (livePreview) {
       runCode(newValue).then(result => {
         setCodeResult(result);
@@ -45,12 +44,12 @@ function App () {
   }
 
   React.useEffect(() => {
-    let res = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
+    let res = TempManager.readFile('default');
     setCodeVal(res);
 
     ipcRenderer.on('run-code', () => {
       setBtnRunIsClicked(true);
-      let newValue = fs.readFileSync(TEMP_FILE, { encoding: 'UTF8' });
+      let newValue = TempManager.readFile('default');
       setCodeVal(newValue);
 
       runCode(newValue).then(result => {
@@ -66,7 +65,7 @@ function App () {
     });
 
     ipcRenderer.on('save-as-file', async () => {
-      await saveAs(codeVal)
+      await saveAs();
     });
 
     ipcRenderer.on('live-preview', async (channel, isChecked) => {
@@ -115,7 +114,7 @@ function App () {
       </div>
 
       <Footer
-        updateFont={updateFont}                
+        updateFont={updateFont}
         fontSize={fontSize}
         lang={lang}
         selectLang={selectLang}

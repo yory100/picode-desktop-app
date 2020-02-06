@@ -16,13 +16,7 @@ export default function CodeOutput ({ codeError, codeResult, isSideFileClosed,
   return <div className="code-result"
     style={{ width: !isSideFileClosed ? '23%' : '39%', fontSize: fontSize + 'px' }}>
     {language === 'html'
-      ? <Iframe url={htmlToURL(codeVal)}
-        width="100%"
-        height="100%"
-        id="myId"
-        className="myClassname"
-        display="initial"
-        position="relative" />
+      ? <Iframe url={htmlToURL(codeVal)} />
       : <ExecCode
         codeError={codeError}
         codeResult={codeResult}

@@ -6,18 +6,18 @@ Simple HTML/Javascript/Typescript/Python playground
 - [x] import node modules
 - [x] cache (only current file edit)
 - [x] sidebar for files (closed/shortcuts)
-- [ ] remote import
+- [ ] fetch code
 - [ ] timer
 - [ ] capture code
 - [ ] multi tabs
 
 ### Languages
-- [x] support Typescript (require : ts-node and typescript installed globally)
-- [x] Support Python (require: python installed)
-- [x] Support Javascript (require: nodejs installed)
-- [x] Support Nodejs modules (require: nodejs installed)
-- [ ] support React
-- [x] support browser (html)
+- [x] Typescript
+- [x] Python
+- [x] Javascript
+- [x] Nodejs modules
+- [x] Browser (html)
+- ![React example](https://bitbucket.org/haikel2090/code-examples/src/master/index.html)
 
 ### Capture
 ![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)

@@ -1,11 +1,7 @@
 import JsonStore from './JsonStore';
+import TempManager from './TempManager';
 
 const { execFile, exec } = require('child_process');
-const path = require("path");
-const fs = require('fs');
-
-const TEMP_FILE_TS = path.join(__dirname, '/store/temp.ts');
-const TEMP_FILE = path.join(__dirname, '/store/temp');
 
 export default function runCode (newValue) {
 
@@ -15,7 +11,16 @@ export default function runCode (newValue) {
 
     switch (currLang) {
       case 'python':
-        execFile('python', [TEMP_FILE], (error, stdout, stderr) => {
+        execFile('python', [TempManager.getDefaultFilePath()], (error, stdout, stderr) => {
+          if (stderr) {
+            reject(stderr.split(/\n|\r\n/).filter(v => v))
+          }
+          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+        });
+        break;
+
+      case 'javascript':
+        execFile('node', [TempManager.getDefaultFilePath()], (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -24,17 +29,8 @@ export default function runCode (newValue) {
         break;
 
       case 'typescript':
-        fs.writeFileSync(TEMP_FILE_TS, newValue, { flag: 'w' });
-        exec('ts-node ' + TEMP_FILE_TS, (error, stdout, stderr) => {
-          if (stderr) {
-            reject(stderr.split(/\n|\r\n/).filter(v => v))
-          }
-          resolve(stdout.split(/\n|\r\n/).filter(v => v));
-        });
-        break;
-
-        case 'javascript':
-        execFile('node', [TEMP_FILE], (error, stdout, stderr) => {
+        TempManager.overrideFile(TempManager.getTsFilePath(), newValue)
+        exec('ts-node ' + TempManager.getTsFilePath(), (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
           }
@@ -43,8 +39,8 @@ export default function runCode (newValue) {
         break;
 
       default:
-        resolve(newValue);
-        reject(newValue);
+        resolve(['html']);
+        reject(['html']);
         break;
     }
   })

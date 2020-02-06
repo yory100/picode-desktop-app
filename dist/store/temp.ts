@@ -1,4 +1,4 @@
-class Car {
+class Example {
 
   // fields  
   model: String;  
@@ -17,5 +17,7 @@ class Car {
 
 }
 
-const Prius = new Car('Prius', 4, true);  
+
+
+const Prius = new Example('Prius', 4, true);  
 Prius.displayMake(); // This car is Prius
