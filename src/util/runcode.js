@@ -13,18 +13,18 @@ export default function runCode (newValue) {
       case 'python':
         execFile('python', [FileSys.getDefaultFilePath()], (error, stdout, stderr) => {
           if (stderr) {
-            reject(stderr.split(/\n|\r\n/).filter(v => v))
+            reject(stderr)
           }
-          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+          resolve(stdout);
         });
         break;
 
       case 'javascript':
         execFile('node', [FileSys.getDefaultFilePath()], (error, stdout, stderr) => {
           if (stderr) {
-            reject(stderr.split(/\n|\r\n/).filter(v => v))
+            reject(stderr)
           }
-          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+          resolve(stdout);
         });
         break;
 
@@ -32,15 +32,15 @@ export default function runCode (newValue) {
         FileSys.overrideFile(FileSys.getTsFilePath(), newValue);
         exec('ts-node ' + FileSys.getTsFilePath(), (error, stdout, stderr) => {
           if (stderr) {
-            reject(stderr.split(/\n|\r\n/).filter(v => v))
+            reject(stderr)
           }
-          resolve(stdout.split(/\n|\r\n/).filter(v => v));
+          resolve(stdout);
         });
         break;
 
       default:
-        resolve(['..']);
-        reject(['..']);
+        resolve('..');
+        reject('..');
         break;
     }
   })

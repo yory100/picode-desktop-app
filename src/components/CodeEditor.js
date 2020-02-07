@@ -12,13 +12,13 @@ import "ace-builds/src-noconflict/mode-json";
 /*eslint-disable no-alert, no-console */
 import "ace-builds/src-min-noconflict/ext-language_tools";
 
-export default function CodeEditor ({ codeVal, onChange, fontSize, mode }) {
+export default function CodeEditor ({ codeVal, onChange, fontSize, mode, nameId }) {
 
   return <AceEditor
     mode={mode}
     theme="monokai"
     onChange={onChange}
-    name="ace-editor-col"
+    name={nameId}
     fontSize={fontSize}
     value={codeVal}
     showPrintMargin={false}

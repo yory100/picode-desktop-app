@@ -17,8 +17,8 @@ let { ipcRenderer } = require('electron');
 function App () {
 
   const [codeVal, setCodeVal] = useState();
-  const [codeResult, setCodeResult] = useState([]);
-  const [codeError, setCodeError] = useState([]);
+  const [codeResult, setCodeResult] = useState('');
+  const [codeError, setCodeError] = useState('');
 
   const [livePreview, setLivePreview] = useState(false);
   const [fontSize, setFontSize] = useState(getStoreFontSize());
@@ -34,11 +34,11 @@ function App () {
     if (livePreview) {
       runCode(newValue).then(result => {
         setCodeResult(result);
-        setCodeError([]);
+        setCodeError('');
       })
         .catch(e => {
           setCodeError(e);
-          setCodeResult([]);
+          setCodeResult('');
         });
     }
   }
@@ -54,12 +54,12 @@ function App () {
 
       runCode(newValue).then(result => {
         setCodeResult(result);
-        setCodeError([]);
+        setCodeError('');
         if (result && result.length > 0) setBtnRunIsClicked(false);
       })
         .catch(e => {
           setCodeError(e);
-          setCodeResult([]);
+          setCodeResult('');
           if (e && e.length > 0) setBtnRunIsClicked(false);
         });
     });
@@ -99,6 +99,7 @@ function App () {
           onChange={onEditorChange}
           fontSize={fontSize}
           mode={lang}
+          nameId="ace-editor-col"
         />
 
         <CodeOutput
@@ -106,7 +107,6 @@ function App () {
           codeResult={codeResult}
           isSideFileClosed={isSideFileClosed}
           fontSize={fontSize}
-          btnRunIsClicked={btnRunIsClicked}
           language={lang}
           codeVal={codeVal}
         />

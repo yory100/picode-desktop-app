@@ -1,17 +1,20 @@
 import React from 'react';
 import Iframe from 'react-iframe'
 import htmlToURL from '../util/htmlToURL';
+import CodeEditor from './CodeEditor';
 
-const ExecCode = ({ codeError, codeResult, btnRunIsClicked }) => {
+const ExecCode = ({ codeError, codeResult, fontSize, mode }) => {
   return <>
-    {btnRunIsClicked && <p className="cl-green">Is running..</p>}
-    {codeResult && codeResult.length > 0 && codeResult.map((v, i) => <p key={v + i}>{v}</p>)}
-    {codeError && codeError.length > 0 && codeError.map((v, i) => <p key={v + i} className="cl-red">{v}</p>)}
+    <CodeEditor
+      codeVal={codeResult && codeResult.length > 0 ? codeResult : codeError}
+      fontSize={fontSize}
+      mode={mode}
+    />
   </>
 }
 
 export default function CodeOutput ({ codeError, codeResult, isSideFileClosed,
-  fontSize, btnRunIsClicked, language, codeVal }) {
+  fontSize, language, codeVal }) {
 
   return <div className="code-result"
     style={{ width: !isSideFileClosed ? '23%' : '39%', fontSize: fontSize + 'px' }}>
@@ -20,7 +23,9 @@ export default function CodeOutput ({ codeError, codeResult, isSideFileClosed,
       : <ExecCode
         codeError={codeError}
         codeResult={codeResult}
-        btnRunIsClicked={btnRunIsClicked}
+        fontSize={fontSize}
+        mode="javascript"
+        name="ace-editor-result"
       />
     }
   </div>;

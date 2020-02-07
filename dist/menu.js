@@ -145,13 +145,11 @@ const template = [
       {
         label: 'Learn More',
         click: async () => {
-          await shell.openExternal('https://github.com/haikelfazzani')
+          await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
         }
       }
     ]
   }
 ];
 
-const menu = Menu.buildFromTemplate(template);
-
-module.exports = menu;
+module.exports = Menu.buildFromTemplate(template);

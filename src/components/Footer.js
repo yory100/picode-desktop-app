@@ -1,5 +1,8 @@
 import React from 'react';
 
+const FontSizes = ['10', '12', '14', '16', '18', '20', '22', '24'];
+const Languages = ['html', 'javascript', 'python', 'typescript'];
+
 export default function Footer ({ updateFont, fontSize, selectLang, lang, livePreview, btnRunIsClicked }) {
   return <footer className="disp-flex">
     <div>
@@ -13,19 +16,11 @@ export default function Footer ({ updateFont, fontSize, selectLang, lang, livePr
 
     <div>
       <select onChange={updateFont} className="plr">
-        <option value="12">12</option>
-        <option value="14">14</option>
-        <option value="16">16</option>
-        <option value="18">18</option>
-        <option value="20">20</option>
-        <option value="22">22</option>
+        {FontSizes.map(fns => <option value={fns} key={fns}>{fns}</option>)}
       </select>
 
       <select onChange={(e) => { selectLang(e.target.value) }} className="plr">
-        <option value="html">html</option>
-        <option value="javascript">javascript</option>
-        <option value="python">python</option>
-        <option value="typescript">typescript</option>
+        {Languages.map(lng => <option value={lng} key={lng}>{lng}</option>)}
       </select>
     </div>
   </footer>;
