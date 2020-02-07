@@ -8,7 +8,7 @@ let mainWindow;
 function createWindow () {
   mainWindow = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
-    icon: __dirname + '/icons/logo256.png'
+    icon: __dirname + '/logo256.png'
   });
 
   mainWindow.maximize();

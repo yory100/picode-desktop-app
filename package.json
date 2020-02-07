@@ -5,7 +5,7 @@
   "license": "MIT",
   "description": "Modern and ligtweight code editor",
   "main": "dist/main.js",
-  "icon": "dist/logo/logo.ico",
+  "icon": "dist/logo.ico",
   "scripts": {
     "watch": "rollup -c -w src/",
     "build": "rimraf -rf dist/ && rollup -c",
@@ -27,8 +27,8 @@
       ]
     },
     "nsis": {
-      "installerIcon": "dist/icons/logo.ico",
-      "uninstallerIcon": "dist/icons/logo.ico",
+      "installerIcon": "dist/logo.ico",
+      "uninstallerIcon": "dist/logo.ico",
       "license": "License"
     },
     "directories": {
