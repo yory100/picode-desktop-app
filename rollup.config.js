@@ -20,7 +20,9 @@ const config = {
     commonjs({ include: /node_modules/ }),
     copy({
       targets: [
-        { src: 'src/styles', dest: 'dist/' },
+        { src: 'main_process/*', dest: 'dist/' },
+        { src: 'src/assets/*', dest: 'dist/' },
+        { src: 'src/store/*', dest: 'dist/' }
       ]
     }),
     terser()

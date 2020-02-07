@@ -1,18 +1,18 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
-const menu = require(__dirname + '/main_process/menu');
-const contextMenu = require(__dirname + '/main_process/context-menu');
+const menu = require(__dirname + '/menu');
+const contextMenu = require(__dirname + '/context-menu');
 
 let mainWindow;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
-    icon: __dirname + '/dist/icons/logo256.png'
+    icon: __dirname + '/icons/logo256.png'
   });
 
   mainWindow.maximize();
-  mainWindow.loadFile(__dirname + '/dist/index.html');
+  mainWindow.loadFile(__dirname + '/index.html');
 
   Menu.setApplicationMenu(menu);
 

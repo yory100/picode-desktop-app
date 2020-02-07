@@ -1,8 +1,8 @@
 const path = require("path");
 const fs = require('fs');
 
-const TEMP_FILE_TS = path.join(__dirname, '/store/temp.ts');
-const TEMP_FILE = path.join(__dirname, '/store/temp');
+const TEMP_FILE_TS = path.join(__dirname, '/temp.ts');
+const TEMP_FILE = path.join(__dirname, '/temp');
 
 export default class FileSys {
 
@@ -51,6 +51,6 @@ export default class FileSys {
     return res;
   }
 
-  static getTsFilePath () { return path.join(__dirname, '/store/temp.ts'); }
-  static getDefaultFilePath () { return path.join(__dirname, '/store/temp'); }
+  static getTsFilePath () { return TEMP_FILE_TS; }
+  static getDefaultFilePath () { return TEMP_FILE; }
 }

@@ -4,7 +4,7 @@ import FileSys from "./FileSys";
 const path = require("path");
 const { dialog } = require('electron').remote;
 
-let currentFilePath = __dirname + '/store/temp';
+let currentFilePath = __dirname + '/temp';
 
 const LANG_EXT = [
   { ext: '.txt', lang: 'text' },

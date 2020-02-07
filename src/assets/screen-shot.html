@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screenshot</title>
+
+  <style>
+    img { height: 100%; width: 100%;}
+  </style>
+</head>
+
+<body>
+
+  <button id="btn-shot">clik</button>
+  <img src="" alt="." id="shot" />
+
+  <script>
+    const screenshot = require('screenshot-desktop');
+
+    document.getElementById('btn-shot').addEventListener('click', () => {
+      screenshot().then((img) => {
+        // img: Buffer filled with jpg goodness
+        // ...
+        console.log(img);
+
+        document.getElementById('shot').src = ('data:image/png;base64,' + Buffer.from(img).toString('base64'))
+      }).catch((err) => {
+        // ...
+        console.log(err);
+
+      })
+    })
+  </script>
+
+</body>
+
+</html>

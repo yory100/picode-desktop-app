@@ -1,5 +1,5 @@
 var fs = require('fs');
-const STORE_PATH = __dirname + '/store/store.json';
+const STORE_PATH = __dirname + '/store.json';
 
 export default class JsonStore {
 

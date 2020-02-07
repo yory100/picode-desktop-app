@@ -4,11 +4,11 @@
   "author": "Haikel Fazzani",
   "license": "MIT",
   "description": "Modern and ligtweight code editor",
-  "main": "main.js",
+  "main": "dist/main.js",
   "icon": "dist/logo/logo.ico",
   "scripts": {
     "watch": "rollup -c -w src/",
-    "build": "rollup -c",
+    "build": "rimraf -rf dist/ && rollup -c",
     "start": "electron .",
     "packager": "electron-packager . --ignore=^/src",
     "pack": "electron-builder --dir",
@@ -37,7 +37,6 @@
     },
     "files": [
       "main.js",
-      "main_process/*",
       "dist/*",
       "dist/*/**"
     ]
@@ -80,6 +79,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "rimraf": "^3.0.1",
     "rollup": "^1.16.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
