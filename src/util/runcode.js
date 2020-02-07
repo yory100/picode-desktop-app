@@ -29,7 +29,7 @@ export default function runCode (newValue) {
         break;
 
       case 'typescript':
-        FileSys.overrideFile(FileSys.getTsFilePath(), newValue)
+        FileSys.overrideFile(FileSys.getTsFilePath(), newValue);
         exec('ts-node ' + FileSys.getTsFilePath(), (error, stdout, stderr) => {
           if (stderr) {
             reject(stderr.split(/\n|\r\n/).filter(v => v))
@@ -39,8 +39,8 @@ export default function runCode (newValue) {
         break;
 
       default:
-        resolve(['html']);
-        reject(['html']);
+        resolve(['..']);
+        reject(['..']);
         break;
     }
   })

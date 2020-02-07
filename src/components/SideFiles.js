@@ -1,38 +1,31 @@
 import React from 'react';
-import { loadFile, saveCurrent, updateFilesToStore, getFilesFromStore, updateFileInfos, removeFileFromStore } from '../util/FileManager';
+import FileManager from '../util/FileManager';
 
 const fs = require('fs');
-const path = require('path');
 let { ipcRenderer } = require('electron');
-
-const LANG_EXT = [
-  { ext: '.js', lang: 'javascript' },
-  { ext: '.ts', lang: 'typescript' },
-  { ext: '.py', lang: 'python' },
-  { ext: '.html', lang: 'html' }
-];
-
 
 export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setCodeVal, selectLang }) {
 
-  const [files, setFiles] = React.useState(getFilesFromStore());
+  const [files, setFiles] = React.useState(FileManager.getFilesFromStore());
   const [currFileName, setCurrFileName] = React.useState('');
 
   React.useEffect(() => {
     ipcRenderer.on('load-file', async () => {
-      let { fileName, filePath, fileContent } = await loadFile();
-      if (fileContent && fileContent.length > 15) {
+      let { fileName, filePath, fileContent } = await FileManager.loadFile();
+      if (fileContent && fileContent.length > 2) {
 
         setCodeVal(fileContent);
         setCurrFileName(fileName);
 
-        let rs = updateFilesToStore(filePath, fileName);
+        selectLang(FileManager.getLangFromExt(fileName));
+
+        let rs = FileManager.updateFilesToStore(filePath, fileName);
         setFiles([...rs]);
       }
     });
 
     ipcRenderer.on('save-file', async () => {
-      await saveCurrent()
+      await FileManager.saveCurrent()
     });
   }, []);
 
@@ -41,15 +34,12 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
     let fileContent = fs.readFileSync(filePath, { encoding: 'UTF8' });
     setCodeVal(fileContent);
 
-    let fileExtension = path.extname(fileName);      
-    let language = LANG_EXT.find(l => l.ext === fileExtension).lang;
-    selectLang(language);
-
-    updateFileInfos(filePath, fileName, fileContent, fileExtension);
+    selectLang(FileManager.getLangFromExt(fileName));
+    FileManager.updateFileInfos(filePath, fileName, fileContent);
   }
 
   const removeFile = (fileName) => {
-    let rs = removeFileFromStore(fileName);
+    let rs = FileManager.removeFileFromStore(fileName);
     setFiles(rs);
   }
 

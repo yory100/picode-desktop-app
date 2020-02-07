@@ -1,11 +1,6 @@
 import React from 'react';
 
-export default function Footer ({
-  updateFont, fontSize,
-  selectLang, lang,
-  livePreview,
-  btnRunIsClicked
-}) {
+export default function Footer ({ updateFont, fontSize, selectLang, lang, livePreview, btnRunIsClicked }) {
   return <footer className="disp-flex">
     <div>
       <div>

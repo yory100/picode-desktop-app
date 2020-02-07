@@ -18,10 +18,11 @@ export default class FileSys {
     return res;
   }
 
-  static overrideFile (flag, newCodeValue) {
+  static async overrideFile (flag, newCodeValue) {
     let res = flag === 'default' ? TEMP_FILE : TEMP_FILE_TS;
-    fs.writeFile(res, newCodeValue, { flag: 'w+' }, function (err) { });
+    await fs.promises.writeFile(res, newCodeValue, { flag: 'w+' });
   }
+  
   /** read , write */
   static writeFile (filePath, newCodeValue) {
     fs.writeFile(filePath, newCodeValue, { flag: 'w+' }, function (err) { });

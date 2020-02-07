@@ -5,12 +5,12 @@ import "@babel/polyfill";
 
 import runCode from './util/runcode';
 import SideFiles from './components/SideFiles';
-import { saveAs } from './util/FileManager';
+import FileManager from './util/FileManager';
 import CodeEditor from './components/CodeEditor';
 import CodeOutput from './components/CodeOutput';
 import { getStoreFontSize, updateFontSize, getStoreLang, updateLang } from './util/LangFonSize';
 import Footer from './components/Footer';
-import TempManager from './util/TempManager';
+import FileSys from './util/FileSys';
 
 let { ipcRenderer } = require('electron');
 
@@ -28,9 +28,9 @@ function App () {
 
   const [isSideFileClosed, setIsSideFileClosed] = useState(false);
 
-  function onEditorChange (newValue) {
+  async function onEditorChange (newValue) {
     setCodeVal(newValue);
-    TempManager.overrideFile('default', newValue);
+    await FileSys.overrideFile('default', newValue);
     if (livePreview) {
       runCode(newValue).then(result => {
         setCodeResult(result);
@@ -44,12 +44,12 @@ function App () {
   }
 
   React.useEffect(() => {
-    let res = TempManager.readFile('default');
+    let res = FileSys.readFile('default');
     setCodeVal(res);
 
     ipcRenderer.on('run-code', () => {
       setBtnRunIsClicked(true);
-      let newValue = TempManager.readFile('default');
+      let newValue = FileSys.readFile('default');
       setCodeVal(newValue);
 
       runCode(newValue).then(result => {
@@ -65,7 +65,7 @@ function App () {
     });
 
     ipcRenderer.on('save-as-file', async () => {
-      await saveAs();
+      await FileManager.saveAs();
     });
 
     ipcRenderer.on('live-preview', async (channel, isChecked) => {

@@ -15,7 +15,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "asar": true,
+    "asar": false,
     "win": {
       "target": [
         {
@@ -46,7 +46,8 @@
     "ace-builds": "^1.4.8",
     "electron-context-menu": "^0.16.0",
     "react-ace": "^8.0.0",
-    "react-iframe": "^1.8.0"
+    "react-iframe": "^1.8.0",
+    "screenshot-desktop": "^1.11.0"
   },
   "repository": {
     "type": "git",

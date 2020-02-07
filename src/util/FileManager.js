@@ -7,83 +7,97 @@ const { dialog } = require('electron').remote;
 let currentFilePath = __dirname + '/store/temp';
 
 const LANG_EXT = [
+  { ext: '.txt', lang: 'text' },
+  { ext: '.json', lang: 'json' },
   { ext: '.js', lang: 'javascript' },
   { ext: '.ts', lang: 'typescript' },
   { ext: '.py', lang: 'python' },
   { ext: '.html', lang: 'html' }
 ];
 
-export async function loadFile () {
+export default class FileManager {
 
-  let result = await dialog.showOpenDialog();
-  let fileContent = '',
-    fileName = '',
-    fileExtension = '';
+  static async loadFile () {
 
-  currentFilePath = result.filePaths[0];
+    let result = await dialog.showOpenDialog();
+    let fileContent = '', fileName = '';
 
-  if (!result.canceled) {
-    fileName = path.basename(currentFilePath);
-    fileContent = FileSys.readFileUsingPath(currentFilePath);
+    currentFilePath = result.filePaths[0];
 
-    fileExtension = path.extname(fileName);
-    updateFileInfos(currentFilePath, fileName, fileContent, fileExtension);
-  }
-  return { fileName, fileContent, filePath: currentFilePath };
-}
-
-export function updateFileInfos (filePath, fileName, fileContent, fileExtension) {
-  let language = LANG_EXT.find(l => l.ext === fileExtension).lang;
-  JsonStore.pushOrUpdate("current-path", filePath);
-  JsonStore.pushOrUpdate("filename", fileName);
-  JsonStore.pushOrUpdate("language", language);
-  FileSys.overrideFile('default', fileContent);
-}
-
-export async function saveAs () {
-  try {
-    let result = await dialog.showSaveDialog();
     if (!result.canceled) {
-      currentFilePath = result.filePath;
-      
-      FileSys.readAndWriteFile(currentFilePath);
-
-      JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
-      JsonStore.pushOrUpdate("current-path", currentFilePath);
+      fileName = path.basename(currentFilePath);
+      fileContent = FileSys.readFileUsingPath(currentFilePath);
+      await this.updateFileInfos(currentFilePath, fileName, fileContent);
     }
-  } catch (error) {
-    console.log(error);
+    return { fileName, fileContent, filePath: currentFilePath };
   }
-}
 
-export async function saveCurrent () {
-  currentFilePath = JsonStore.get()["current-path"];
-  FileSys.readAndWriteFile(currentFilePath);
-  await dialog.showMessageBox({
-    message: 'The file has been saved!',
-    buttons: ['OK']
-  });
-}
+  static async updateFileInfos (filePath, fileName, fileContent) {
+    if (fileName) {
+      JsonStore.pushOrUpdate("language", this.getLangFromExt(fileName));
 
-// add loaded files into the store
-export function updateFilesToStore (currentFilePath, fileName) {
-  let listFiles = getFilesFromStore();
-  if (!listFiles.some(f => f.fileName === fileName)) {
-    listFiles.push({ fileName, currentFilePath });
-    JsonStore.pushOrUpdate('files', listFiles);
+      JsonStore.pushOrUpdate("current-path", filePath);
+      JsonStore.pushOrUpdate("filename", fileName);
+
+      await FileSys.overrideFile('default', fileContent);
+    }
   }
-  return listFiles;
-}
 
-export function getFilesFromStore () {
-  return JsonStore.getPropVal('files') || [];
-}
+  // get language from file using extension: .js - .ts - .html - .py
+  static getLangFromExt (fileName) {
+    let language = 'text';
+    if (fileName) {
+      let fileExtension = path.extname(fileName);
+      if(fileExtension) { language = LANG_EXT.find(l => l.ext === fileExtension).lang; }
+    }
+    return language;
+  }
 
-// remove file ,update  store / side files (ui)
-export function removeFileFromStore (filename) {
-  let listFiles = getFilesFromStore();
-  let tmp = [];
-  tmp = listFiles.filter(f => f.fileName !== filename);
-  JsonStore.pushOrUpdate('files', tmp);
-  return tmp;
+  static async saveAs () {
+    try {
+      let result = await dialog.showSaveDialog();
+      if (!result.canceled) {
+        currentFilePath = result.filePath;
+
+        FileSys.readAndWriteFile(currentFilePath);
+
+        JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
+        JsonStore.pushOrUpdate("current-path", currentFilePath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async saveCurrent () {
+    currentFilePath = JsonStore.get()["current-path"];
+    FileSys.readAndWriteFile(currentFilePath);
+    await dialog.showMessageBox({
+      message: 'The file has been saved!',
+      buttons: ['OK']
+    });
+  }
+
+  // add loaded files into the store
+  static updateFilesToStore (currentFilePath, fileName) {
+    let listFiles = this.getFilesFromStore();
+    if (!listFiles.some(f => f.fileName === fileName)) {
+      listFiles.push({ fileName, currentFilePath });
+      JsonStore.pushOrUpdate('files', listFiles);
+    }
+    return listFiles;
+  }
+
+  static getFilesFromStore () {
+    return JsonStore.getPropVal('files') || [];
+  }
+
+  // remove file ,update  store / side files (ui)
+  static removeFileFromStore (filename) {
+    let listFiles = this.getFilesFromStore();
+    let tmp = [];
+    tmp = listFiles.filter(f => f.fileName !== filename);
+    JsonStore.pushOrUpdate('files', tmp);
+    return tmp;
+  }
 }
