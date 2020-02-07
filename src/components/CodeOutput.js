@@ -4,13 +4,11 @@ import htmlToURL from '../util/htmlToURL';
 import CodeEditor from './CodeEditor';
 
 const ExecCode = ({ codeError, codeResult, fontSize, mode }) => {
-  return <>
-    <CodeEditor
-      codeVal={codeResult && codeResult.length > 0 ? codeResult : codeError}
-      fontSize={fontSize}
-      mode={mode}
-    />
-  </>
+  return <CodeEditor
+    codeVal={codeResult && codeResult.length > 0 ? codeResult : codeError}
+    fontSize={fontSize}
+    mode={mode}   
+  />
 }
 
 export default function CodeOutput ({ codeError, codeResult, isSideFileClosed,

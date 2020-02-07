@@ -12,7 +12,7 @@ import "ace-builds/src-noconflict/mode-json";
 /*eslint-disable no-alert, no-console */
 import "ace-builds/src-min-noconflict/ext-language_tools";
 
-export default function CodeEditor ({ codeVal, onChange, fontSize, mode, nameId }) {
+export default function CodeEditor ({ codeVal, onChange, fontSize, mode, nameId , showLineNumbers}) {
 
   return <AceEditor
     mode={mode}
@@ -24,12 +24,11 @@ export default function CodeEditor ({ codeVal, onChange, fontSize, mode, nameId 
     showPrintMargin={false}
     showGutter={true}
     highlightActiveLine={true}
-    wrapEnabled={true}
     editorProps={{ $blockScrolling: true }}
     setOptions={{
       enableBasicAutocompletion: true,
       enableLiveAutocompletion: true,
-      showLineNumbers: true,
+      showLineNumbers: (showLineNumbers||false),
       tabSize: 2,
       useWorker: false
     }}

@@ -7,33 +7,39 @@
   <title>Screenshot</title>
 
   <style>
-    img { height: 100%; width: 100%;}
+    html,body {margin: 0;  background-color: #0e0e0e;}
+    div {width: 100%;display: flex;}
+
+    #btn-capture,
+    #btn-save {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 10px;
+      text-transform: uppercase;
+      background-color: #333333;
+      border: 0;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: background-color .2s;
+    }
+
+    #btn-save {background-color: #1d1d1d;}
+    #btn-capture:hover ,#btn-save:hover {background-color: #1e1e20 !important;}
+    img {height: 100%;width: 100%;}
   </style>
 </head>
 
 <body>
 
-  <button id="btn-shot">clik</button>
-  <img src="" alt="." id="shot" />
+  <div class="btns-containers">
+    <button id="btn-capture">take screen shot</button>
+    <button id="btn-save">save</button>
+  </div>
+  
+  <div id="img-container"></div>
 
-  <script>
-    const screenshot = require('screenshot-desktop');
-
-    document.getElementById('btn-shot').addEventListener('click', () => {
-      screenshot().then((img) => {
-        // img: Buffer filled with jpg goodness
-        // ...
-        console.log(img);
-
-        document.getElementById('shot').src = ('data:image/png;base64,' + Buffer.from(img).toString('base64'))
-      }).catch((err) => {
-        // ...
-        console.log(err);
-
-      })
-    })
-  </script>
-
+  <script>require('./screenshot.js')</script>
 </body>
-
 </html>

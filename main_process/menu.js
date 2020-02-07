@@ -1,7 +1,7 @@
 const { app, Menu, shell, BrowserWindow } = require('electron');
 const isMac = process.platform === 'darwin';
 
-const logoPath = __dirname + '/logo256.png';
+const logoPath = __dirname + '/icons/logo256.png';
 const screenshotHTML = __dirname + '/screen-shot.html';
 
 const Action = {

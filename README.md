@@ -6,18 +6,18 @@ Simple HTML/Javascript/Typescript/Python playground
 - [x] import node modules
 - [x] cache (only current file edit)
 - [x] sidebar for files (closed/shortcuts)
-- [ ] fetch code
-- [ ] timer
-- [ ] capture code
+- [x] take screenshot
 - [ ] multi tabs
+- [ ] fetch code from url
+- [ ] timer
 
 ### Languages
-- [x] Typescript
+- [x] Typescript (+ ts-node installed globally)
 - [x] Python
 - [x] Javascript
 - [x] Nodejs modules
 - [x] Browser (html)
-- ![React example](https://bitbucket.org/haikel2090/code-examples/src/master/index.html)
+- [React example](https://bitbucket.org/haikel2090/code-examples/src/master/index.html)
 
 ### Capture
 ![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)
