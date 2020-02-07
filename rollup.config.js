@@ -13,15 +13,14 @@ const config = {
     sourcemap: 'inline',
   },
   plugins: [
-    babel({
-      exclude: /node_modules/
-    }),
+    babel({ exclude: /node_modules/ }),
     resolve(),
     commonjs({ include: /node_modules/ }),
     copy({
       targets: [
         { src: 'main_process/*', dest: 'dist/' },
-        { src: 'src/assets/*', dest: 'dist/' },
+        { src: 'src/render_process/*', dest: 'dist/' },
+        { src: 'src/resources/*', dest: 'dist/' },
         { src: 'src/store/*', dest: 'dist/' }
       ]
     }),
