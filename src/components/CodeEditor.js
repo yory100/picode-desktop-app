@@ -12,11 +12,14 @@ import "ace-builds/src-noconflict/mode-json";
 /*eslint-disable no-alert, no-console */
 import "ace-builds/src-min-noconflict/ext-language_tools";
 
-export default function CodeEditor ({ codeVal, onChange, fontSize, mode, nameId }) {
+import "ace-builds/src-min-noconflict/theme-dracula";
+import "ace-builds/src-min-noconflict/theme-solarized_dark";
+
+export default function CodeEditor ({ codeVal, onChange, fontSize, mode, theme, nameId }) {
 
   return <AceEditor
     mode={mode}
-    theme="monokai"
+    theme={theme || "monokai"}
     onChange={onChange}
     name={nameId}
     fontSize={fontSize}

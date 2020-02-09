@@ -8,11 +8,11 @@ import SideFiles from './components/SideFiles';
 import FileManager from './util/FileManager';
 import CodeEditor from './components/CodeEditor';
 import CodeOutput from './components/CodeOutput';
-import { getStoreFontSize, updateFontSize, getStoreLang, updateLang } from './util/LangFonSize';
+import LangThemeFont from './util/LangFonSize';
 import Footer from './components/Footer';
 import FileSys from './util/FileSys';
 
-let { ipcRenderer } = require('electron');
+let ipcRenderer = require('electron').ipcRenderer;
 
 function App () {
 
@@ -21,8 +21,9 @@ function App () {
   const [codeError, setCodeError] = useState('');
 
   const [livePreview, setLivePreview] = useState(false);
-  const [fontSize, setFontSize] = useState(getStoreFontSize());
-  const [lang, setLang] = useState(getStoreLang());
+  const [fontSize, setFontSize] = useState(LangThemeFont.getStoreFontSize());
+  const [lang, setLang] = useState(LangThemeFont.getStoreLang());
+  const [theme, setTheme] = useState(LangThemeFont.getStoreTheme());
 
   const [btnRunIsClicked, setBtnRunIsClicked] = useState(false);
 
@@ -75,12 +76,17 @@ function App () {
 
   const updateFont = (e) => {
     setFontSize(+e.target.value);
-    updateFontSize(+e.target.value);
+    LangThemeFont.updateFontSize(+e.target.value);
   }
 
   const selectLang = (e) => {
     setLang(e);
-    updateLang(e);
+    LangThemeFont.updateLang(e);
+  }
+
+  const changeTheme = (e) => {
+    setTheme(e.target.value);
+    LangThemeFont.updateTheme(e.target.value);
   }
 
   return (
@@ -99,6 +105,7 @@ function App () {
           onChange={onEditorChange}
           fontSize={fontSize}
           mode={lang}
+          theme={theme}
           nameId="ace-editor-col"
         />
 
@@ -109,6 +116,7 @@ function App () {
           fontSize={fontSize}
           language={lang}
           codeVal={codeVal}
+          theme={theme}
         />
 
       </div>
@@ -118,6 +126,8 @@ function App () {
         fontSize={fontSize}
         lang={lang}
         selectLang={selectLang}
+        changeTheme={changeTheme}
+        theme={theme}
         livePreview={livePreview}
         btnRunIsClicked={btnRunIsClicked}
       />

@@ -1,9 +1,13 @@
 import React from 'react';
+import Select from './Select';
 
 const FontSizes = ['10', '12', '14', '16', '18', '20', '22', '24'];
 const Languages = ['html', 'javascript', 'python', 'typescript'];
+const themes = ['monokai', 'dracula', 'solarized_dark'];
 
-export default function Footer ({ updateFont, fontSize, selectLang, lang, livePreview, btnRunIsClicked }) {
+export default function Footer ({
+  updateFont, fontSize, selectLang, lang, changeTheme, theme, livePreview, btnRunIsClicked
+}) {
   return <footer>
     <div className="disp-flex">
       <div className="info-configs">
@@ -12,16 +16,13 @@ export default function Footer ({ updateFont, fontSize, selectLang, lang, livePr
       </div>
       <div className={btnRunIsClicked ? "info-configs bg-green p-left" : "info-configs p-left"}>{lang}</div>
       <div className="info-configs p-left">{fontSize + 'px'}</div>
+      <div className="info-configs p-left">{theme}</div>
     </div>
 
     <div className="disp-flex">
-      <select onChange={updateFont} >
-        {FontSizes.map(fns => <option value={fns} key={fns}>{fns}</option>)}
-      </select>
-
-      <select onChange={(e) => { selectLang(e.target.value) }} >
-        {Languages.map(lng => <option value={lng} key={lng}>{lng}</option>)}
-      </select>
+      <Select items={themes} onChange={changeTheme} />
+      <Select items={FontSizes} onChange={updateFont} />
+      <Select items={Languages} onChange={(e) => { selectLang(e.target.value) }} />
     </div>
   </footer>;
 }

@@ -147,6 +147,20 @@ const template = [
         click: async () => {
           await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
         }
+      },
+      { type: 'separator' },
+      {
+        label: 'Report issue',
+        click: async () => {
+          await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
+        }
+      },
+      { type: 'separator' },
+      {
+        label: 'About',
+        click: async () => {
+          await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
+        }
       }
     ]
   }
