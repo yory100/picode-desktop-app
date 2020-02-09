@@ -100,7 +100,6 @@ function App () {
           fontSize={fontSize}
           mode={lang}
           nameId="ace-editor-col"
-          showLineNumbers={true}
         />
 
         <CodeOutput

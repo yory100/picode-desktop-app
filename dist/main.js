@@ -16,10 +16,6 @@ function createWindow () {
 
   Menu.setApplicationMenu(menu);
 
-  // try {
-  //   require('electron-reloader')(module);
-  // } catch (_) { }
-
   mainWindow.on('closed', function () {
     mainWindow = null
   });

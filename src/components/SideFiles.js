@@ -45,15 +45,19 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
 
   return <div className="sidebar-files" style={{ marginLeft: isSideFileClosed ? '-16%' : '0%' }}>
 
-    <ul style={{ width: '95%' }}>
+    <div onClick={() => { setIsSideFileClosed(!isSideFileClosed) }} 
+    className="w-100 explorer disp-flex-sp">
+      📁 Explorer<span>👈</span>
+    </div>
+
+    <ul className="w-100">
       {files && Array.isArray(files) && files.map(f =>
-        <li key={f.fileName} className={f.fileName === currFileName ? "disp-flex cl-yellow" : "disp-flex"}>
+        <li key={f.fileName} className={f.fileName === currFileName ? "disp-flex-sp cl-yellow" : "disp-flex-sp"}>
           <span onClick={() => { getPath(f.currentFilePath, f.fileName) }}>📑 {f.fileName}</span>
           <button onClick={() => { removeFile(f.fileName) }} className="btn-rm">x</button>
         </li>
       )}
     </ul>
 
-    <div className="close-side bg-dark" onClick={() => { setIsSideFileClosed(!isSideFileClosed) }}></div>
   </div>;
 }

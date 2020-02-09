@@ -35,7 +35,7 @@ const FileManager = {
   label: 'File',
   submenu: [
     {
-      label: 'Load file',
+      label: 'Open file',
       accelerator: 'CmdOrCtrl+l',
       click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('load-file', 'files')

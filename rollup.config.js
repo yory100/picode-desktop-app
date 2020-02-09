@@ -19,7 +19,7 @@ const config = {
     copy({
       targets: [
         { src: 'main_process/*', dest: 'dist/' },
-        { src: 'src/render_process/*', dest: 'dist/' },
+        { src: 'render_process/*', dest: 'dist/' },
         { src: 'src/resources/*', dest: 'dist/' },
         { src: 'src/store/*', dest: 'dist/' }
       ]
