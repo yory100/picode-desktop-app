@@ -1,7 +1,7 @@
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
-const menu = require(__dirname + '/menu');
-const contextMenu = require(__dirname + '/context-menu');
+import menu from './menu';
+import contextMenu from './context-menu';
 
 let mainWindow;
 

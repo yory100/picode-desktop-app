@@ -166,4 +166,4 @@ const template = [
   }
 ];
 
-module.exports = Menu.buildFromTemplate(template);
+export default Menu.buildFromTemplate(template);

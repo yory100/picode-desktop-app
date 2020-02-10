@@ -5,7 +5,7 @@ const STORE_PATH = __dirname + '/store.json';
 let jsonStore = fs.readFileSync(STORE_PATH, { encoding: 'UTF-8' });
 var isChecked = JSON.parse(jsonStore)['live-preview'];
 
-contextMenu({
+export default contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
     {
       label: 'Run code',
@@ -42,5 +42,3 @@ contextMenu({
     { type: 'separator' }
   ]
 });
-
-module.exports = contextMenu;
