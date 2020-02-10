@@ -12,7 +12,7 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
   React.useEffect(() => {
     ipcRenderer.on('load-file', async () => {
       let { fileName, filePath, fileContent } = await FileManager.loadFile();
-      if (fileContent && fileContent.length > 2) {
+      if (fileContent) {
 
         setCodeVal(fileContent);
         setCurrFileName(fileName);

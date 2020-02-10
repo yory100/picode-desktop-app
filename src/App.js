@@ -58,6 +58,10 @@ export default function App () {
         });
     });
 
+    ipcRenderer.on('new-file', async (channel) => {
+      setCodeVal('');
+    });
+
     ipcRenderer.on('save-as-file', async () => {
       await FileManager.saveAs();
     });
@@ -83,12 +87,14 @@ export default function App () {
   }
 
   const formatCode = () => {
-    if(lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'go') {
-      if(lang === 'html') {
-        setCodeVal(js_beautify.html(codeVal));
+    if(codeVal && codeVal.length > 4) {
+      if(lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'golang') {
+        if(lang === 'html') {
+          setCodeVal(js_beautify.html(codeVal));
+        }
+        else setCodeVal(js_beautify.js(codeVal, { indent_size: 2, space_in_empty_paren: true }));
       }
-      else setCodeVal(js_beautify.js(codeVal, { indent_size: 2, space_in_empty_paren: true }));
-    }
+    }    
   }
 
   return (
