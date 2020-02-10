@@ -2,6 +2,7 @@ import JsonStore from "./JsonStore";
 import FileSys from "./FileSys";
 
 const path = require("path");
+const fs = require('fs');
 const { dialog } = require('electron').remote;
 
 let currentFilePath = __dirname + '/temp';
@@ -39,7 +40,7 @@ export default class FileManager {
       JsonStore.pushOrUpdate("current-path", filePath);
       JsonStore.pushOrUpdate("filename", fileName);
 
-      await FileSys.overrideFile('default', fileContent);
+      await FileSys.overrideTempFile(fileContent);
     }
   }
 
@@ -48,7 +49,7 @@ export default class FileManager {
     let language = 'text';
     if (fileName) {
       let fileExtension = path.extname(fileName);
-      if(fileExtension) { language = LANG_EXT.find(l => l.ext === fileExtension).lang; }
+      if (fileExtension) { language = LANG_EXT.find(l => l.ext === fileExtension).lang; }
     }
     return language;
   }
@@ -59,10 +60,12 @@ export default class FileManager {
       if (!result.canceled) {
         currentFilePath = result.filePath;
 
-        FileSys.readAndWriteFile(currentFilePath);
+        let codeVal = FileSys.readTempFile();
 
-        JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
-        JsonStore.pushOrUpdate("current-path", currentFilePath);
+        fs.writeFile(currentFilePath, codeVal, { flag: 'w' }, (err) => {
+          JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
+          JsonStore.pushOrUpdate("current-path", currentFilePath);
+        });
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +74,9 @@ export default class FileManager {
 
   static async saveCurrent () {
     currentFilePath = JsonStore.get()["current-path"];
-    FileSys.readAndWriteFile(currentFilePath);
+    let codeVal = FileSys.readTempFile();
+
+    fs.writeFile(currentFilePath, codeVal, { flag: 'w' }, (err) => { });
     await dialog.showMessageBox({
       message: 'The file has been saved!',
       buttons: ['OK']

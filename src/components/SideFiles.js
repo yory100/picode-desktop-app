@@ -25,7 +25,7 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
     });
 
     ipcRenderer.on('save-file', async () => {
-      await FileManager.saveCurrent()
+      await FileManager.saveCurrent();
     });
   }, []);
 

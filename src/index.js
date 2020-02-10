@@ -16,7 +16,7 @@ let ipcRenderer = require('electron').ipcRenderer;
 
 function App () {
 
-  const [codeVal, setCodeVal] = useState();
+  const [codeVal, setCodeVal] = useState('');
   const [codeResult, setCodeResult] = useState('');
   const [codeError, setCodeError] = useState('');
 
@@ -31,9 +31,9 @@ function App () {
 
   async function onEditorChange (newValue) {
     setCodeVal(newValue);
-    await FileSys.overrideFile('default', newValue);
+    await FileSys.overrideTempFile(newValue);
     if (livePreview) {
-      runCode(newValue).then(result => {
+      runCode().then(result => {
         setCodeResult(result);
         setCodeError('');
       })
@@ -45,15 +45,10 @@ function App () {
   }
 
   React.useEffect(() => {
-    let res = FileSys.readFile('default');
-    setCodeVal(res);
-
     ipcRenderer.on('run-code', () => {
       setBtnRunIsClicked(true);
-      let newValue = FileSys.readFile('default');
-      setCodeVal(newValue);
 
-      runCode(newValue).then(result => {
+      runCode().then(result => {
         setCodeResult(result);
         setCodeError('');
         if (result && result.length > 0) setBtnRunIsClicked(false);
