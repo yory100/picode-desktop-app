@@ -9,11 +9,11 @@ let currentFilePath = __dirname + '/temp';
 
 const LANG_EXT = [
   { ext: '.txt', lang: 'text' },
-  { ext: '.json', lang: 'json' },
   { ext: '.js', lang: 'javascript' },
   { ext: '.ts', lang: 'typescript' },
   { ext: '.py', lang: 'python' },
-  { ext: '.html', lang: 'html' }
+  { ext: '.html', lang: 'html' },
+  { ext: '.go', lang: 'golang' }
 ];
 
 export default class FileManager {
@@ -27,7 +27,7 @@ export default class FileManager {
 
     if (!result.canceled) {
       fileName = path.basename(currentFilePath);
-      fileContent = FileSys.readFileUsingPath(currentFilePath);
+      fileContent = FileSys.readOrCreateFile(currentFilePath);
       await this.updateFileInfos(currentFilePath, fileName, fileContent);
     }
     return { fileName, fileContent, filePath: currentFilePath };
@@ -40,7 +40,7 @@ export default class FileManager {
       JsonStore.pushOrUpdate("current-path", filePath);
       JsonStore.pushOrUpdate("filename", fileName);
 
-      await FileSys.overrideTempFile(fileContent);
+      await FileSys.writeTempFile(fileContent);
     }
   }
 

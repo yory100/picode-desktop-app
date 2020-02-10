@@ -13,21 +13,32 @@ export default function runCode () {
       case 'python':
         execFile('python', [currPath], (error, stdout, stderr) => {
           if (stderr) { reject(stderr); }
-          resolve(stdout);
+          else resolve(stdout);
+        });
+        break;
+
+      case 'golang':
+        exec('go run ' + currPath, (error, stdout, stderr) => {
+          if (stderr) { reject(stderr); }
+          else resolve(stdout);
         });
         break;
 
       case 'javascript':
         execFile('node', [currPath], (error, stdout, stderr) => {
           if (stderr) { reject(stderr); }
-          resolve(stdout);
+          else resolve(stdout);
+
+          console.log('error = ' + error);
+          console.log('stdout = ' + stdout);
+          console.log('stderr = ' + stderr);
         });
         break;
 
       case 'typescript':
         exec('ts-node ' + currPath, (error, stdout, stderr) => {
           if (stderr) { reject(stderr); }
-          resolve(stdout);
+          else resolve(stdout);
         });
         break;
 

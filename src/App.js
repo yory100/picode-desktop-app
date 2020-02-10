@@ -28,7 +28,7 @@ export default function App () {
 
   async function onEditorChange (newValue) {
     setCodeVal(newValue);
-    await FileSys.overrideTempFile(newValue);
+    await FileSys.writeTempFile(newValue);
     if (livePreview) {
       runCode().then(result => {
         setCodeResult(result);
@@ -109,6 +109,7 @@ export default function App () {
           language={lang}
           codeVal={codeVal}
           theme={theme}
+          btnRunIsClicked={btnRunIsClicked}
         />
 
       </div>
@@ -121,7 +122,6 @@ export default function App () {
         changeTheme={changeTheme}
         theme={theme}
         livePreview={livePreview}
-        btnRunIsClicked={btnRunIsClicked}
       />
     </>);
 }

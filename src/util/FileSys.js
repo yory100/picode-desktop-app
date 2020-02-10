@@ -14,29 +14,17 @@ export default class FileSys {
     return res;
   }
 
-  static async overrideTempFile (newCodeValue) {
+  static async writeTempFile (newCodeValue) {
     await fs.promises.writeFile(TEMP_FILE, newCodeValue, { flag: 'w+' });
   }
 
-  static readFileUsingPath (filePath) {
+  static readOrCreateFile (filePath) {
     let res = '';
     if (fs.existsSync(filePath)) {
       res = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' });
     }
     else {
-      fs.writeFile(filePath, '', { encoding: 'utf8', flag: 'w+' }, (err, data) => { });
-    }
-    return res;
-  }
-  /** read and wite: file */
-  static readAndWriteFile (filePath) {
-    let res = '';
-    if (fs.existsSync(TEMP_FILE)) {
-      res = fs.readFileSync(TEMP_FILE, { encoding: 'utf8', flag: 'r' });
-      fs.writeFile(filePath, res, { encoding: 'utf8', flag: 'w+' }, (err, data) => { });
-    }
-    else {
-      fs.writeFile(filePath, '', { encoding: 'utf8', flag: 'w+' }, (err, data) => { });
+      fs.writeFile(filePath, '', { encoding: 'utf8', flag: 'w+' }, (err) => { });
     }
     return res;
   }
