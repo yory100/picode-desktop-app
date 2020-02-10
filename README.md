@@ -1,5 +1,5 @@
 # Picode   
-Simple HTML/Javascript/Typescript/Python playground
+Simple HTML/Javascript/Typescript/Python/Golang playground
 
 - [Website repo](https://github.com/haikelfazzani/picode-website)
 - [Website and download](https://picode-website.netlify.com/)
@@ -7,7 +7,7 @@ Simple HTML/Javascript/Typescript/Python playground
 - [Releases](https://github.com/haikelfazzani/picode-website/releases)
 
 ### Capture
-![Capture](https://i.ibb.co/QjQ5hXM/Nouvelle-image-bitmap.png)
+![Capture](https://i.ibb.co/742RWT6/Capture.png)
 
 ## Notes
 - All pull requests are welcome, feel free.
