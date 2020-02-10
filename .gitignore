@@ -9,5 +9,5 @@ picode-win32-x64
 Squirrel.exe
 
 app/
-
+dist/
 build/
