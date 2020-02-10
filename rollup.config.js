@@ -17,14 +17,16 @@ const config = {
   },
   plugins: [
     resolve(),
-    babel({ exclude: /node_modules/ }),
+    babel({ exclude: 'node_modules/**' }),
     commonjs({
       include: 'node_modules/**',
       exclude: [
         'node_modules/process-es6/**',
       ],
       namedExports: {
-        'node_modules/react/index.js': ['Children', 'Component', 'createElement', 'PropTypes', 'useState', 'useEffect'],
+        'node_modules/react/index.js': [
+          'Children', 'Component', 'createElement', 'PropTypes', 'useState', 'useEffect'
+        ],
         'node_modules/react-dom/index.js': ['render'],
       }
     }),

@@ -8,6 +8,7 @@ import CodeOutput from './components/CodeOutput';
 import LangThemeFont from './util/LangFonSize';
 import Footer from './components/Footer';
 import FileSys from './util/FileSys';
+import js_beautify from 'js-beautify';
 
 let ipcRenderer = require('electron').ipcRenderer;
 
@@ -81,6 +82,15 @@ export default function App () {
     LangThemeFont.updateTheme(e.target.value);
   }
 
+  const formatCode = () => {
+    if(lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'go') {
+      if(lang === 'html') {
+        setCodeVal(js_beautify.html(codeVal));
+      }
+      else setCodeVal(js_beautify.js(codeVal, { indent_size: 2, space_in_empty_paren: true }));
+    }
+  }
+
   return (
     <>
       <div className="container">
@@ -122,6 +132,11 @@ export default function App () {
         changeTheme={changeTheme}
         theme={theme}
         livePreview={livePreview}
-      />
+      >
+        <div className="info-configs p-left">{lang}</div>
+        <div className="info-configs p-left">{fontSize + 'px'}</div>
+        <div className="info-configs p-left">{theme}</div>
+        <div className="info-configs p-left btn-format" onClick={formatCode}>Format code</div>
+      </Footer>
     </>);
 }

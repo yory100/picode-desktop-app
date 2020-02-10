@@ -28,10 +28,6 @@ export default function runCode () {
         execFile('node', [currPath], (error, stdout, stderr) => {
           if (stderr) { reject(stderr); }
           else resolve(stdout);
-
-          console.log('error = ' + error);
-          console.log('stdout = ' + stdout);
-          console.log('stderr = ' + stderr);
         });
         break;
 
