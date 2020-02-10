@@ -1,30 +1,34 @@
-function editDistance(word1, word2) {
-  const len = word1.length;
-  const len2 = word2.length;
-  let dp = [];
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>body { color: #fff; }</style>
+</head>
+<body>
+<div id="root"></div>
 
-  for (let i = 0; i < len + 1; i++) {
-    dp[i] = [];
-    for (let j = 0; j < len2 + 1; j++) {
-      /* base case: empty strings */
-      if (i === 0) dp[i][j] = j;
-      else if (j === 0) dp[i][j] = i;
-      /* test if last characters of the strings match */ 
-      else if (
-        word1[i - 1] === word2[j - 1]
-      ) {
-        dp[i][j] = dp[i - 1][j - 1];
-      } else {
-        dp[i][j] = 1 + Math.min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]);
-      }
-    }
-  }
-  return dp[len][len2];
+<script type="text/babel">
+
+function Example() {
+  // Declare a new state variable, which we'll call "count"
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
 }
 
+let domContainer = document.querySelector('#root');
+ReactDOM.render(<Example />, domContainer);
+</script>
 
-
-
-console.log("Result = ",editDistance("hello", "hello")); // 4
-console.log("Result = ",editDistance("hello", "helol")); // 4
-console.log("Result = ",editDistance("hello", "sssss")); // 4
+</body>
+</html>

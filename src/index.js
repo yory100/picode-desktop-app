@@ -16,7 +16,7 @@ let ipcRenderer = require('electron').ipcRenderer;
 
 function App () {
 
-  const [codeVal, setCodeVal] = useState('');
+  const [codeVal, setCodeVal] = useState(FileSys.readTempFile());
   const [codeResult, setCodeResult] = useState('');
   const [codeError, setCodeError] = useState('');
 
