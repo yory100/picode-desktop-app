@@ -14,7 +14,12 @@ import "ace-builds/src-min-noconflict/ext-language_tools";
 import "ace-builds/src-min-noconflict/theme-dracula";
 import "ace-builds/src-min-noconflict/theme-chaos";
 
+import js from 'js-beautify';
+
 export default function CodeEditor ({ codeVal, onChange, fontSize, mode, theme, nameId }) {
+
+  console.log(js);
+  
 
   return <AceEditor
     mode={mode}
