@@ -1,9 +1,8 @@
-const contextMenu = require('electron-context-menu');
-var fs = require('fs');
-const STORE_PATH = __dirname + '/store.json';
+import JsonStore from '../src/util/JsonStore';
 
-let jsonStore = fs.readFileSync(STORE_PATH, { encoding: 'UTF-8' });
-var isChecked = JSON.parse(jsonStore)['live-preview'];
+const contextMenu = require('electron-context-menu');
+
+var isChecked = JsonStore.getPropVal('live-preview');
 
 export default contextMenu({
   prepend: (defaultActions, params, browserWindow) => [

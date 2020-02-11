@@ -62,10 +62,9 @@ export default class FileManager {
 
         let codeVal = FileSys.readTempFile();
 
-        fs.writeFile(currentFilePath, codeVal, { flag: 'w' }, (err) => {
-          JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
-          JsonStore.pushOrUpdate("current-path", currentFilePath);
-        });
+        await fs.promises.writeFile(currentFilePath, codeVal, { flag: 'w' });
+        JsonStore.pushOrUpdate("filename", path.basename(currentFilePath));
+        JsonStore.pushOrUpdate("current-path", currentFilePath);
       }
     } catch (error) {
       console.log(error);
@@ -73,16 +72,10 @@ export default class FileManager {
   }
 
   static async saveCurrent () {
-    currentFilePath = JsonStore.get()["current-path"];
+    currentFilePath = JsonStore.getPropVal("current-path");
     let codeVal = FileSys.readTempFile();
-
-    fs.writeFile(currentFilePath, codeVal, { flag: 'w' }, (err) => { });
-    await dialog.showMessageBox({
-      type: 'info',
-      message: 'The file has been saved!',
-      buttons: ['OK'],
-      detail: 'Filename: '+path.basename(currentFilePath)
-    });
+    await fs.promises.writeFile(currentFilePath, codeVal, { flag: 'w' });
+    return 'The file has been saved!';
   }
 
   // add loaded files into the store

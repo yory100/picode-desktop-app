@@ -23,10 +23,6 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
         setFiles([...rs]);
       }
     });
-
-    ipcRenderer.on('save-file', async () => {
-      await FileManager.saveCurrent();
-    });
   }, []);
 
   const getPath = (filePath, fileName) => {
