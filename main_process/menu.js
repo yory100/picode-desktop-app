@@ -1,8 +1,5 @@
-const { app, Menu, shell, BrowserWindow } = require('electron');
+const { app, Menu, shell } = require('electron');
 const isMac = process.platform === 'darwin';
-
-const logoPath = __dirname + '/icons/logo256.png';
-const screenshotHTML = __dirname + '/screen-shot.html';
 
 const Action = {
   label: 'Action',
@@ -12,20 +9,6 @@ const Action = {
       accelerator: 'CmdOrCtrl+Enter',
       click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('run-code', 'run code')
-      }
-    },
-    { type: 'separator' },
-    {
-      label: 'Take Screenshot',
-      accelerator: 'CmdOrCtrl+t',
-      click: (menuItem, browserWindow, event) => {
-        let screenShotWin = new BrowserWindow({
-          width: 800, height: 600,
-          webPreferences: { nodeIntegration: true },
-          icon: logoPath
-        });
-        screenShotWin.loadFile(screenshotHTML);
-        screenShotWin.show();
       }
     }
   ]

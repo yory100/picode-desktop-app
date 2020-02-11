@@ -7,14 +7,16 @@ let mainWindow;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
+    width: 800, height: 600,
     webPreferences: { nodeIntegration: true },
     icon: __dirname + '/icons/logo256.png'
   });
-
-  mainWindow.maximize();
+  
   mainWindow.loadFile(__dirname + '/index.html');
 
   Menu.setApplicationMenu(menu);
+
+  mainWindow.maximize();
 
   mainWindow.on('closed', function () {
     mainWindow = null

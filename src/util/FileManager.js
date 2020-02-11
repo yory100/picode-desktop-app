@@ -78,8 +78,10 @@ export default class FileManager {
 
     fs.writeFile(currentFilePath, codeVal, { flag: 'w' }, (err) => { });
     await dialog.showMessageBox({
+      type: 'info',
       message: 'The file has been saved!',
-      buttons: ['OK']
+      buttons: ['OK'],
+      detail: 'Filename: '+path.basename(currentFilePath)
     });
   }
 
