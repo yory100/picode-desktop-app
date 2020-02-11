@@ -1,8 +1,4 @@
-import JsonStore from '../src/util/JsonStore';
-
 const contextMenu = require('electron-context-menu');
-
-var isChecked = JsonStore.getPropVal('live-preview');
 
 export default contextMenu({
   prepend: (defaultActions, params, browserWindow) => [
@@ -41,17 +37,6 @@ export default contextMenu({
       accelerator: 'CmdOrCtrl+Shift+s',
       click: (menuItem, browserWindow, event) => {
         browserWindow.webContents.send('save-as-file', 'save-as-file');
-      }
-    },
-    { type: 'separator' },
-    {
-      label: 'Live Preview',
-      type: 'checkbox',
-      accelerator: 'CmdOrCtrl+Shift+p',
-      checked: isChecked,
-      click: (menuItem, browserWindow, event) => {
-        browserWindow.webContents.send('live-preview', menuItem.checked);
-        isChecked = !isChecked;
       }
     }
   ]

@@ -18,7 +18,6 @@ export default function App () {
   const [codeResult, setCodeResult] = useState('');
   const [codeError, setCodeError] = useState('');
 
-  const [livePreview, setLivePreview] = useState(false);
   const [fontSize, setFontSize] = useState(LangThemeFont.getStoreFontSize());
   const [lang, setLang] = useState(LangThemeFont.getStoreLang());
   const [theme, setTheme] = useState(LangThemeFont.getStoreTheme());
@@ -30,16 +29,6 @@ export default function App () {
   async function onEditorChange (newValue) {
     setCodeVal(newValue);
     await FileSys.writeTempFile(newValue);
-    if (livePreview) {
-      runCode().then(result => {
-        setCodeResult(result);
-        setCodeError('');
-      })
-        .catch(e => {
-          setCodeError(e);
-          setCodeResult('');
-        });
-    }
   }
 
   React.useEffect(() => {
@@ -64,10 +53,6 @@ export default function App () {
 
     ipcRenderer.on('save-as-file', async () => {
       await FileManager.saveAs();
-    });
-
-    ipcRenderer.on('live-preview', async (channel, isChecked) => {
-      setLivePreview(isChecked)
     });
   }, []);
 
@@ -137,7 +122,6 @@ export default function App () {
         selectLang={selectLang}
         changeTheme={changeTheme}
         theme={theme}
-        livePreview={livePreview}
       >
         <div className="info-configs p-left">{lang}</div>
         <div className="info-configs p-left">{fontSize + 'px'}</div>

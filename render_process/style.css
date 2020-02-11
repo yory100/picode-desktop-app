@@ -151,12 +151,6 @@ footer .info-configs {
   padding-right: 15px;
 }
 
-.live-preview {
-  height: 100%;
-  width: 20px;
-  margin-right: 10px;
-}
-
 select {
   padding: 0 10px;
   color: #ffffff;
@@ -171,65 +165,26 @@ button {
   cursor: pointer;
 }
 
-.cl-yellow {
-  color: #f1d817;
-}
+.cl-yellow {color: #f1d817;}
 
-.cl-red {
-  color: #ff5959;
-}
+.cl-red {color: #ff5959;}
+.cl-green {color: #10ff08 !important;}
 
-.cl-green {
-  color: #10ff08 !important;
-}
+.bg-red {background-color: #ff5959 !important;}
+.bg-green {background-color: #06960e !important;}
+.bg-yellow {background-color: #ac9800 !important;}
+.bg-dark {background-color: #1e1e1e !important;}
 
-.bg-red {
-  background-color: #ff5959 !important;
-}
+.ml-20 {margin-left: 20px !important;}
+.mr-20 {margin-right: 20px !important;}
+.mr-10 {margin-right: 10px !important;}
 
-.bg-green {
-  background-color: #06960e !important;
-}
+.plr {padding: 7px 15px; border-left: 2px solid #272727 !important;}
+.p-left {padding-left: 15px;}
 
-.bg-yellow {
-  background-color: #ac9800 !important;
-}
-
-.bg-dark {
-  background-color: #1e1e1e !important;
-}
-
-.ml-20 {
-  margin-left: 20px !important;
-}
-
-.mr-20 {
-  margin-right: 20px !important;
-}
-
-.mr-10 {
-  margin-right: 10px !important;
-}
-
-.plr {
-  padding: 7px 15px;
-  border-left: 2px solid #272727 !important;
-}
-
-.p-left {
-  padding-left: 15px;
-}
-
-.w-25 {
-  width: 25% !important;
-}
-.w-100 {
-  width: 100% !important;
-}
-
-.h-100 {
-  height: 100% !important;
-}
+.w-25 {width: 25% !important;}
+.w-100 { width: 100% !important;}
+.h-100 {height: 100% !important;}
 
 .disp-flex {
   display: flex;
@@ -252,18 +207,9 @@ button {
 }
 
 /* scroll */
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #555;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #363636;
-}
-
+::-webkit-scrollbar {width: 7px;}
+::-webkit-scrollbar-thumb {background: #555;}
+::-webkit-scrollbar-thumb:hover {background: #363636;}
 /* transition*/
 .btn-format {cursor: pointer;}
 .btn-format:hover { background-color: #1e1e1e !important;}
@@ -271,4 +217,33 @@ button {
 .btn-rm,
 .sidebar-files, .btn-format {
   transition: all .3s;
+}
+
+/* snackbar */
+.snackbar {
+  visibility: hidden;
+  margin-left: -125px;
+  font-size: 14px !important;
+  background-color: #0061924b;
+    color: #fff;
+    padding: 5px 15px;    
+  z-index: 1;
+}
+
+.snack-right {position: fixed;    right: 5%;bottom: 30px;}
+.snack-center {position: fixed;    left: 50%;bottom: 30px;}
+
+.snackbar.show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 40px; opacity: 1;}
+}
+
+@keyframes fadeout {
+  from {bottom: 40px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
 }
