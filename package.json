@@ -48,7 +48,8 @@
     "react": "^16.12.0",
     "react-ace": "^8.0.0",
     "react-dom": "^16.12.0",
-    "react-iframe": "^1.8.0"
+    "react-iframe": "^1.8.0",
+    "react-split": "^2.0.7"
   },
   "repository": {
     "type": "git",

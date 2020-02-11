@@ -4,11 +4,11 @@ import htmlToURL from '../util/htmlToURL';
 import CodeEditor from './CodeEditor';
 import Snackbar from './Snackbar';
 
-export default function CodeOutput ({ codeError, codeResult, isSideFileClosed,
-  fontSize, language, theme, codeVal, btnRunIsClicked }) {
+export default function CodeOutput ({
+  codeError, codeResult, fontSize, language, theme, codeVal, btnRunIsClicked
+}) {
 
-  return <div className="code-result"
-    style={{ width: !isSideFileClosed ? '23%' : '39%', fontSize: fontSize + 'px' }}>
+  return <div className="code-result">
     {language === 'html'
       ? <Iframe url={htmlToURL(codeVal)} />
       : <>

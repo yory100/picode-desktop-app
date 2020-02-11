@@ -1,4 +1,4 @@
-const { app, Menu, shell } = require('electron');
+const { app, Menu, dialog, shell } = require("electron");
 const isMac = process.platform === 'darwin';
 
 const Action = {
@@ -105,7 +105,6 @@ const template = [
     submenu: [
       { role: 'reload' },
       { role: 'forcereload' },
-      { role: 'toggledevtools' },
       { type: 'separator' },
       { role: 'resetzoom' },
       { role: 'zoomin' },
@@ -114,32 +113,9 @@ const template = [
       { role: 'togglefullscreen' }
     ]
   },
-  // { role: 'windowMenu' }
-  {
-    label: 'Window',
-    submenu: [
-      { role: 'minimize' },
-      { role: 'zoom' },
-      ...(isMac ? [
-        { type: 'separator' },
-        { role: 'front' },
-        { type: 'separator' },
-        { role: 'window' }
-      ] : [
-          { role: 'close' }
-        ])
-    ]
-  },
   {
     role: 'help',
     submenu: [
-      {
-        label: 'Learn More',
-        click: async () => {
-          await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
-        }
-      },
-      { type: 'separator' },
       {
         label: 'Report issue',
         click: async () => {
@@ -149,8 +125,13 @@ const template = [
       { type: 'separator' },
       {
         label: 'About',
-        click: async () => {
-          await shell.openExternal('https://github.com/haikelfazzani/picode-desktop-app')
+        click: async (menuItem, browserWindow, event) => {
+          await dialog.showMessageBox(browserWindow, {
+            title: 'About',
+            type: 'info',
+            message: 'Picode v1.0.0',
+            detail: 'Copyright © 2090 - Haikel Fazzani'
+          });
         }
       }
     ]

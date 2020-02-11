@@ -4,7 +4,7 @@ import FileManager from '../util/FileManager';
 const fs = require('fs');
 let { ipcRenderer } = require('electron');
 
-export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setCodeVal, selectLang }) {
+export default function SideFiles ({ setCodeVal, selectLang }) {
 
   const [files, setFiles] = React.useState(FileManager.getFilesFromStore());
   const [currFileName, setCurrFileName] = React.useState('');
@@ -39,12 +39,9 @@ export default function SideFiles ({ setIsSideFileClosed, isSideFileClosed, setC
     setFiles(rs);
   }
 
-  return <div className="sidebar-files" style={{ marginLeft: isSideFileClosed ? '-16%' : '0%' }}>
+  return <div className="sidebar-files">
 
-    <div onClick={() => { setIsSideFileClosed(!isSideFileClosed) }} 
-    className="w-100 explorer disp-flex-sp">
-      📁 Explorer<span>👈</span>
-    </div>
+    <div className="w-100 explorer disp-flex-sp">📁 Explorer</div>
 
     <ul className="w-100">
       {files && Array.isArray(files) && files.map(f =>

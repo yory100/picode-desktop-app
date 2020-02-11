@@ -16,20 +16,15 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body,
-#root,
-.container {
+body,#root,.container {
   margin: 0;
   width: 100vw;
   height: 100vh;
   font-size: 14px;
   font-family: Consolas;
-
 }
 
-body {
-  position: relative; overflow: hidden;
-}
+body {position: relative; overflow: hidden;}
 
 html,
 body,
@@ -40,30 +35,24 @@ body,
   background-color: #1e1e1e;
 }
 
-#root,
-.container {
-  display: flex;
-  height: 97vh;
-}
-#ace-editor-col,
-#ace-editor-col .ace_editor {
-  width: 60% !important;
-  height: 100% !important;
+#root,.container {height: 97vh; width: 100vw;}
+.container > div{width: 100vw; height: 100%; display: flex;}
+.container .gutter {     width: 5px !important; 
+  background-color: inherit; cursor: col-resize;
+  border-right: 2px solid #272727;
 }
 
+#ace-editor-col,#ace-editor-col .ace_editor {height: 100% !important;}
+
 .code-result {
-  width: 23%;
   height: 100%;
   color: #f1d817;
   word-break: break-all;
-  border-left: 2px solid #272727;
   overflow: auto;
   transition: width .2s;
 }
 
-#ace-editor {
-  overflow-x: auto;
-}
+#ace-editor {overflow-x: auto;}
 
 #ace-editor,
 #ace-editor .ace_editor,
@@ -72,17 +61,11 @@ body,
   height: 100% !important;
 }
 
-iframe {
-  border: 0;
-  width: 100%;
-  height: 100%;
-}
+iframe {border: 0;width: 100%;height: 100%;}
 
 /* Side files */
 .sidebar-files {
-  width: 17%;
   color: #ffffff;
-  border-right: 2px solid #272727;
   overflow: auto;
 }
 
@@ -224,7 +207,7 @@ button {
   visibility: hidden;
   margin-left: -125px;
   font-size: 14px !important;
-  background-color: #0061924b;
+  background-color: #006192;
     color: #fff;
     padding: 5px 15px;    
   z-index: 1;

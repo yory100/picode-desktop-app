@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import FileSys from './util/FileSys';
 import js_beautify from 'js-beautify';
 
+import Split from 'react-split';
 let ipcRenderer = require('electron').ipcRenderer;
 
 export default function App () {
@@ -23,8 +24,6 @@ export default function App () {
   const [theme, setTheme] = useState(LangThemeFont.getStoreTheme());
 
   const [btnRunIsClicked, setBtnRunIsClicked] = useState(false);
-
-  const [isSideFileClosed, setIsSideFileClosed] = useState(false);
 
   async function onEditorChange (newValue) {
     setCodeVal(newValue);
@@ -72,47 +71,49 @@ export default function App () {
   }
 
   const formatCode = () => {
-    if(codeVal && codeVal.length > 4) {
-      if(lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'golang') {
-        if(lang === 'html') {
+    if (codeVal && codeVal.length > 4) {
+      if (lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'golang') {
+        if (lang === 'html') {
           setCodeVal(js_beautify.html(codeVal));
         }
         else setCodeVal(js_beautify.js(codeVal, { indent_size: 2, space_in_empty_paren: true }));
       }
-    }    
+    }
   }
 
   return (
-    <>    
+    <>
       <div className="container">
 
-        <SideFiles
-          setIsSideFileClosed={setIsSideFileClosed}
-          isSideFileClosed={isSideFileClosed}
-          setCodeVal={setCodeVal}
-          selectLang={selectLang}
-        />
+        <Split
+          sizes={[17, 60, 24]}
+          direction="horizontal"
+          cursor="col-resize"
+        >
+          <SideFiles
+            setCodeVal={setCodeVal}
+            selectLang={selectLang}
+          />
 
-        <CodeEditor
-          codeVal={codeVal}
-          onChange={onEditorChange}
-          fontSize={fontSize}
-          mode={lang}
-          theme={theme}
-          nameId="ace-editor-col"
-        />
+          <CodeEditor
+            codeVal={codeVal}
+            onChange={onEditorChange}
+            fontSize={fontSize}
+            mode={lang}
+            theme={theme}
+            nameId="ace-editor-col"
+          />
 
-        <CodeOutput
-          codeError={codeError}
-          codeResult={codeResult}
-          isSideFileClosed={isSideFileClosed}
-          fontSize={fontSize}
-          language={lang}
-          codeVal={codeVal}
-          theme={theme}
-          btnRunIsClicked={btnRunIsClicked}
-        />
-
+          <CodeOutput
+            codeError={codeError}
+            codeResult={codeResult}
+            fontSize={fontSize}
+            language={lang}
+            codeVal={codeVal}
+            theme={theme}
+            btnRunIsClicked={btnRunIsClicked}
+          />
+        </Split>
       </div>
 
       <Footer
