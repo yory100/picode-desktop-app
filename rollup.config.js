@@ -36,7 +36,7 @@ const config = {
         { src: 'src/store/*', dest: 'dist/' }
       ]
     }),
-    terser()
+    //terser()
   ]
 }
 

@@ -37,9 +37,7 @@ body,
 
 #root,.container {height: 97vh; width: 100vw;}
 .container > div{width: 100vw; height: 100%; display: flex;}
-.container .gutter {     width: 5px !important; 
-  background-color: inherit; cursor: col-resize;
-  border-right: 2px solid #272727;
+.container .gutter { width: 5px !important;  cursor: col-resize; border-right: 3px solid #272727;
 }
 
 #ace-editor-col,#ace-editor-col .ace_editor {height: 100% !important;}
@@ -64,15 +62,9 @@ body,
 iframe {border: 0;width: 100%;height: 100%;}
 
 /* Side files */
-.sidebar-files {
-  color: #ffffff;
-  overflow: auto;
-}
+.sidebar-files {color: #ffffff;overflow: auto;}
 
-.explorer {
-  padding: 10px 10px 5px 10px;
-  cursor: pointer;
-}
+.explorer {padding: 15px 10px 5px 10px;cursor: pointer;}
 
 ul {
   list-style: none;
@@ -94,9 +86,7 @@ ul li {
   cursor: pointer;
 }
 
-.btn-rm:hover {
-  color: #ffffff !important;
-}
+.btn-rm:hover {color: #da0000 !important;}
 
 /* Run command */
 .run-command {
@@ -197,10 +187,7 @@ button {
 .btn-format {cursor: pointer;}
 .btn-format:hover { background-color: #1e1e1e !important;}
 
-.btn-rm,
-.sidebar-files, .btn-format {
-  transition: all .3s;
-}
+.btn-rm,.sidebar-files, .btn-format {transition: all .3s;}
 
 /* snackbar */
 .snackbar {

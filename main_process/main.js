@@ -11,7 +11,7 @@ function createWindow () {
     webPreferences: { nodeIntegration: true },
     icon: __dirname + '/icons/logo256.png'
   });
-  
+
   mainWindow.loadFile(__dirname + '/index.html');
   Menu.setApplicationMenu(menu);
 

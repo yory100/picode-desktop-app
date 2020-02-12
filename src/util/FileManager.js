@@ -13,7 +13,8 @@ const LANG_EXT = [
   { ext: '.ts', lang: 'typescript' },
   { ext: '.py', lang: 'python' },
   { ext: '.html', lang: 'html' },
-  { ext: '.go', lang: 'golang' }
+  { ext: '.go', lang: 'golang' },
+  { ext: '.md', lang: 'text' }
 ];
 
 export default class FileManager {
