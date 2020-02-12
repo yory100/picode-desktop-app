@@ -56,6 +56,22 @@ export default function runCode () {
         });
         break;
 
+      case 'c_cpp':
+        let filename = path.basename(currPath).split('.')[0];
+        let k = currPath.slice(0, currPath.lastIndexOf('\\'));
+        execFile('gcc', ['-o', k + '\\' + filename, currPath], (errorrr, stdoutt, stderr) => {
+          if (stderr && stderr.length > 1) {
+            resolve(stderr);
+          }
+          else {
+            execFile(k + '\\' + filename, (error, stdout, stderr) => {
+              if (stderr) { reject(stderr); }
+              else resolve(stdout);
+            });
+          }
+        });
+        break;
+
       default:
         resolve('..');
         reject('..');

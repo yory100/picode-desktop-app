@@ -9,6 +9,7 @@ import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/mode-golang";
 import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-c_cpp";
 /*eslint-disable no-alert, no-console */
 import "ace-builds/src-min-noconflict/ext-language_tools";
 

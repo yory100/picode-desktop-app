@@ -5,7 +5,7 @@ import FileManager from '../util/FileManager';
 import Snackbar from './Snackbar';
 
 const FontSizes = ['10', '12', '14', '16', '18', '20', '22', '24', '26'];
-const Languages = ['text', 'html', 'javascript', 'python', 'typescript', 'golang'];
+const Languages = ['text', 'html', 'javascript', 'python', 'typescript', 'golang', 'c_pp', 'java'];
 const themes = ['monokai', 'dracula', 'chaos'];
 
 let { ipcRenderer } = require('electron');

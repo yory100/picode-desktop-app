@@ -12,13 +12,15 @@ export default function SideFiles ({ setCodeVal, selectLang }) {
   React.useEffect(() => {
     ipcRenderer.on('load-file', async () => {
       let { fileName, filePath, fileContent } = await FileManager.loadFile();
-      setCodeVal(fileContent);
-      setCurrFileName(fileName);
+      if (filePath || fileName) {
+        setCodeVal(fileContent);
+        setCurrFileName(fileName);
 
-      selectLang(FileManager.getLangFromExt(fileName));
+        selectLang(FileManager.getLangFromExt(fileName));
 
-      let rs = FileManager.updateFilesToStore(filePath, fileName);
-      setFiles([...rs]);
+        let rs = FileManager.updateFilesToStore(filePath, fileName);
+        setFiles([...rs]);
+      }
     });
   }, []);
 
