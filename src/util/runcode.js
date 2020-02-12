@@ -1,6 +1,7 @@
 import JsonStore from './JsonStore';
 
 const { execFile, exec } = require('child_process');
+const path = require('path')
 
 export default function runCode () {
 
@@ -21,6 +22,23 @@ export default function runCode () {
         exec('go run ' + currPath, (error, stdout, stderr) => {
           if (stderr) { reject(stderr); }
           else resolve(stdout);
+        });
+        break;
+
+      case 'java':
+        execFile('javac', [currPath], (errorrr, stdoutt, stderr) => {
+          if (stderr && stderr.length > 1) {
+            resolve(stderr);
+          }
+          else {
+            let v = path.basename(currPath).split('.')[0];
+            let k = currPath.slice(0, currPath.lastIndexOf('\\'));
+
+            execFile('java', ['-cp', k, v], (error, stdout, stderr) => {
+              if (stderr) { reject(stderr); }
+              else resolve(stdout);
+            });
+          }
         });
         break;
 

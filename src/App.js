@@ -72,7 +72,7 @@ export default function App () {
 
   const formatCode = () => {
     if (codeVal && codeVal.length > 4) {
-      if (lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'golang') {
+      if (lang === 'javascript' || lang === 'typescript' || lang === 'html' || lang === 'java') {
         if (lang === 'html') {
           setCodeVal(js_beautify.html(codeVal));
         }

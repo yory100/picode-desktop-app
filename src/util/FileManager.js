@@ -14,6 +14,7 @@ const LANG_EXT = [
   { ext: '.py', lang: 'python' },
   { ext: '.html', lang: 'html' },
   { ext: '.go', lang: 'golang' },
+  { ext: '.java', lang: 'java' },
   { ext: '.md', lang: 'text' }
 ];
 
